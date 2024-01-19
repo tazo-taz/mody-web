@@ -31,7 +31,7 @@ export default function Slider() {
                 }}
                 loop={true}
                 modules={[Pagination, Autoplay]}
-                className="mySwiper h-[400px] rounded-primary"
+                className="mySwiper h-[200px] md:h-[400px] rounded-primary"
                 style={{ width }}
             >
                 <SwiperSlide>

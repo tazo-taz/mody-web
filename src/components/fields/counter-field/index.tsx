@@ -27,7 +27,7 @@ export default function CounterField({ placeholder, secondaryPlaceholder, icon, 
 
     return (
         <div className='relative'>
-            <div className='flex bg-gray-100 p-[14px] rounded-primary items-center'>
+            <div className='flex bg-gray-50 md:bg-gray-100 p-[14px] rounded-primary items-center'>
                 {ownIcon}
 
                 <div className='flex flex-col relative' ref={scope}>

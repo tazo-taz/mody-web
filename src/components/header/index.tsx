@@ -37,13 +37,16 @@ export default function Header() {
                     </div>
                 </div>
 
-
-                <Button icon={true} variant="secondary" className="ml-auto" onClick={toggle}>
-                    {isOpen ? <XIcon /> : <BurgerIcon />}
-                </Button>
+                <div className="block md:hidden ml-auto">
+                    <Button icon={true} variant="secondary" onClick={toggle}>
+                        {isOpen ? <XIcon /> : <BurgerIcon />}
+                    </Button>
+                </div>
 
                 {isOpen && (
-                    <MobileMenu toggle={toggle} />
+                    <div className="block md:hidden">
+                        <MobileMenu toggle={toggle} />
+                    </div>
                 )}
             </div>
         </div>

@@ -23,6 +23,33 @@ body {
 
 @media screen and (max-width: 640px) {
     .container {
-        padding: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
+}
+
+/* Apply to your container or body */
+body {
+  scrollbar-width: thin; /* "thin" or "auto" depending on your preference */
+  scrollbar-color: transparent transparent; /* Set the scrollbar color */
+  overflow-y: overlay; /* Use "overlay" to overlay the scrollbar */
+}
+
+/* Set the color of the scrollbar track */
+body::-webkit-scrollbar {
+  width: 8px; /* Set the desired scrollbar width */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--primary); /* Set the color of the scrollbar thumb */
+}
+
+body {
+  overflow-y: scroll; /* Always show the scrollbar */
+}
+
+
+body {
+  scrollbar-gutter: stable;
+  overflow-y: auto;
 }
