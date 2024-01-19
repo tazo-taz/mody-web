@@ -7,7 +7,9 @@ const useOpen = (value: boolean = false) => {
 
     const close = () => setIsOpen(false)
 
-    return { isOpen, open, close }
+    const toggle = () => setIsOpen(a => !a)
+
+    return { isOpen, open, close, toggle }
 }
 
 export default useOpen

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import ChevronDown from '../../assets/images/svgs/icons/chevron-down'
+import ChevronDown from '../../assets/images/svgs/icons/chevron/chevron-down'
 import CircleIcon from '../../assets/images/svgs/icons/cirlce-icon'
 import TicketIcon from '../../assets/images/svgs/icons/ticket-icon'
 import { getLanguageItem } from '../../assets/language'
@@ -30,7 +30,7 @@ export default function TicketSelect() {
 
     return (
         <>
-            <div className='relative'>
+            <div className='relative z-[2]'>
                 {isOpen && (
                     <>
                         <div onClick={close} className='inset-0 fixed z-10' />
