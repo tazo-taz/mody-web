@@ -1,13 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Header from './components/header';
+import { Route, Routes } from 'react-router-dom';
+import './assets/css/App.css';
+import HeaderLayout from './components/layouts/header-layout';
+import HomePage from './pages/home';
+import FooterLayout from './components/layouts/footer-layout';
 
 function App() {
   return (
-    <div>
-      <Header />
-    </div>
+    <Routes>
+      <Route element={<HeaderLayout />}>
+        <Route element={<FooterLayout />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 }
 
