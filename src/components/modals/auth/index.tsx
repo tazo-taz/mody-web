@@ -9,7 +9,7 @@ enum AUTH_TYPE {
     SIGN_UP
 }
 
-const defaultAuthType = AUTH_TYPE.SIGN_UP
+const defaultAuthType = AUTH_TYPE.LOGIN
 
 export default function AuthModal() {
     const [authType, setAuthType] = useState(defaultAuthType)
