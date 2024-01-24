@@ -12,6 +12,15 @@ import Badge from '../../badge'
 import Button from '../../fields/button'
 import TicketSelectContent from '../ticket-select/content'
 import MobileMenuItem from './mobile-menu-item'
+import useModal from '../../../stores/useModal'
+import useUser from '../../../stores/useUser'
+import TicketIcon from '../../../assets/images/svgs/icons/ticket-icon'
+import SettingsIcon from '../../../assets/images/svgs/icons/settings'
+import PaymentIcon from '../../../assets/images/svgs/icons/payment'
+import RedeemIcon from '../../../assets/images/svgs/icons/redeem'
+import UserPlusIcon from '../../../assets/images/svgs/icons/user-plus'
+import LogOutIcon from '../../../assets/images/svgs/icons/log-out'
+import { signOut } from '../../../lib/user'
 
 type mobileMenuProps = {
     toggle: () => void
@@ -19,6 +28,9 @@ type mobileMenuProps = {
 
 export default function MobileMenu({ toggle }: mobileMenuProps) {
     const [currentItemId, setCurrentItemId] = useState<null | number>(null)
+
+    const modal = useModal()
+    const { isLoading, user } = useUser()
 
     useEffect(() => {
         hideScrollbar()
@@ -43,6 +55,40 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
             icon: <GlobeIcon />,
             title: getLanguageItem("Language"),
             endContent: <Badge title={getLanguageItem("ENG")} />
+        },
+    ]
+
+    const userItems = [
+        {
+            id: 4,
+            icon: <TicketIcon />,
+            title: getLanguageItem("My_tickets"),
+        },
+        {
+            id: 5,
+            icon: <SettingsIcon />,
+            title: getLanguageItem("Account_Settings"),
+        },
+        {
+            id: 6,
+            icon: <PaymentIcon />,
+            title: getLanguageItem("Payment"),
+        },
+        {
+            id: 7,
+            icon: <RedeemIcon />,
+            title: getLanguageItem("Redeem_codes"),
+        },
+        {
+            id: 8,
+            icon: <UserPlusIcon />,
+            title: getLanguageItem("Invite_friends"),
+        },
+        {
+            id: 9,
+            icon: <LogOutIcon />,
+            title: getLanguageItem("Log_out"),
+            onClick: signOut
         },
     ]
 
@@ -76,14 +122,16 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
                 </Button>
             </HeaderContainer>
 
-            <div className='container mx-auto'>
+            <div className='container mx-auto overflow-y-auto'>
                 <div className='flex flex-col mt-4'>
-                    {items.map((item) => (
-                        <MobileMenuItem onClick={setCurrentItemId} {...item} key={item.id} />
+                    {(user ? [...items, ...userItems] : items).map((item) => (
+                        <MobileMenuItem onClick={"onClick" in item && item.onClick ? item.onClick : setCurrentItemId} {...item} key={item.id} />
                     ))}
                 </div>
 
-                <Button className='w-full mt-6'>Log in</Button>
+                {!user && !isLoading && (
+                    <Button className='w-full mt-6' onClick={() => modal.onOpen("auth")}>Log in</Button>
+                )}
             </div>
         </Container>
     )
@@ -96,7 +144,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
 )
 
 const HeaderContainer = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <div className='border-b-1 border-gray-200 pr-2'>
+    <div className='border-b-1 border-gray-200'>
         <div className='container mx-auto flex items-center'>
             <div className={cn('h-[88px] flex items-center w-full', className)}>
                 {children}

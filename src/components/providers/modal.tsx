@@ -1,9 +1,9 @@
-import LoginModal from '../modals/login'
+import AuthModal from '../modals/auth'
 
 export default function ModalProviders() {
     return (
         <>
-            <LoginModal />
+            <AuthModal />
         </>
     )
 }

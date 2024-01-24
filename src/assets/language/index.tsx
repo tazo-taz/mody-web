@@ -181,6 +181,62 @@ const data = {
         en: "Go Back",
         ge: "უკან დაბრუნება"
     },
+    Something_went_wrong_please_try_again: {
+        en: "Something went wrong please try again",
+        ge: "რაღაც შეფერხდა, გთხოვთ, სცადოთ ხელახლა"
+    },
+    Account_Settings: {
+        en: "Account Settings",
+        ge: "ანგარიშის პარამეტრები"
+    },
+    Payment: {
+        en: "Payment",
+        ge: "გადახდა"
+    },
+    Redeem_codes: {
+        en: "Redeem codes",
+        ge: "კოდების განაღდება"
+    },
+    Invite_friends: {
+        en: "Invite friends",
+        ge: "მეგობრების მოწვევა"
+    },
+    Log_out: {
+        en: "Log out",
+        ge: "გამოსვლა"
+    },
+    Successfully_logged_out: {
+        en: "Successfully logged out!",
+        ge: "წარმატებით გამოხვედით!"
+    },
+    My_tickets: {
+        en: "My tickets",
+        ge: "ჩემი ბილეთები"
+    },
+    Already_have_an_account: {
+        en: "Already have an account?",
+        ge: "გაქვთ ანგარიში?"
+    },
+    First_name: {
+        en: "First name",
+        ge: "სახელი"
+    },
+    Last_name: {
+        en: "Last name",
+        ge: "გვარი"
+    },
+    ID_Number: {
+        en: "ID Number",
+        ge: "პირადი ნომერი"
+    },
+    Email: {
+        en: "Email",
+        ge: "მეილი"
+    },
+    Wrong_or_expired_code: {
+        en: "Wrong or expired code",
+        ge: "კოდი არასწორია ან ვადა გაუვიდა"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof data) => {

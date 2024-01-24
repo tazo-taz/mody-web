@@ -1,21 +1,44 @@
+import { signInWithCustomToken } from "firebase/auth"
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
-import { getLanguageItem } from '../../../assets/language'
-import { auth, functions } from '../../../firebase'
-import { startLoading, stopLoading } from '../../../references/loading'
-import Modal from '../../modal'
+import { getLanguageItem } from '../../../../assets/language'
+import { auth, functions } from '../../../../firebase'
+import { toGeoNumber } from '../../../../lib/number'
+import { startLoading, stopLoading } from '../../../../references/loading'
+import useModal from "../../../../stores/useModal"
 import Stage1 from './stage1'
 import Stage2 from './stage2'
-import { toGeoNumber } from '../../../lib/number'
-import { signInWithCustomToken } from "firebase/auth";
 
 export const codeLength = 6
 
-export default function LoginModal() {
+export default function LoginContent({ onSignUp }: { onSignUp: () => void }) {
     const [stage, setStage] = useState(0)
 
     const [phone, setPhone] = useState("")
     const [code, setCode] = useState("")
+
+    const modal = useModal()
+
+    const onClose = () => {
+        modal.onClose()
+        reset()
+    }
+
+    const sendAuthSms = useCallback(() =>
+        functions("requestAuthSms", {
+            phoneNumber: toGeoNumber(phone)
+        }), [phone])
+
+    const goStage1 = useCallback(() => {
+        setCode("")
+        setStage(0)
+    }, [])
+
+    const reset = () => {
+        setStage(0)
+        setPhone("")
+        setCode("")
+    }
 
     const onVeriticationCodeChange = async (newCode: string) => {
         setCode(newCode)
@@ -30,6 +53,7 @@ export default function LoginModal() {
 
                 if (res.data.result) {
                     await signInWithCustomToken(auth, res.data.data.token)
+                    onClose()
                 }
 
             } catch (error) {
@@ -40,11 +64,6 @@ export default function LoginModal() {
         }
     }
 
-    const sendAuthSms = useCallback(() =>
-        functions("requestAuthSms", {
-            phoneNumber: toGeoNumber(phone)
-        }), [phone])
-
     const sendCode = async () => {
         try {
 
@@ -52,11 +71,7 @@ export default function LoginModal() {
                 return toast.error(getLanguageItem("Fill_in_the_fields"))
 
             startLoading()
-
             const res = await sendAuthSms()
-
-            console.log(res.data);
-
 
             if (res.data.result) {
                 setStage(1)
@@ -69,11 +84,6 @@ export default function LoginModal() {
 
     }
 
-    const goStage1 = useCallback(() => {
-        setCode("")
-        setStage(0)
-    }, [])
-
     let content: React.ReactNode = null
 
     if (stage === 0) {
@@ -82,6 +92,7 @@ export default function LoginModal() {
                 phone={phone}
                 setPhone={setPhone}
                 sendCode={sendCode}
+                onSignUp={onSignUp}
             />
         )
     }
@@ -98,10 +109,5 @@ export default function LoginModal() {
         )
     }
 
-    return (
-        <Modal
-            children={content}
-            title={getLanguageItem("Log_In")}
-        />
-    )
+    return content
 }

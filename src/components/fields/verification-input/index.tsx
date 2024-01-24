@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 type VerificationInputType = {
     count: number,
     value: string,
-    setValue: (value: string) => void
+    setValue: (value: string) => void,
+    inputRef?: React.MutableRefObject<null | HTMLInputElement>
 }
 
-export default function VerificationInput({ count, value, setValue }: VerificationInputType) {
+export default function VerificationInput({ count, value, setValue, inputRef }: VerificationInputType) {
+
+    useEffect(() => {
+        if (inputRef) inputRef.current?.focus()
+    }, [inputRef])
+
     return (
         <div className='flex gap-3 flex-wrap relative'>
-            <input value={value} onChange={e => {
+            <input ref={inputRef} value={value} onChange={e => {
                 const { value } = e.target
                 value.length <= count && setValue(value)
             }} className='absolute inset-0 focus-within:outline-none z-[1] bg-transparent opacity-0' />

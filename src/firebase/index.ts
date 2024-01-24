@@ -27,7 +27,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const functionsApp = getFunctions(app, "europe-west3");
 
-export const functions = (name: string, data: any) => {
+export const functions = (name: string, data: any = {}) => {
     return httpsCallable(functionsApp, name)(data) as Promise<{ data: any }>
 }
 

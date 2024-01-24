@@ -1,25 +1,16 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { auth } from "../firebase";
+import { loadUser } from "../lib/user";
+import useUser from "../stores/useUser";
 
 export default function useAuthStateChange() {
     useEffect(() => {
-
-
-
-        const subscriber = onAuthStateChanged(auth, (user) => {
-            console.log({ user });
-
+        const subscriber = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/firebase.User
-                const uid = user.uid;
-                // ...
-                console.log("uid", uid)
+                await loadUser()
             } else {
-                // User is signed out
-                // ...
-                console.log("user is logged out")
+                useUser.setState({ isLoading: false })
             }
         });
         return subscriber;

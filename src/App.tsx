@@ -35,7 +35,6 @@ function App() {
     <>
       <Loading ref={saveLoadingReference} />
       <Toaster />
-      <ModalProviders />
       <Routes>
         <Route element={<HeaderLayout />}>
           <Route element={<FooterLayout />}>
@@ -43,6 +42,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
+      <ModalProviders />
     </>
   );
 }

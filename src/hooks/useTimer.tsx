@@ -10,8 +10,6 @@ export const useTimer = (second: number) => {
     const resume = useCallback(() => {
         stop()
         interval.current = setInterval(() => {
-            console.log("xxx");
-
             setTime(time => {
                 return time - 1
             })
