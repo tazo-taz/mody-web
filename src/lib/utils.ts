@@ -7,11 +7,12 @@ export function cn(...inputs: ClassValue[]) {
 
 let oldOverflow = ""
 
-export const toggleHideScrollbar = () => {
-    if (document.body.style.overflow === "hidden") {
-        document.body.style.overflow = oldOverflow
-    } else {
-        if (!oldOverflow) oldOverflow = document.body.style.overflow
-        document.body.style.overflow = "hidden"
-    }
+
+export const hideScrollbar = () => {
+    if (!oldOverflow) oldOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+}
+
+export const showScrollbar = () => {
+    document.body.style.overflow = oldOverflow
 }

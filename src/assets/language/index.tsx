@@ -137,6 +137,50 @@ const data = {
         en: "GEO",
         ge: "ქარ"
     },
+    Log_In: {
+        en: "Log In",
+        ge: "შესვლა"
+    },
+    Whats_your_number: {
+        en: "What’s your number?",
+        ge: "შეიყვანეთ თქვენი ნომერი"
+    },
+    If_you_dont_have_an_account_use_phone_registration_we_will_text_you_to_verify_your_phone_number: {
+        en: "If you don’t have an account use phone registration. we will text you to verify your phone number",
+        ge: "თუ არ გაქვთ ანგარიში, გამოიყენეთ ტელეფონის რეგისტრაცია. ჩვენ გამოგიგზავნით შეტყობინებას თქვენი ტელეფონის ნომრის დასადასტურებლად"
+    },
+    Phone_number: {
+        en: "Phone number",
+        ge: "ტელეფონის ნომერი"
+    },
+    Next: {
+        en: "Next",
+        ge: "შემდეგი"
+    },
+    Dont_have_an_account: {
+        en: "Don’t have an account?",
+        ge: "არ გაქვთ ანგარიში?"
+    },
+    Sign_Up: {
+        en: "Sign Up",
+        ge: "რეგისტრაცია"
+    },
+    Fill_in_the_fields: {
+        en: "Fill in the fields",
+        ge: "შეავსეთ ველები"
+    },
+    Enter_the_6_digit_code_sent_to_you_at: {
+        en: "Enter the 6-digit code sent to you at",
+        ge: "შეიყვანეთ თქვენთვის გამოგზავნილი 6-ნიშნა კოდი"
+    },
+    Resend_code: {
+        en: "Resend code",
+        ge: "კოდის თავიდან გაგზავნა"
+    },
+    Go_Back: {
+        en: "Go Back",
+        ge: "უკან დაბრუნება"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof data) => {

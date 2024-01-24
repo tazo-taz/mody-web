@@ -3,18 +3,24 @@ import { cn } from '../../../lib/utils'
 
 type variantType = "primary" | "secondary"
 
+type sizeType = "lg" | "sm" | "icon"
+
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    icon?: boolean,
-    variant?: variantType
+    variant?: variantType,
+    size?: sizeType
 }
 
-export default function Button({ className, icon, variant = "primary", ...props }: ButtonProps) {
+export default function Button({ className, size = "lg", variant = "primary", disabled, ...props }: ButtonProps) {
     return (
         <button className={cn(
-            "h-12 rounded-primary flex items-center justify-center transition active:scale-95 hover:opacity-90",
-            icon ? "w-12" : "px-[18px]",
+            "rounded-primary flex items-center justify-center transition",
+            size === "icon" && "w-12 h-12",
+            size === "lg" && "px-[18px] h-12 font-semibold",
+            size === "sm" && "px-[18px] py-[11px] text-sm",
             variant === "primary" && "bg-primary text-white",
-            variant === "secondary" && "bg-gray-100 text-primary",
+            variant === "secondary" && "bg-[#F3F4F6] text-[#111928]",
+            !disabled && "active:scale-95 hover:opacity-90",
+            disabled && "cursor-auto",
             className
         )} {...props}></button>
     )

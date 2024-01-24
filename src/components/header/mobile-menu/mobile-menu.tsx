@@ -7,7 +7,7 @@ import GlobeIcon from '../../../assets/images/svgs/icons/globe'
 import XIcon from '../../../assets/images/svgs/icons/x'
 import ModyLogoPurple from '../../../assets/images/svgs/logo/mody-logo-purple'
 import { getLanguageItem } from '../../../assets/language'
-import { cn, toggleHideScrollbar } from '../../../lib/utils'
+import { cn, hideScrollbar, showScrollbar } from '../../../lib/utils'
 import Badge from '../../badge'
 import Button from '../../fields/button'
 import TicketSelectContent from '../ticket-select/content'
@@ -21,8 +21,8 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
     const [currentItemId, setCurrentItemId] = useState<null | number>(null)
 
     useEffect(() => {
-        toggleHideScrollbar()
-        return toggleHideScrollbar
+        hideScrollbar()
+        return showScrollbar
     }, [])
 
     const items = [
@@ -52,7 +52,7 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
         return (
             <Container>
                 <HeaderContainer className="relative">
-                    <Button icon variant='secondary' onClick={() => setCurrentItemId(null)}>
+                    <Button size='icon' variant='secondary' onClick={() => setCurrentItemId(null)}>
                         <ChevronLeft />
                     </Button>
 
@@ -71,7 +71,7 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
                     <ModyLogoPurple />
                 </Link>
 
-                <Button icon={true} variant="secondary" className="ml-auto" onClick={toggle}>
+                <Button size='icon' variant="secondary" className="ml-auto" onClick={toggle}>
                     <XIcon />
                 </Button>
             </HeaderContainer>

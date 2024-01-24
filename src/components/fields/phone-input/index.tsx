@@ -1,0 +1,25 @@
+import React from 'react'
+import GeorgianFlagIcon from '../../../assets/images/svgs/icons/flags/georgian'
+import { getLanguageItem } from '../../../assets/language'
+import { cn } from '../../../lib/utils'
+
+type phoneInputType = {
+    value: string,
+    onChange: (newValue: string) => void
+}
+
+export default function PhoneInput({ value, onChange }: phoneInputType) {
+    return (
+        <div className='border-1 rounded-primary flex'>
+            <div className='flex p-4 gap-2.5 border-r-1'>
+                <GeorgianFlagIcon />
+                <h5>+995</h5>
+            </div>
+
+            <div className='flex flex-col justify-center pl-4 relative'>
+                <h4 className={cn('text-gray-500 absolute left-4 whitespace-nowrap transition duration-150', value.length && "text-[13px] -translate-y-3")}>{getLanguageItem("Phone_number")}</h4>
+                <input type="number" value={value} onChange={e => onChange(e.target.value)} className={cn('focus-within:outline-none absolute z-[1] bg-transparent', value && "translate-y-2")} />
+            </div>
+        </div>
+    )
+}

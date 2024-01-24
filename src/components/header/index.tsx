@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import DollarIcon from "../../assets/images/svgs/icons/dollar-icon";
-import EnglishFlagIcon from "../../assets/images/svgs/icons/english-flag-icon";
+import EnglishFlagIcon from "../../assets/images/svgs/icons/flags/english";
 import ModyLogoPurple from "../../assets/images/svgs/logo/mody-logo-purple";
 import { getLanguageItem } from "../../assets/language";
 import Button from "../fields/button";
@@ -28,17 +28,17 @@ export default function Header() {
                         <Button>
                             Log In
                         </Button>
-                        <Button icon variant="secondary">
+                        <Button size="icon" variant="secondary">
                             <DollarIcon />
                         </Button>
-                        <Button icon variant="secondary">
+                        <Button size="icon" variant="secondary">
                             <EnglishFlagIcon />
                         </Button>
                     </div>
                 </div>
 
                 <div className="block md:hidden ml-auto">
-                    <Button icon={true} variant="secondary" onClick={toggle}>
+                    <Button size="icon" variant="secondary" onClick={toggle}>
                         {isOpen ? <XIcon /> : <BurgerIcon />}
                     </Button>
                 </div>
