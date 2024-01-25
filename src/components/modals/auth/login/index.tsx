@@ -1,10 +1,10 @@
 import { signInWithCustomToken } from "firebase/auth"
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
-import { getLanguageItem } from '../../../../assets/language'
 import { auth, functions } from '../../../../firebase'
 import { toGeoNumber } from '../../../../lib/number'
 import { startLoading, stopLoading } from '../../../../references/loading'
+import useLanguage from "../../../../stores/useLanguage"
 import useModal from "../../../../stores/useModal"
 import Stage1 from './stage1'
 import Stage2 from './stage2'
@@ -12,6 +12,7 @@ import Stage2 from './stage2'
 export const codeLength = 6
 
 export default function LoginContent({ onSignUp }: { onSignUp: () => void }) {
+    const { getItem } = useLanguage()
     const [stage, setStage] = useState(0)
 
     const [phone, setPhone] = useState("")
@@ -68,7 +69,7 @@ export default function LoginContent({ onSignUp }: { onSignUp: () => void }) {
         try {
 
             if (!phone)
-                return toast.error(getLanguageItem("Fill_in_the_fields"))
+                return toast.error(getItem("Fill_in_the_fields"))
 
             startLoading()
             const res = await sendAuthSms()

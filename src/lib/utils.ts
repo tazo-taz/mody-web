@@ -6,17 +6,20 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-let oldOverflow = ""
-
+let overflow = 0
 
 export const hideScrollbar = () => {
-    if (!oldOverflow) oldOverflow = document.body.style.overflow
     document.body.style.overflow = "hidden"
+    overflow--
 }
 
 export const showScrollbar = () => {
-    document.body.style.overflow = oldOverflow
+    overflow++
+    if (!overflow)
+        document.body.style.overflow = ""
 }
+
+export const scrollToTop = () => document.querySelector("html")!.scrollTop = 0
 
 export const fillTheField = (fieldType: string) => {
     const lang = useLanguage.getState().language

@@ -1,16 +1,13 @@
+import { Toaster } from 'react-hot-toast';
 import { Route, Routes } from 'react-router-dom';
 import './assets/css/App.css';
-import HeaderLayout from './components/layouts/header-layout';
-import HomePage from './pages/home';
 import FooterLayout from './components/layouts/footer-layout';
-import { collection, getDocs } from "firebase/firestore";
-import { useEffect } from 'react';
-import { db } from './firebase';
-import ModalProviders from './components/providers/modal';
-import { Toaster } from 'react-hot-toast';
+import HeaderLayout from './components/layouts/header-layout';
 import Loading from './components/loading';
-import { saveLoadingReference } from './references/loading';
+import ModalProviders from './components/providers/modal';
 import useAuthStateChange from './hooks/useAuthStateChange';
+import HomePage from './pages/home';
+import { saveLoadingReference } from './references/loading';
 
 function App() {
 

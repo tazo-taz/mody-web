@@ -4,23 +4,24 @@ import ChevronLeft from '../../../assets/images/svgs/icons/chevron/chevron-left'
 import DollarIcon from '../../../assets/images/svgs/icons/dollar-icon'
 import FilterIcon from '../../../assets/images/svgs/icons/filter'
 import GlobeIcon from '../../../assets/images/svgs/icons/globe'
+import LogOutIcon from '../../../assets/images/svgs/icons/log-out'
+import PaymentIcon from '../../../assets/images/svgs/icons/payment'
+import RedeemIcon from '../../../assets/images/svgs/icons/redeem'
+import SettingsIcon from '../../../assets/images/svgs/icons/settings'
+import TicketIcon from '../../../assets/images/svgs/icons/ticket-icon'
+import UserPlusIcon from '../../../assets/images/svgs/icons/user-plus'
 import XIcon from '../../../assets/images/svgs/icons/x'
 import ModyLogoPurple from '../../../assets/images/svgs/logo/mody-logo-purple'
-import { getLanguageItem } from '../../../assets/language'
+import { signOut } from '../../../lib/user'
 import { cn, hideScrollbar, showScrollbar } from '../../../lib/utils'
+import useLanguage from '../../../stores/useLanguage'
+import useModal from '../../../stores/useModal'
+import useUser from '../../../stores/useUser'
 import Badge from '../../badge'
 import Button from '../../fields/button'
 import TicketSelectContent from '../ticket-select/content'
 import MobileMenuItem from './mobile-menu-item'
-import useModal from '../../../stores/useModal'
-import useUser from '../../../stores/useUser'
-import TicketIcon from '../../../assets/images/svgs/icons/ticket-icon'
-import SettingsIcon from '../../../assets/images/svgs/icons/settings'
-import PaymentIcon from '../../../assets/images/svgs/icons/payment'
-import RedeemIcon from '../../../assets/images/svgs/icons/redeem'
-import UserPlusIcon from '../../../assets/images/svgs/icons/user-plus'
-import LogOutIcon from '../../../assets/images/svgs/icons/log-out'
-import { signOut } from '../../../lib/user'
+import { switchLanguage } from '../../../lib/language'
 
 type mobileMenuProps = {
     toggle: () => void
@@ -28,6 +29,7 @@ type mobileMenuProps = {
 
 export default function MobileMenu({ toggle }: mobileMenuProps) {
     const [currentItemId, setCurrentItemId] = useState<null | number>(null)
+    const { getItem, setLanguage, language } = useLanguage()
 
     const modal = useModal()
     const { isLoading, user } = useUser()
@@ -37,24 +39,28 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
         return showScrollbar
     }, [])
 
+    let languageBadgeTitle = getItem("ENG")
+    if (language === "ge") languageBadgeTitle = getItem("GEO")
+
     const items = [
         {
             id: 1,
             icon: <FilterIcon />,
-            title: getLanguageItem("Search_ticket"),
+            title: getItem("Search_ticket"),
             content: <div className='flex flex-col gap-4 px-5 pb-5 pt-8 flex-1'><TicketSelectContent /></div>
         },
         {
             id: 2,
             icon: <DollarIcon />,
-            title: getLanguageItem("Currency"),
-            endContent: <Badge title={getLanguageItem("USD")} />
+            title: getItem("Currency"),
+            endContent: <Badge title={getItem("USD")} />
         },
         {
             id: 3,
             icon: <GlobeIcon />,
-            title: getLanguageItem("Language"),
-            endContent: <Badge title={getLanguageItem("ENG")} />
+            title: getItem("Language"),
+            endContent: <Badge title={languageBadgeTitle} />,
+            onClick: () => switchLanguage(language, setLanguage)
         },
     ]
 
@@ -62,32 +68,32 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
         {
             id: 4,
             icon: <TicketIcon />,
-            title: getLanguageItem("My_tickets"),
+            title: getItem("My_tickets"),
         },
         {
             id: 5,
             icon: <SettingsIcon />,
-            title: getLanguageItem("Account_Settings"),
+            title: getItem("Account_Settings"),
         },
         {
             id: 6,
             icon: <PaymentIcon />,
-            title: getLanguageItem("Payment"),
+            title: getItem("Payment"),
         },
         {
             id: 7,
             icon: <RedeemIcon />,
-            title: getLanguageItem("Redeem_codes"),
+            title: getItem("Redeem_codes"),
         },
         {
             id: 8,
             icon: <UserPlusIcon />,
-            title: getLanguageItem("Invite_friends"),
+            title: getItem("Invite_friends"),
         },
         {
             id: 9,
             icon: <LogOutIcon />,
-            title: getLanguageItem("Log_out"),
+            title: getItem("Log_out"),
             onClick: signOut
         },
     ]

@@ -1,13 +1,9 @@
 import useLanguage from "../../stores/useLanguage"
 
-const data = {
+export const languageData = {
     Find_Official_Tickets: {
         en: "Find Official \nTickets",
         ge: "მოძებნეთ ოფიციალური \nბილეთები"
-    },
-    Search_your_ticket: {
-        en: "Search your ticket",
-        ge: "მოძებნეთ თქვენი ბილეთი"
     },
     Search_ticket: {
         en: "Search ticket",
@@ -239,7 +235,7 @@ const data = {
     },
 }
 
-export const getLanguageItem = (item: keyof typeof data) => {
+export const getLanguageItem = (item: keyof typeof languageData) => {
     const language = useLanguage.getState()
-    return data[item][language.language]
+    return languageData[item][language.language]
 }

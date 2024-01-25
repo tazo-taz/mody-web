@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react'
-import VerificationInput from '../../../fields/verification-input'
-import { getLanguageItem } from '../../../../assets/language'
-import Button from '../../../fields/button'
+import moment from 'moment'
+import { useEffect, useRef } from 'react'
 import { codeLength } from '.'
 import { useTimer } from '../../../../hooks/useTimer'
-import moment from 'moment'
+import useLanguage from '../../../../stores/useLanguage'
+import Button from '../../../fields/button'
+import VerificationInput from '../../../fields/verification-input'
 
 type Stage2Props = {
     phone: string,
@@ -17,6 +17,7 @@ type Stage2Props = {
 export default function Stage2({ phone, code, onVeriticationCodeChange, goBack, sendAuthSms }: Stage2Props) {
     const { seconds, resume, reset } = useTimer(30)
     const inputRef = useRef(null)
+    const { getItem } = useLanguage()
 
     useEffect(() => {
         resume()
@@ -32,17 +33,17 @@ export default function Stage2({ phone, code, onVeriticationCodeChange, goBack, 
 
     return (
         <>
-            <p className='text-gray-500 text-sm mb-5'>{getLanguageItem("Enter_the_6_digit_code_sent_to_you_at")} <span className='text-secondary font-semibold'>{phone}</span></p>
+            <p className='text-gray-500 text-sm mb-5'>{getItem("Enter_the_6_digit_code_sent_to_you_at")} <span className='text-secondary font-semibold'>{phone}</span></p>
 
             <VerificationInput inputRef={inputRef} value={code} setValue={onVeriticationCodeChange} count={codeLength} />
 
             <div className='mt-5'>
                 <Button style={seconds ? {
                     color: "#b1b1b1"
-                } : {}} disabled={!!seconds} onClick={resend} size='sm' className='rounded-full font-medium' variant='secondary'>{getLanguageItem("Resend_code")} ({moment.utc(seconds * 1000).format('mm:ss')})</Button>
+                } : {}} disabled={!!seconds} onClick={resend} size='sm' className='rounded-full font-medium' variant='secondary'>{getItem("Resend_code")} ({moment.utc(seconds * 1000).format('mm:ss')})</Button>
             </div>
 
-            <Button onClick={goBack} className='text-black mt-[86px]' variant='secondary'>{getLanguageItem("Go_Back")}</Button>
+            <Button onClick={goBack} className='text-black mt-[86px]' variant='secondary'>{getItem("Go_Back")}</Button>
         </>
     )
 }

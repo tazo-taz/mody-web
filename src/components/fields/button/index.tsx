@@ -7,10 +7,11 @@ type sizeType = "lg" | "sm" | "icon"
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     variant?: variantType,
-    size?: sizeType
+    size?: sizeType,
+    icon?: React.ReactNode
 }
 
-export default function Button({ className, size = "lg", variant = "primary", disabled, ...props }: ButtonProps) {
+export default function Button({ className, size = "lg", variant = "primary", disabled, icon, children, ...props }: ButtonProps) {
     return (
         <button className={cn(
             "rounded-primary flex items-center justify-center transition",
@@ -22,6 +23,11 @@ export default function Button({ className, size = "lg", variant = "primary", di
             !disabled && "active:scale-95 hover:opacity-90",
             disabled && "cursor-auto",
             className
-        )} {...props}></button>
+        )} {...props}>
+            {icon && (
+                <div className='w-[30px]'>{icon}</div>
+            )}
+            {children}
+        </button>
     )
 }

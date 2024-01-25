@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import useLanguage from '../../../stores/useLanguage'
 import Modal from '../../modal'
-import { getLanguageItem } from '../../../assets/language'
 import LoginContent from './login'
 import SignUpContent from './sign-up'
 
@@ -13,6 +13,7 @@ const defaultAuthType = AUTH_TYPE.LOGIN
 
 export default function AuthModal() {
     const [authType, setAuthType] = useState(defaultAuthType)
+    const { getItem } = useLanguage()
 
     let content = null
 
@@ -22,7 +23,7 @@ export default function AuthModal() {
         content = <SignUpContent onLogin={() => setAuthType(AUTH_TYPE.LOGIN)} />
     }
 
-    const title = getLanguageItem(authType === AUTH_TYPE.LOGIN ? "Log_In" : "Sign_Up")
+    const title = getItem(authType === AUTH_TYPE.LOGIN ? "Log_In" : "Sign_Up")
 
     return (
         <Modal

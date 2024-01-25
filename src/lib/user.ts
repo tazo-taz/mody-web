@@ -1,9 +1,10 @@
+import { signOut as signOutAuth } from "firebase/auth";
 import toast from "react-hot-toast";
-import { auth, functions } from "../firebase"
+import { auth, functions } from "../firebase";
 import { userSchema } from "../schemas/user";
-import { getLanguageItem } from "../assets/language";
+import useLanguage from "../stores/useLanguage";
 import useUser from "../stores/useUser";
-import { signOut as signOutAuth } from "firebase/auth"
+import { getLanguageItem } from "../assets/language";
 
 export const loadUser = async () => {
     const res = await functions("MyInfo")

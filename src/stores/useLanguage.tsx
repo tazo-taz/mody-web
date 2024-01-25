@@ -1,15 +1,18 @@
 import { create } from "zustand";
+import { languageData } from "../assets/language";
 
-type languageType = "en" | "ge"
+export type languageType = "en" | "ge"
 
-export type layoutStore = {
+export type languageStore = {
     language: languageType,
     setLanguage: (language: languageType) => void,
+    getItem: (item: keyof typeof languageData) => string
 };
 
-const useLanguage = create<layoutStore>((set) => ({
+const useLanguage = create<languageStore>((set, get) => ({
     language: "en",
     setLanguage: (language) => set({ language }),
+    getItem: (item) => languageData[item][get().language]
 }));
 
 

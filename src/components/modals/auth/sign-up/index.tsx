@@ -1,23 +1,24 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { signInWithCustomToken } from "firebase/auth"
 import { useCallback, useEffect, useState } from 'react'
+import { useForm } from "react-hook-form"
 import toast from 'react-hot-toast'
-import { getLanguageItem } from '../../../../assets/language'
 import { auth, functions } from '../../../../firebase'
 import { toGeoNumber } from '../../../../lib/number'
+import { loadUser } from "../../../../lib/user"
+import { delay } from "../../../../lib/utils"
 import { startLoading, stopLoading } from '../../../../references/loading'
+import { unregisteredUserSchema, unregisteredUserSchemaType } from "../../../../schemas/user"
+import useLanguage from "../../../../stores/useLanguage"
 import useModal from "../../../../stores/useModal"
 import Stage1 from './stage1'
 import Stage2 from './stage2'
-import { useForm } from "react-hook-form"
-import { unregisteredUserSchema, unregisteredUserSchemaType } from "../../../../schemas/user"
-import { zodResolver } from "@hookform/resolvers/zod";
-import { delay } from "../../../../lib/utils"
-import { loadUser } from "../../../../lib/user"
 
 export const codeLength = 6
 
 export default function SignUpContent({ onLogin }: { onLogin: () => void }) {
     const [stage, setStage] = useState(0)
+    const { getItem } = useLanguage()
 
     const [code, setCode] = useState("")
 
@@ -42,7 +43,7 @@ export default function SignUpContent({ onLogin }: { onLogin: () => void }) {
         const errorValues = Object.values(errors)
         errorValues.length &&
             toast.error(
-                getLanguageItem("Fill_in_the_fields") +
+                getItem("Fill_in_the_fields") +
                 " (" + errorValues.map(a => a.message).filter(a => a).join(", ") + ")"
             )
     }, [errors])
@@ -98,7 +99,7 @@ export default function SignUpContent({ onLogin }: { onLogin: () => void }) {
                     }
                     await loadUser()
                     onClose()
-                } else toast.error(getLanguageItem("Wrong_or_expired_code"))
+                } else toast.error(getItem("Wrong_or_expired_code"))
 
             } catch (error) {
                 console.log(error);

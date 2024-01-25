@@ -1,12 +1,13 @@
-import { getLanguageItem } from '../../assets/language'
 import AppStore from '../../components/app-store'
 import GooglePlay from '../../components/google-play'
+import useLanguage from '../../stores/useLanguage'
 import Services from './services'
 import Slider from './slider'
 
 export default function HomePage() {
+    const { getItem } = useLanguage()
 
-    const [firstWord, ...rest] = getLanguageItem("Travel_That_Moves_You").split(" ")
+    const [firstWord, ...rest] = getItem("Travel_That_Moves_You").split(" ")
 
     return (
         <div className='flex flex-col'>
@@ -15,7 +16,7 @@ export default function HomePage() {
                     <Slider />
 
                     <h1 className='md:text-5xl text-3xl font-semibold mt-6'><span className='text-primary'>{firstWord}</span> {rest.join(" ")}</h1>
-                    <p className='md:text-lg text-gray-500 max-w-[530px]'>{getLanguageItem("One_app_for_every_step_of_your_journey_travel_planning_has_never_been_easier")}</p>
+                    <p className='md:text-lg text-gray-500 max-w-[530px]'>{getItem("One_app_for_every_step_of_your_journey_travel_planning_has_never_been_easier")}</p>
 
                     <div className='flex gap-5 mt-2'>
                         <GooglePlay />
@@ -23,7 +24,7 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div className='md:pl-14 pb-[60px] pt-[50px] order-1 md:order-2'>
-                    <h2 className='text-2xl font-bold mb-8'>{getLanguageItem("Our_Services")}</h2>
+                    <h2 className='text-2xl font-bold mb-8'>{getItem("Our_Services")}</h2>
 
                     <Services />
                 </div>

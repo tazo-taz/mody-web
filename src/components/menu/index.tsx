@@ -2,7 +2,7 @@ import React from 'react'
 import ChevronDown from '../../assets/images/svgs/icons/chevron/chevron-down'
 import useOpen from '../../hooks/useOpen'
 import Item from './item'
-import { AnimatePresence, motion, useAnimate } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type separatorType = {
     isSeparator: true
@@ -18,7 +18,7 @@ export type itemType = {
 type MenuType = {
     icon: React.ReactNode,
     title: string,
-    items: (itemType | separatorType)[]
+    items: (itemType | separatorType | false)[]
 }
 
 export default function Menu({ icon, title, items }: MenuType) {
@@ -47,6 +47,7 @@ export default function Menu({ icon, title, items }: MenuType) {
                                 exit={{ opacity: 0, translateY: 10 }}
                                 className='bg-white rounded-primary flex flex-col w-[250px] absolute shadow-md right-0 top-[110%] z-10'>
                                 {items.map((item, inx) => {
+                                    if (!item) return null
                                     if ("isSeparator" in item) {
                                         return <div key={inx} className='h-[1px] bg-[#EAECF0]' />
                                     } else {

@@ -1,18 +1,18 @@
-import React from 'react'
-import ModyLogoWhite from '../../assets/images/svgs/logo/mody-logo-white.svg'
 import { Link } from 'react-router-dom'
-import { getLanguageItem } from '../../assets/language'
-import TwitterIcon from '../../assets/images/svgs/socials/twitter'
-import LinkedinIcon from '../../assets/images/svgs/socials/linkedin'
+import ModyLogoWhite from '../../assets/images/svgs/logo/mody-logo-white.svg'
 import FacebookIcon from '../../assets/images/svgs/socials/facebook'
+import LinkedinIcon from '../../assets/images/svgs/socials/linkedin'
+import TwitterIcon from '../../assets/images/svgs/socials/twitter'
+import useLanguage from '../../stores/useLanguage'
 
 export default function Footer() {
+    const { getItem } = useLanguage()
 
     const websiteLinks = (
         <div className='text-white flex gap-3 md:gap-6'>
-            <Link to="/">{getLanguageItem("Terms_and_Conditions")}</Link>
-            <Link to="/">{getLanguageItem("Privacy")}</Link>
-            <Link to="/">{getLanguageItem("About_Us")}</Link>
+            <Link to="/">{getItem("Terms_and_Conditions")}</Link>
+            <Link to="/">{getItem("Privacy")}</Link>
+            <Link to="/">{getItem("About_Us")}</Link>
         </div>
     )
 
@@ -54,7 +54,7 @@ export default function Footer() {
                 <div className='w-full h-[1px] bg-gray-600' />
 
                 <div className='flex justify-center md:justify-between items-center'>
-                    <h2 className='text-gray-300'>{getLanguageItem("Mody_All_rights_reserved")}</h2>
+                    <h2 className='text-gray-300'>{getItem("Mody_All_rights_reserved")}</h2>
 
                     <div className='md:block hidden'>
                         {socialLinks}
