@@ -51,7 +51,7 @@ export default function Menu({ icon, title, items }: MenuType) {
                                     if ("isSeparator" in item) {
                                         return <div key={inx} className='h-[1px] bg-[#EAECF0]' />
                                     } else {
-                                        return <Item {...item} key={inx} />
+                                        return <Item toggle={toggle} {...item} key={inx} />
                                     }
                                 })}
                             </motion.div>

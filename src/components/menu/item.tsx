@@ -2,7 +2,7 @@ import React from 'react'
 import { itemType } from '.'
 import { Link } from 'react-router-dom'
 
-export default function Item({ icon, title, ...item }: itemType) {
+export default function Item({ icon, title, toggle, ...item }: itemType & { toggle: () => void }) {
     const content = (
         <>
             <div className='w-[30px]'>
@@ -17,11 +17,14 @@ export default function Item({ icon, title, ...item }: itemType) {
 
     if ("href" in item) {
         container = (
-            <Link to={item.href} className={containerClassnames}>{content}</Link>
+            <Link to={item.href} onClick={toggle} className={containerClassnames}>{content}</Link>
         )
     } else {
         container = (
-            <div onClick={item.onClick} className={containerClassnames}>{content}</div>
+            <div onClick={() => {
+                item.onClick()
+                toggle()
+            }} className={containerClassnames}>{content}</div>
         )
     }
 

@@ -1,7 +1,6 @@
-import React from 'react'
-import useLanguage from '../../stores/useLanguage'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '../../lib/utils'
+import useLanguage from '../../stores/useLanguage'
 
 
 export default function AccountNav() {
@@ -33,7 +32,7 @@ export default function AccountNav() {
     const activeIndex = nav.findIndex((item) => item.href === location.pathname) || 0
 
     return (
-        <div className='bg-[#F3F4F6] border-1 border-[#E5E7EB] rounded-lg p-1'>
+        <div className='bg-[#F3F4F6] border-1 border-[#E5E7EB] rounded-lg p-1 hidden md:block mb-[35px]'>
             <div className='relative grid grid-cols-5'>
                 <div
                     className="absolute top-0 bottom-0 transition-[left] w-1/5 bg-white shadow-md rounded-md"
@@ -45,7 +44,7 @@ export default function AccountNav() {
                     <Link
                         to={item.href}
                         key={inx}
-                        className={cn('py-2 px-5 text-center text-[#6B7280] rounded-md relative z-[1]',
+                        className={cn('py-2 text-center text-[#6B7280] rounded-md relative z-[1] whitespace-nowrap',
                             activeIndex === inx && "text-secondary font-semibold"
                         )}
                     >{item.title}</Link>

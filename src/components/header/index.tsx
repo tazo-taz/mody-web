@@ -47,7 +47,7 @@ export default function Header() {
                     {
                         icon: <SettingsIcon />,
                         title: getItem("Account_Settings"),
-                        href: "/account/settings"
+                        href: "/account"
                     },
                     width < 1024 &&
                     {

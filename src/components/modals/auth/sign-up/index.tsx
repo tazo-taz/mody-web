@@ -13,6 +13,7 @@ import useLanguage from "../../../../stores/useLanguage"
 import useModal from "../../../../stores/useModal"
 import Stage1 from './stage1'
 import Stage2 from './stage2'
+import useUserForm from "../../../../hooks/forms/useUserForm"
 
 export const codeLength = 6
 
@@ -28,16 +29,7 @@ export default function SignUpContent({ onLogin }: { onLogin: () => void }) {
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm<unregisteredUserSchemaType>({
-        resolver: zodResolver(unregisteredUserSchema),
-        defaultValues: {
-            firstName: "თაზო",
-            lastName: "ჯანელიძე",
-            userId: "60001100012",
-            phoneNumber: "557978782",
-            email: ""
-        }
-    })
+    } = useUserForm()
 
     useEffect(() => {
         const errorValues = Object.values(errors)
@@ -46,7 +38,7 @@ export default function SignUpContent({ onLogin }: { onLogin: () => void }) {
                 getItem("Fill_in_the_fields") +
                 " (" + errorValues.map(a => a.message).filter(a => a).join(", ") + ")"
             )
-    }, [errors])
+    }, [errors, getItem])
 
     const phone = watch("phoneNumber")
     const firstName = watch("firstName")

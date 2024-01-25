@@ -237,6 +237,22 @@ export const languageData = {
         en: "Payment methods",
         ge: "გადახდის მეთოდები"
     },
+    Update: {
+        en: "Update",
+        ge: "განახლება"
+    },
+    A_verification_code_will_be_sent_to_this_number: {
+        en: "A verification code will be sent to this number",
+        ge: "ამ ნომერზე გაიგზავნება დამადასტურებელი კოდი"
+    },
+    Cancel: {
+        en: "Cancel",
+        ge: "გაუქმება"
+    },
+    Save: {
+        en: "Save",
+        ge: "შენახვა"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

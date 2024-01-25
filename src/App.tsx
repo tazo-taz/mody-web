@@ -11,8 +11,13 @@ import { saveLoadingReference } from './references/loading';
 import AccountLayout from './components/layouts/account';
 import AccountSettingsPage from './pages/account/settings';
 import MyTicketsPage from './pages/account/my-tickets';
+import PaymentsPage from './pages/account/payments';
+import RedeemCodesPage from './pages/account/redeem-codes';
+import InviteFriendsPage from './pages/account/invite-friends';
+import useUser from './stores/useUser';
 
 function App() {
+  const { user, isLoading } = useUser()
 
   // useEffect(() => {
   //   const x = async () => {
@@ -31,6 +36,8 @@ function App() {
 
   useAuthStateChange()
 
+  if (isLoading) return null
+
   return (
     <>
       <Loading ref={saveLoadingReference} />
@@ -43,6 +50,9 @@ function App() {
           <Route path='account' element={<AccountLayout />}>
             <Route path="" element={<AccountSettingsPage />} />
             <Route path="my-tickets" element={<MyTicketsPage />} />
+            <Route path="payments" element={<PaymentsPage />} />
+            <Route path="redeem-codes" element={<RedeemCodesPage />} />
+            <Route path="invite-friends" element={<InviteFriendsPage />} />
           </Route>
         </Route>
       </Routes>
