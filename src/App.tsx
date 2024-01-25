@@ -8,6 +8,9 @@ import ModalProviders from './components/providers/modal';
 import useAuthStateChange from './hooks/useAuthStateChange';
 import HomePage from './pages/home';
 import { saveLoadingReference } from './references/loading';
+import AccountLayout from './components/layouts/account';
+import AccountSettingsPage from './pages/account/settings';
+import MyTicketsPage from './pages/account/my-tickets';
 
 function App() {
 
@@ -36,6 +39,10 @@ function App() {
         <Route element={<HeaderLayout />}>
           <Route element={<FooterLayout />}>
             <Route path="/" element={<HomePage />} />
+          </Route>
+          <Route path='account' element={<AccountLayout />}>
+            <Route path="" element={<AccountSettingsPage />} />
+            <Route path="my-tickets" element={<MyTicketsPage />} />
           </Route>
         </Route>
       </Routes>

@@ -233,6 +233,10 @@ export const languageData = {
         en: "Wrong or expired code",
         ge: "კოდი არასწორია ან ვადა გაუვიდა"
     },
+    Payment_methods: {
+        en: "Payment methods",
+        ge: "გადახდის მეთოდები"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {
