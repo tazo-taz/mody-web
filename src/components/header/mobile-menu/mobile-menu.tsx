@@ -53,13 +53,13 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
             id: 2,
             icon: <DollarIcon />,
             title: getItem("Currency"),
-            endContent: <Badge title={getItem("USD")} />
+            endContent: <Badge variant='secondary' title={getItem("USD")} />
         },
         {
             id: 3,
             icon: <GlobeIcon />,
             title: getItem("Language"),
-            endContent: <Badge title={languageBadgeTitle} />,
+            endContent: <Badge variant='secondary' title={languageBadgeTitle} />,
             onClick: () => switchLanguage(language, setLanguage)
         },
     ]

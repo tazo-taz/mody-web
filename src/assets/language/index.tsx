@@ -253,6 +253,10 @@ export const languageData = {
         en: "Save",
         ge: "შენახვა"
     },
+    Soon: {
+        en: "Soon",
+        ge: "მალე"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

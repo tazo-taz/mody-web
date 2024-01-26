@@ -1,4 +1,5 @@
 import React from "react";
+import Loader from "./Loader";
 
 export default class Loading extends React.Component {
     state = {
@@ -13,9 +14,7 @@ export default class Loading extends React.Component {
     render(): React.ReactNode {
         if (this.state.isLoading) {
             return (
-                <div className="fixed inset-0 z-50 bg-[#0000003b] flex items-center justify-center">
-                    <img src="https://i.gifer.com/ZKZg.gif" width={40} alt="loading" />
-                </div>
+                <Loader />
             )
         }
     }

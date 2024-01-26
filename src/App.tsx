@@ -1,23 +1,25 @@
 import { Toaster } from 'react-hot-toast';
 import { Route, Routes } from 'react-router-dom';
 import './assets/css/App.css';
+import AccountLayout from './components/layouts/account';
 import FooterLayout from './components/layouts/footer-layout';
 import HeaderLayout from './components/layouts/header-layout';
 import Loading from './components/loading';
 import ModalProviders from './components/providers/modal';
 import useAuthStateChange from './hooks/useAuthStateChange';
-import HomePage from './pages/home';
-import { saveLoadingReference } from './references/loading';
-import AccountLayout from './components/layouts/account';
-import AccountSettingsPage from './pages/account/settings';
+import InviteFriendsPage from './pages/account/invite-friends';
 import MyTicketsPage from './pages/account/my-tickets';
 import PaymentsPage from './pages/account/payments';
 import RedeemCodesPage from './pages/account/redeem-codes';
-import InviteFriendsPage from './pages/account/invite-friends';
+import AccountSettingsPage from './pages/account/settings';
+import HomePage from './pages/home';
+import BusTicketsPage from './pages/tickets/bus';
+import { saveLoadingReference } from './references/loading';
 import useUser from './stores/useUser';
+import Loader from './components/loading/Loader';
 
 function App() {
-  const { user, isLoading } = useUser()
+  const { isLoading } = useUser()
 
   // useEffect(() => {
   //   const x = async () => {
@@ -36,7 +38,7 @@ function App() {
 
   useAuthStateChange()
 
-  if (isLoading) return null
+  if (isLoading) return <Loader />
 
   return (
     <>
@@ -54,6 +56,7 @@ function App() {
             <Route path="redeem-codes" element={<RedeemCodesPage />} />
             <Route path="invite-friends" element={<InviteFriendsPage />} />
           </Route>
+          <Route path='/tickets/bus' element={<BusTicketsPage />} />
         </Route>
       </Routes>
       <ModalProviders />
