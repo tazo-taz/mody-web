@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 import CalendarIcon from '../../../assets/images/svgs/icons/calendar'
 import CircleIcon from '../../../assets/images/svgs/icons/cirlce-icon'
 import LocationIcon from '../../../assets/images/svgs/icons/location'
 import UserIcon from '../../../assets/images/svgs/icons/user'
 import WarningIcon from '../../../assets/images/svgs/icons/warning'
-import { getCityRoutes, transformTicketFormToQuery } from '../../../lib/ticket'
+import useQuery from '../../../hooks/useQuery'
+import { getCityRoutes, getTicketQuery, transformTicketFormToQuery } from '../../../lib/ticket'
 import useLanguage from '../../../stores/useLanguage'
 import Warning from '../../Warning'
 import Button from '../../fields/button'
@@ -12,33 +15,51 @@ import CalendarInput from '../../fields/calendar'
 import CounterField from '../../fields/counter-field'
 import EmptyFieldDropdown from '../../fields/empty-field-dropdown'
 import Select from '../../fields/select'
-import { useNavigate } from 'react-router-dom'
 
 type TicketSelectContentType = {
     showWarning?: boolean,
     showButton?: boolean,
     divideDates?: boolean,
     minified?: boolean,
-    modalBottom?: number
+    modalBottom?: number,
+    handleSearch?: (url: string | null) => void,
+    reff?: React.MutableRefObject<any>
 }
 
-export default function TicketSelectContent({ showButton = true, showWarning = true, divideDates = true, modalBottom, minified }: TicketSelectContentType) {
-    const [cityFrom, setCityFrom] = useState<string>()
-    const [cityTo, setCityTo] = useState<string>()
+const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true, divideDates = true, modalBottom, minified, handleSearch }: TicketSelectContentType, ref) => {
+    const query = useQuery()
+    const {
+        cityFrom: cityFromQuery,
+        cityTo: cityToQuery,
+        passenger: passengerQuery,
+        child: childQuery,
+        departureDate: departureDateQuery,
+        returnDate: returnDateQuery,
+    } = getTicketQuery(query)
 
-    const [passenger, setPassenger] = useState(1)
-    const [child, setChild] = useState(0)
+    const [cityFrom, setCityFrom] = useState(cityFromQuery)
+    const [cityTo, setCityTo] = useState(cityToQuery)
 
-    const [departureDate, setDepartureDate] = useState<Date | undefined>(new Date())
-    const [returnDate, setReturnDate] = useState<Date | undefined>()
+    const [passenger, setPassenger] = useState(passengerQuery)
+    const [child, setChild] = useState(childQuery)
+
+    const [departureDate, setDepartureDate] = useState<Date | undefined>(departureDateQuery)
+    const [returnDate, setReturnDate] = useState<Date | undefined>(returnDateQuery)
     const { getItem } = useLanguage()
 
     const navigate = useNavigate()
 
-    const search = () => {
-        console.log(transformTicketFormToQuery({ cityFrom, cityTo, passenger, child, departureDate, returnDate }))
+    const search = useCallback(() => {
+        const url = transformTicketFormToQuery({ cityFrom, cityTo, passenger, child, departureDate, returnDate })
 
-    }
+        if (url) {
+            navigate(url)
+        } else toast.error(getItem("Fill_in_the_fields"))
+    }, [cityFrom, cityTo, passenger, child, departureDate, returnDate, getItem, navigate])
+
+    useImperativeHandle(ref, () => ({
+        search,
+    }), [search]);
 
     const departureDateElement = (
         <CalendarInput
@@ -49,6 +70,7 @@ export default function TicketSelectContent({ showButton = true, showWarning = t
             onChange={setDepartureDate}
             sort={3}
             className="flex-1"
+            calendarBottom={!divideDates}
         />
     )
 
@@ -61,6 +83,7 @@ export default function TicketSelectContent({ showButton = true, showWarning = t
             onChange={setReturnDate}
             sort={3}
             className="flex-1"
+            calendarBottom={!divideDates}
         />
     )
 
@@ -74,8 +97,12 @@ export default function TicketSelectContent({ showButton = true, showWarning = t
     if (!divideDates) {
         datesElement = (
             <>
-                {departureDateElement}
-                {returnDateElement}
+                <div className='relative'>
+                    {departureDateElement}
+                </div>
+                <div className='relative'>
+                    {returnDateElement}
+                </div>
             </>
         )
     }
@@ -171,4 +198,6 @@ export default function TicketSelectContent({ showButton = true, showWarning = t
             )}
         </>
     )
-}
+})
+
+export default TicketSelectContent

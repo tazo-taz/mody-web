@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import BusImg from "../../assets/images/bus.png"
 import useLanguage from '../../stores/useLanguage'
 import TicketSelectContent from '../header/ticket-select/content'
@@ -6,6 +6,11 @@ import Button from '../fields/button'
 
 export default function TicketHero() {
     const { getItem } = useLanguage()
+
+    const ticketSelectContentRef = useRef<{
+        search: () => void
+    }>();
+
     return (
         <>
             <div className='h-[300px] md:h-[520px] rounded-primary relative'>
@@ -23,9 +28,12 @@ export default function TicketHero() {
                             showWarning={false}
                             divideDates={false}
                             minified
+                            ref={ticketSelectContentRef}
                         />
                     </div>
-                    <Button variant='dark' className='w-full lg:w-[130px]'>{getItem("Search")}</Button>
+                    <Button onClick={() => {
+                        ticketSelectContentRef?.current?.search()
+                    }} variant='dark' className='w-full lg:w-[130px]'>{getItem("Search")}</Button>
                 </div>
 
             </div>
