@@ -39,7 +39,7 @@ export const languageData = {
     },
     ten_years_above: {
         en: "10 years above",
-        ge: "10 წლიდან ზემოთ"
+        ge: "10+ წლიდან"
     },
     five_to_ten_years: {
         en: "5-10 years",
@@ -256,6 +256,14 @@ export const languageData = {
     Soon: {
         en: "Soon",
         ge: "მალე"
+    },
+    Adult: {
+        en: "Adult",
+        ge: "სწულწლოვანი"
+    },
+    Search_buses_Tickets: {
+        en: "Search buses Tickets",
+        ge: "მოძებნე ავტობუსის ბილეთები"
     },
 }
 

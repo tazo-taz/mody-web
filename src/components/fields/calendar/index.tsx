@@ -7,7 +7,7 @@ import { LooseValue } from 'react-calendar/dist/cjs/shared/types';
 import { useWindowSize } from 'usehooks-ts';
 import XCircleIcon from '../../../assets/images/svgs/icons/x-circle';
 import useOpen from '../../../hooks/useOpen';
-import { cn } from '../../../lib/utils';
+import { cn, hideScrollbar, scrollToTop, showScrollbar } from '../../../lib/utils';
 
 type CalendarInputProps = {
     placeholder: string,
@@ -15,12 +15,25 @@ type CalendarInputProps = {
     onChange: (item?: Date) => void,
     value?: Date,
     sort?: number,
-    className?: string
+    className?: string,
+    modalBottom?: number
 }
 
-export default function CalendarInput({ placeholder, icon, onChange, value, sort = 1, className }: CalendarInputProps) {
+export default function CalendarInput({ placeholder, icon, onChange, value, sort = 1, className, modalBottom = 400 }: CalendarInputProps) {
     const { isOpen, open, close } = useOpen(false)
     const [scope, animate] = useAnimate()
+
+    const handleOpen = () => {
+        open()
+        hideScrollbar()
+        scrollToTop()
+    }
+
+    const handleClose = () => {
+        close()
+        showScrollbar()
+        scrollToTop()
+    }
 
     const { width } = useWindowSize()
 
@@ -34,7 +47,7 @@ export default function CalendarInput({ placeholder, icon, onChange, value, sort
         if (date instanceof Date && !isNaN(date.valueOf())) {
             onChange(date)
             animate("h2", { y: -10, x: -3.5, scale: 0.8 })
-            close()
+            handleClose()
         }
     }
 
@@ -59,11 +72,11 @@ export default function CalendarInput({ placeholder, icon, onChange, value, sort
             return (<AnimatePresence>
                 {isOpen && (
                     <>
-                        <div className='fixed inset-0 z-10' onClick={close} />
+                        <div className='fixed inset-0 z-10 bg-[#0000003b]' onClick={handleClose} />
                         <motion.div
-                            initial={{ width: "100vw", left: 0, position: "absolute", bottom: 0 }}
-                            animate={{ width: "100vw", left: 0, position: "absolute", bottom: 400 }}
-                            exit={{ width: "100vw", left: 0, position: "absolute", bottom: 0 }}
+                            initial={{ width: "100%", left: 0, position: "absolute", bottom: modalBottom - 400 }}
+                            animate={{ width: "100%", left: 0, position: "absolute", bottom: modalBottom }}
+                            exit={{ width: "100%", left: 0, position: "absolute", bottom: modalBottom - 400 }}
                         >
                             <div className={cn('z-10 transition absolute w-full pb-14 md:pb-4 pt-4 md:pt-4 right-0 md:right-auto left-0 md:left-[104%] shadow-[black_0px_0px_10px_-6px] md:rounded-primary rounded-t-[30px] overflow-hidden md:px-4 flex items-center justify-center bg-white gap-3 flex-col')}>
                                 <div className='h-[5px] w-16 bg-gray-200 rounded-md' />
@@ -77,7 +90,7 @@ export default function CalendarInput({ placeholder, icon, onChange, value, sort
 
         return isOpen && (
             <>
-                <div className='fixed inset-0 z-10' onClick={close} />
+                <div className='fixed inset-0 z-10' onClick={handleClose} />
                 <div className={cn('z-10 transition absolute w-full pb-14 md:pb-4 pt-8 md:pt-4 right-0 md:right-auto left-0 md:left-[104%] shadow-[black_0px_0px_10px_-6px] md:rounded-primary rounded-t-[30px] overflow-hidden md:px-4 flex items-center justify-center bg-white')}>
                     <Calendar onChange={ownOnChange} value={value} />
                 </div>
@@ -87,7 +100,7 @@ export default function CalendarInput({ placeholder, icon, onChange, value, sort
 
     return (
         <div className={className}>
-            <div className='flex bg-gray-50 md:bg-gray-100 p-[14px] rounded-primary items-center' onClick={open}>
+            <div className='flex border-1 bg-gray-50 md:bg-gray-100 p-[14px] rounded-primary items-center' onClick={handleOpen}>
                 {ownIcon}
 
                 <div ref={scope} className='flex flex-col relative'>

@@ -17,11 +17,11 @@ import useModal from "../../stores/useModal";
 import useUser from "../../stores/useUser";
 import Button from "../fields/button";
 import LanguageSwitch from "../language-switch";
-import Menu from "../menu";
 import MyLink from "../my-link";
 import MobileMenu from "./mobile-menu/mobile-menu";
 import TicketSelect from "./ticket-select";
 import { useWindowSize } from "usehooks-ts";
+import IconDropdown from "../dropdown/types/icon";
 
 export default function Header() {
     const { isOpen, toggle } = useHeaderMenuOpen()
@@ -43,7 +43,7 @@ export default function Header() {
                 <MyLink className="hidden lg:block" href="/account/my-tickets" icon={<TicketIcon />}>
                     {getItem("My_tickets")}
                 </MyLink>
-                <Menu title={user.firstName} icon={<UserIcon />} items={[
+                <IconDropdown title={user.firstName} icon={<UserIcon />} items={[
                     {
                         icon: <SettingsIcon />,
                         title: getItem("Account_Settings"),

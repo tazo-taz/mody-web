@@ -15,6 +15,9 @@ module.exports = {
       },
       borderWidth: {
         "1": "1px"
+      },
+      gridTemplateColumns: {
+        "horizontal-tickets-form": "2fr 2fr 2fr 2fr 3fr 3fr"
       }
     },
   },

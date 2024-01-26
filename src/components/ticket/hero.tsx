@@ -1,0 +1,37 @@
+import React from 'react'
+import BusImg from "../../assets/images/bus.png"
+import useLanguage from '../../stores/useLanguage'
+import TicketSelectContent from '../header/ticket-select/content'
+import Button from '../fields/button'
+
+export default function TicketHero() {
+    const { getItem } = useLanguage()
+    return (
+        <>
+            <div className='h-[300px] md:h-[520px] rounded-primary relative'>
+                <img src={BusImg} alt='hero' className='w-full h-full object-cover absolute inset-0 rounded-primary' />
+
+                <div className='absolute top-7 md:top-16 lg:top-1/2 left-1/2 lg:-translate-y-1/2 -translate-x-1/2 flex flex-col gap-2.5 text-center'>
+                    <h1 className='text-white text-2xl md:text-4xl lg:text-[40px] xl:text-[50px] font-bold whitespace-nowrap'>{getItem("Search_buses_Tickets")}</h1>
+                    <p className='text-[#E5E7EB] text-sm md:text-[16px] xl:text-lg min-w-[320px]'>{getItem("One_app_for_every_step_of_your_journey_travel_planning_has_never_been_easier")}</p>
+                </div>
+
+                <div className='md:flex hidden flex-col lg:flex-row items-center justify-center bg-white p-3 absolute bottom-3 left-3 right-3 gap-3 rounded-primary'>
+                    <div className='grid w-full grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 flex-1'>
+                        <TicketSelectContent
+                            showButton={false}
+                            showWarning={false}
+                            divideDates={false}
+                            minified
+                        />
+                    </div>
+                    <Button variant='dark' className='w-full lg:w-[130px]'>{getItem("Search")}</Button>
+                </div>
+
+            </div>
+            <div className='container mx-auto block md:hidden'>
+                <div className='bg-white flex flex-col gap-4 px-5 pb-5 pt-8 flex-1 -mt-36 shadow-md rounded-primary relative'><TicketSelectContent modalBottom={250} /></div>
+            </div>
+        </>
+    )
+}

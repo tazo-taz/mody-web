@@ -1,8 +1,7 @@
-import React from 'react'
-import { itemType } from '.'
 import { Link } from 'react-router-dom'
+import { defaultDropdownItemType } from '.'
 
-export default function Item({ icon, title, toggle, ...item }: itemType & { toggle: () => void }) {
+export default function Item({ icon, title, toggle, ...item }: defaultDropdownItemType & { toggle: () => void }) {
     const content = (
         <>
             <div className='w-[30px]'>

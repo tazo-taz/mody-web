@@ -48,7 +48,7 @@ export default function Select({ placeholder, icon, items, onChange, value, sort
 
     return (
         <div className='relative'>
-            <div className='flex bg-gray-50 md:bg-gray-100 p-[14px] rounded-primary items-center' onClick={open}>
+            <div className='flex border-1 bg-gray-50 md:bg-gray-100 p-[14px] rounded-primary items-center' onClick={open}>
                 {ownIcon}
 
                 <div ref={scope} className='flex flex-col relative'>

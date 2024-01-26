@@ -17,6 +17,7 @@ import BusTicketsPage from './pages/tickets/bus';
 import { saveLoadingReference } from './references/loading';
 import useUser from './stores/useUser';
 import Loader from './components/loading/Loader';
+import BusTicketsSearchPage from './pages/tickets/bus/search';
 
 function App() {
   const { isLoading } = useUser()
@@ -57,6 +58,7 @@ function App() {
             <Route path="invite-friends" element={<InviteFriendsPage />} />
           </Route>
           <Route path='/tickets/bus' element={<BusTicketsPage />} />
+          <Route path='/tickets/bus/search' element={<BusTicketsSearchPage />} />
         </Route>
       </Routes>
       <ModalProviders />
