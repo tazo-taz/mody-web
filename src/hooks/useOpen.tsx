@@ -1,13 +1,13 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 const useOpen = (value: boolean = false) => {
     const [isOpen, setIsOpen] = useState(value)
 
-    const open = () => setIsOpen(true)
+    const open = useCallback(() => setIsOpen(true), [])
 
-    const close = () => setIsOpen(false)
+    const close = useCallback(() => setIsOpen(false), [])
 
-    const toggle = () => setIsOpen(a => !a)
+    const toggle = useCallback(() => setIsOpen(a => !a), [])
 
     return { isOpen, open, close, toggle }
 }

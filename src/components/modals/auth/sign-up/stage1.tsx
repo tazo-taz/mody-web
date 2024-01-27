@@ -1,7 +1,7 @@
 import { UseFormRegister, UseFormWatch } from 'react-hook-form'
 import EmailIcon from '../../../../assets/images/svgs/icons/email'
 import IdNumberIcon from '../../../../assets/images/svgs/icons/id-number'
-import UserIcon from '../../../../assets/images/svgs/icons/user'
+import UserIcon from '../../../../assets/images/svgs/icons/user/user'
 import { unregisteredUserSchemaType } from '../../../../schemas/user'
 import useLanguage from '../../../../stores/useLanguage'
 import Button from '../../../fields/button'

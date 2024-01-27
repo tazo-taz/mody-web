@@ -3,6 +3,7 @@ import ChevronDown from '../../assets/images/svgs/icons/chevron/chevron-down'
 import useOpen from '../../hooks/useOpen'
 import Item from './item'
 import { AnimatePresence, motion } from 'framer-motion';
+import { cn } from '../../lib/utils';
 
 export type separatorType = {
     isSeparator: true
@@ -21,10 +22,11 @@ type DropdownType = {
     items: (dropdownItemType)[],
     children: React.ReactNode,
     exact?: boolean,
-    width?: number
+    width?: number,
+    itemsClassName?: string
 }
 
-export default function Dropdown({ children, items, exact = false, width = 250 }: DropdownType) {
+export default function Dropdown({ children, items, exact = false, width = 250, itemsClassName }: DropdownType) {
     const { isOpen, toggle } = useOpen()
 
     let frontElement: React.ReactNode = (
@@ -57,7 +59,7 @@ export default function Dropdown({ children, items, exact = false, width = 250 }
                                 initial={{ opacity: 0, translateY: 10 }}
                                 animate={{ opacity: 1, translateY: 0 }}
                                 exit={{ opacity: 0, translateY: 10 }}
-                                className='bg-white rounded-primary flex flex-col absolute shadow-md right-0 top-[110%] z-10'
+                                className={cn('bg-white rounded-primary flex flex-col absolute shadow-md right-0 top-[110%] z-10', itemsClassName)}
                                 style={{ width }}
                             >
                                 {items.map((item, inx) => {

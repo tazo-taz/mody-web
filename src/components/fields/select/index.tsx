@@ -7,7 +7,7 @@ import { cn } from '../../../lib/utils';
 type SelectProps = {
     placeholder: string,
     icon?: React.ReactNode,
-    items: string[],
+    items: { value: string, title: string }[],
     onChange: (item?: string) => void,
     value?: string,
     sort?: number
@@ -35,7 +35,7 @@ export default function Select({ placeholder, icon, items, onChange, value, sort
         animate("h2", { y: 0, x: 0, scale: 1 })
     }
 
-    const valueText = items.find((item) => item === value)
+    const valueText = items.find((item) => item.value === value)?.title
 
     useEffect(() => {
         animate("h2", { opacity: [0, 1] }, { duration: 0.5, delay: sort * 0.1 })
@@ -70,10 +70,10 @@ export default function Select({ placeholder, icon, items, onChange, value, sort
                     <div className='flex flex-col rounded-primary border-1 absolute top-[110%] left-0 w-full bg-white overflow-hidden z-10 shadow-md'>
                         {items.map((item, inx) => (
                             <div
-                                key={item}
+                                key={item.value}
                                 className={cn('flex items-center p-[14px] hover:bg-gray-100 transition cursor-pointer', inx + 1 !== items.length && "border-b-1")}
-                                onClick={() => ownOnChange(item)}
-                            >{ownIcon} {item}</div>
+                                onClick={() => ownOnChange(item.value)}
+                            >{ownIcon} {item.title}</div>
                         ))}
                     </div>
                 </>

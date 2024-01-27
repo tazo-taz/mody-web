@@ -1,6 +1,6 @@
 import React from 'react'
 import Input from '../../../components/fields/input'
-import UserIcon from '../../../assets/images/svgs/icons/user'
+import UserIcon from '../../../assets/images/svgs/icons/user/user'
 import useLanguage from '../../../stores/useLanguage'
 import IdNumberIcon from '../../../assets/images/svgs/icons/id-number'
 import EmailIcon from '../../../assets/images/svgs/icons/email'
@@ -8,7 +8,7 @@ import PhoneInput from '../../../components/fields/phone-input'
 import { UseFormRegister, UseFormWatch } from 'react-hook-form'
 import { unregisteredUserSchemaType } from '../../../schemas/user'
 import Button from '../../../components/fields/button'
-import Warning from '../../../components/Warning'
+import WarningMessage from '../../../components/Messages/Warning'
 
 type SettingsFormType = {
     register: UseFormRegister<unregisteredUserSchemaType>,
@@ -61,7 +61,7 @@ export default function SettingsForm({ watch, register }: SettingsFormType) {
                 </div>
             </div>
             <div className='md:col-span-2'>
-                <Warning
+                <WarningMessage
                     text={getItem("A_verification_code_will_be_sent_to_this_number")}
                     className="inline-flex md:bg-yellow-50 bg-transparent"
                 />

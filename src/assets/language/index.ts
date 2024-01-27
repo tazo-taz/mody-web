@@ -1,4 +1,5 @@
 import useLanguage from "../../stores/useLanguage"
+import { BatumiEng, BatumiGeo, KutaisiEng, KutaisiGeo, TbilisiEng, TbilisiGeo } from "./cities"
 
 export const languageData = {
     Find_Official_Tickets: {
@@ -18,16 +19,16 @@ export const languageData = {
         ge: "ში"
     },
     Tbilisi: {
-        en: "Tbilisi",
-        ge: "თბილისი"
+        en: TbilisiEng,
+        ge: TbilisiGeo
     },
     Batumi: {
-        en: "Batumi",
-        ge: "ქუთაისი"
+        en: BatumiEng,
+        ge: BatumiGeo
     },
     Kutaisi: {
-        en: "Kutaisi",
-        ge: "ბათუმი"
+        en: KutaisiEng,
+        ge: KutaisiGeo
     },
     Passenger: {
         en: "Passenger",
@@ -265,9 +266,49 @@ export const languageData = {
         en: "Search buses Tickets",
         ge: "მოძებნე ავტობუსის ბილეთები"
     },
+    Select_Outbound: {
+        en: "Select Outbound",
+        ge: "აირჩიეთ გამავალი დრო"
+    },
+    Select_Return: {
+        en: "Select Return",
+        ge: "აირჩიეთ დაბრუნების დრო"
+    },
+    CHEAPEST: {
+        en: "CHEAPEST",
+        ge: "იაფი"
+    },
+    One_way: {
+        en: "One-way",
+        ge: "ერთი გზა"
+    },
+    Tickets_not_found: {
+        en: "Tickets not found",
+        ge: "ბილეთები ვერ მოიძებნა"
+    },
+    Kutaisi_airport: {
+        en: "Kutaisi airport",
+        ge: "ქუთაისის აეროპორტი"
+    },
+    Tbilisi_Station_square_1: {
+        en: "Tbilisi Station square 1",
+        ge: "თბილისი სადგური მოედანი 1"
+    },
+    Batumi_Station_2: {
+        en: "Batumi Station 2",
+        ge: "ბათუმი სადგური 2"
+    },
+    Details: {
+        en: "Details",
+        ge: "დეტალები"
+    },
+    Continue: {
+        en: "Continue",
+        ge: "გაგრძელება"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {
     const language = useLanguage.getState()
-    return languageData[item][language.language]
+    return languageData[item]?.[language.language] || ""
 }

@@ -69,7 +69,9 @@ export default function Services() {
                     </div>
                     <p className='text-xl font-semibold'>{service.title}</p>
                     {!service.href && (
-                        <Badge className='absolute bottom-0 translate-y-1/2' size='sm' title={getItem("Soon")} />
+                        <Badge className='absolute bottom-0 translate-y-1/2' size='sm'>
+                            {getItem("Soon")}
+                        </Badge>
                     )}
                 </div>
             )

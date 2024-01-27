@@ -5,21 +5,21 @@ type variantType = "primary" | "secondary"
 type sizeType = "lg" | "sm"
 
 type badgeProps = {
-    title: string,
+    children: React.ReactNode,
     variant?: variantType,
     size?: sizeType,
     className?: string
 }
 
-export default function Badge({ title, variant = "primary", size = "lg", className }: badgeProps) {
+export default function Badge({ children, variant = "primary", size = "lg", className }: badgeProps) {
     return (
         <div className={cn(
-            'rounded-primary',
+            'rounded-primary flex items-center justify-center gap-1',
             variant === "secondary" && "bg-gray-100",
             variant === "primary" && "bg-primary text-white",
-            size === "lg" && "px-3 py-2",
-            size === "sm" && "px-2.5 py-1 text-sm",
+            size === "lg" && "px-4 py-2",
+            size === "sm" && "px-3 py-1.5 text-xs",
             className
-        )}>{title}</div>
+        )}>{children}</div>
     )
 }

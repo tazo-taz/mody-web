@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import ChevronDown from '../../../assets/images/svgs/icons/chevron/chevron-down'
-import TicketIcon from '../../../assets/images/svgs/icons/ticket-icon'
+import TicketIcon from '../../../assets/images/svgs/icons/ticket/ticket-icon'
 import useOpen from '../../../hooks/useOpen'
 import { hideScrollbar, scrollToTop, showScrollbar } from '../../../lib/utils'
 import useLanguage from '../../../stores/useLanguage'
 import TicketSelectContent from './content'
+import { useCallback } from 'react'
 
 export default function TicketSelect() {
     const { isOpen, open, close } = useOpen(false)
@@ -16,10 +17,10 @@ export default function TicketSelect() {
         hideScrollbar()
     }
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         close()
         showScrollbar()
-    }
+    }, [close])
 
     return (
         <>
@@ -44,7 +45,7 @@ export default function TicketSelect() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 15 }}
                             className='flex flex-col gap-4 absolute top-[130%] z-10 right-[-40px] shadow-[black_0px_0px_10px_-6px] w-[395px] p-5 bg-white rounded-primary'>
-                            <TicketSelectContent />
+                            <TicketSelectContent onSearch={handleClose} />
                         </motion.div>
                     )}
                 </AnimatePresence>

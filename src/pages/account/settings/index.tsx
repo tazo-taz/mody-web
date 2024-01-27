@@ -14,14 +14,7 @@ export default function AccountSettingsPage() {
     const { getItem } = useLanguage()
     const { user } = useUser()
 
-    console.log(user);
-
-
-
     const { formState, handleSubmit, register, reset, watch } = useUserForm(user)
-
-    console.log(formState.defaultValues);
-
 
     return (
         <div>

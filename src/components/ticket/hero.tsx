@@ -1,15 +1,10 @@
-import React, { useRef } from 'react'
 import BusImg from "../../assets/images/bus.png"
 import useLanguage from '../../stores/useLanguage'
 import TicketSelectContent from '../header/ticket-select/content'
-import Button from '../fields/button'
+import TicketSearchHorizontal from './ticket-search-horizontal'
 
 export default function TicketHero() {
     const { getItem } = useLanguage()
-
-    const ticketSelectContentRef = useRef<{
-        search: () => void
-    }>();
 
     return (
         <>
@@ -21,19 +16,8 @@ export default function TicketHero() {
                     <p className='text-[#E5E7EB] text-sm md:text-[16px] xl:text-lg min-w-[320px]'>{getItem("One_app_for_every_step_of_your_journey_travel_planning_has_never_been_easier")}</p>
                 </div>
 
-                <div className='md:flex hidden flex-col lg:flex-row items-center justify-center bg-white p-3 absolute bottom-3 left-3 right-3 gap-3 rounded-primary'>
-                    <div className='grid w-full grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 flex-1'>
-                        <TicketSelectContent
-                            showButton={false}
-                            showWarning={false}
-                            divideDates={false}
-                            minified
-                            ref={ticketSelectContentRef}
-                        />
-                    </div>
-                    <Button onClick={() => {
-                        ticketSelectContentRef?.current?.search()
-                    }} variant='dark' className='w-full lg:w-[130px]'>{getItem("Search")}</Button>
+                <div className="absolute bottom-3 left-3 right-3">
+                    <TicketSearchHorizontal />
                 </div>
 
             </div>

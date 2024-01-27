@@ -10,7 +10,6 @@ type phoneInputType = React.InputHTMLAttributes<HTMLInputElement> & {
 
 const PhoneInput = forwardRef<HTMLInputElement, phoneInputType>(({ value, onValueChange, onChange, ...rest }, ref) => {
     const { getItem } = useLanguage()
-    console.log({ value }, "ph");
 
     return (
         <div className='border-1 rounded-primary flex'>

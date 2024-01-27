@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import CalendarIcon from '../../../assets/images/svgs/icons/calendar'
 import CircleIcon from '../../../assets/images/svgs/icons/cirlce-icon'
 import LocationIcon from '../../../assets/images/svgs/icons/location'
-import UserIcon from '../../../assets/images/svgs/icons/user'
+import UserIcon from '../../../assets/images/svgs/icons/user/user'
 import WarningIcon from '../../../assets/images/svgs/icons/warning'
 import useQuery from '../../../hooks/useQuery'
-import { getCityRoutes, getTicketQuery, transformTicketFormToQuery } from '../../../lib/ticket'
+import { getCityRoutes, parseTicketQuery, transformTicketFormToQuery } from '../../../lib/ticket'
 import useLanguage from '../../../stores/useLanguage'
-import Warning from '../../Warning'
+import WarningMessage from '../../Messages/Warning'
 import Button from '../../fields/button'
 import CalendarInput from '../../fields/calendar'
 import CounterField from '../../fields/counter-field'
@@ -22,11 +22,11 @@ type TicketSelectContentType = {
     divideDates?: boolean,
     minified?: boolean,
     modalBottom?: number,
-    handleSearch?: (url: string | null) => void,
+    onSearch?: () => void,
     reff?: React.MutableRefObject<any>
 }
 
-const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true, divideDates = true, modalBottom, minified, handleSearch }: TicketSelectContentType, ref) => {
+const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true, divideDates = true, modalBottom, minified, onSearch }: TicketSelectContentType, ref) => {
     const query = useQuery()
     const {
         cityFrom: cityFromQuery,
@@ -35,7 +35,7 @@ const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true,
         child: childQuery,
         departureDate: departureDateQuery,
         returnDate: returnDateQuery,
-    } = getTicketQuery(query)
+    } = parseTicketQuery(query)
 
     const [cityFrom, setCityFrom] = useState(cityFromQuery)
     const [cityTo, setCityTo] = useState(cityToQuery)
@@ -54,8 +54,9 @@ const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true,
 
         if (url) {
             navigate(url)
+            onSearch?.()
         } else toast.error(getItem("Fill_in_the_fields"))
-    }, [cityFrom, cityTo, passenger, child, departureDate, returnDate, getItem, navigate])
+    }, [cityFrom, cityTo, passenger, child, departureDate, returnDate, getItem, navigate, onSearch])
 
     useImperativeHandle(ref, () => ({
         search,
@@ -131,11 +132,12 @@ const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true,
 
     if (minified) counterFields = (
         <EmptyFieldDropdown
-            width={300}
+            width={375}
             icon={<UserIcon />}
             value={getItem("Adult")}
             placeholder={getItem("Passenger")}
             className="md:bg-gray-100 bg-gray-50"
+            itemsClassName='p-5 gap-[15px]'
             items={[
                 {
                     custom: true,
@@ -147,12 +149,10 @@ const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true,
                             value={passenger}
                             onChange={setPassenger}
                             sort={0}
-                            className="md:bg-white bg-white border-0"
                             min={1}
                         />
                     )
                 },
-                { isSeparator: true },
                 {
                     custom: true,
                     element: (
@@ -163,10 +163,13 @@ const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true,
                             value={child}
                             onChange={setChild}
                             sort={1}
-                            className="md:bg-white bg-white border-0"
                         />
                     )
                 },
+                {
+                    custom: true,
+                    element: <WarningMessage text={getItem("Child_passenger_information")} />
+                }
             ]}
         />
     )
@@ -191,7 +194,7 @@ const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true,
             {datesElement}
             {counterFields}
             {showWarning && (
-                <Warning icon={<WarningIcon />} text={getItem("Child_passenger_information")} />
+                <WarningMessage icon={<WarningIcon />} text={getItem("Child_passenger_information")} />
             )}
             {showButton && (
                 <Button onClick={search} className='mt-auto md:mt-[14px]'>{getItem("Search")}</Button>

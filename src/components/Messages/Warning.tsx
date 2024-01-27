@@ -1,6 +1,6 @@
 import React from 'react'
-import WarningIcon from '../assets/images/svgs/icons/warning'
-import { cn } from '../lib/utils'
+import WarningIcon from '../../assets/images/svgs/icons/warning'
+import { cn } from '../../lib/utils'
 
 type warningProps = {
     icon?: React.ReactNode,
@@ -8,7 +8,7 @@ type warningProps = {
     className?: string,
 }
 
-export default function Warning({ icon = <WarningIcon />, text, className }: warningProps) {
+export default function WarningMessage({ icon = <WarningIcon />, text, className }: warningProps) {
     return (
         <div className={cn('pl-3 py-2 bg-yellow-50 flex items-center rounded-primary pr-8', className)}>
             <div className='w-[30px]'>

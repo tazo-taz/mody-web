@@ -1,5 +1,4 @@
 import React from 'react';
-import { cn } from '../../../lib/utils';
 import Dropdown, { dropdownItemType } from '../../dropdown';
 import EmptyField from '../empty-field';
 
@@ -8,18 +7,20 @@ type EmptyFieldDropdownType = {
     placeholder: string,
     value: string,
     className?: string,
+    itemsClassName?: string,
     items: dropdownItemType[],
     width?: number
 }
 
-const EmptyFieldDropdown = ({ icon, placeholder, value, className, items, width }: EmptyFieldDropdownType) => {
+const EmptyFieldDropdown = ({ icon, placeholder, value, className, itemsClassName, items, width }: EmptyFieldDropdownType) => {
     return (
-        <Dropdown exact items={items} width={width}>
+        <Dropdown exact items={items} width={width} itemsClassName={itemsClassName}>
             <EmptyField
                 icon={icon}
                 placeholder={placeholder}
                 value={value}
                 className={className}
+
             />
         </Dropdown>
     );

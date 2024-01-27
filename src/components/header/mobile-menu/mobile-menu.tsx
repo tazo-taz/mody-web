@@ -8,7 +8,7 @@ import LogOutIcon from '../../../assets/images/svgs/icons/log-out'
 import PaymentIcon from '../../../assets/images/svgs/icons/payment'
 import RedeemIcon from '../../../assets/images/svgs/icons/redeem'
 import SettingsIcon from '../../../assets/images/svgs/icons/settings'
-import TicketIcon from '../../../assets/images/svgs/icons/ticket-icon'
+import TicketIcon from '../../../assets/images/svgs/icons/ticket/ticket-icon'
 import UserPlusIcon from '../../../assets/images/svgs/icons/user-plus'
 import XIcon from '../../../assets/images/svgs/icons/x'
 import ModyLogoPurple from '../../../assets/images/svgs/logo/mody-logo-purple'
@@ -53,13 +53,21 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
             id: 2,
             icon: <DollarIcon />,
             title: getItem("Currency"),
-            endContent: <Badge variant='secondary' title={getItem("USD")} />
+            endContent: (
+                <Badge variant='secondary'>
+                    {getItem("USD")}
+                </Badge>
+            )
         },
         {
             id: 3,
             icon: <GlobeIcon />,
             title: getItem("Language"),
-            endContent: <Badge variant='secondary' title={languageBadgeTitle} />,
+            endContent: (
+                <Badge variant='secondary'>
+                    {languageBadgeTitle}
+                </Badge>
+            ),
             onClick: () => switchLanguage(language, setLanguage)
         },
     ]

@@ -12,7 +12,10 @@ export type languageStore = {
 const useLanguage = create<languageStore>((set, get) => ({
     language: "en",
     setLanguage: (language) => set({ language }),
-    getItem: (item) => languageData[item][get().language]
+    getItem: (item) => {
+        const translated = languageData[item][get().language]
+        return translated
+    }
 }));
 
 
