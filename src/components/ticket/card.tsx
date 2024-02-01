@@ -20,6 +20,16 @@ type TicketCardProps = ticketChooseType & {
     active: ticketChooseType | null
 }
 
+export const TimeDiff = ({ timeDiff }: { timeDiff: number }) => {
+    const minsDiff = String((timeDiff % 1) * 60).padStart(2, "0")
+    const hoursDiff = timeDiff - timeDiff % 1
+    return (
+        <div className='rounded-xl text-xs text-[#9CA3AF] py-[5px] px-2 whitespace-nowrap bg-white border-1 border-[#E5E7EB]'>
+            {hoursDiff}h {minsDiff}m
+        </div>
+    )
+}
+
 export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, onChoose, active }: TicketCardProps) {
     const { getItem } = useLanguage()
 
@@ -31,8 +41,7 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
     const timeWidth = 80
     const timeDiffWidth = 220
 
-    const minsDiff = String((busDirection.timeDiff % 1) * 60).padStart(2, "0")
-    const hoursDiff = busDirection.timeDiff - busDirection.timeDiff % 1
+
 
     const isActive = active?.id === id
 
@@ -66,8 +75,8 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
                     <div className='absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#E5E7EB]' />
                     <div className='absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#E5E7EB]' />
 
-                    <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl text-xs text-[#9CA3AF] py-[5px] px-2 whitespace-nowrap bg-white border-1 border-[#E5E7EB]'>
-                        {hoursDiff}h {minsDiff}m
+                    <div className='center'>
+                        <TimeDiff timeDiff={busDirection.timeDiff} />
                     </div>
 
                     <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />

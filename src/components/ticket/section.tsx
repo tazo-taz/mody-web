@@ -54,6 +54,7 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
             />
 
             {tickets}
+
         </>
     )
 }

@@ -31,16 +31,12 @@ body {
 /* Apply to your container or body */
 * {
   scrollbar-width: thin; /* "thin" or "auto" depending on your preference */
-  scrollbar-color: transparent transparent; /* Set the scrollbar color */
+  scrollbar-color: var(--primary) transparent; /* Set the scrollbar color */
 }
 
 /* Set the color of the scrollbar track */
 *::-webkit-scrollbar {
   width: 8px; /* Set the desired scrollbar width */
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: var(--primary); /* Set the color of the scrollbar thumb */
 }
 
 * {
@@ -64,4 +60,12 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active{
     -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
