@@ -45,15 +45,15 @@ export default function TicketMiniCard({ busDirection, cityFrom, cityTo, date, i
             </div>
 
             <div className="flex gap-3.5 mt-3.5">
-                <Badge variant="secondary" size="sm" className="">
+                <Badge variant="secondary" size="sm">
                     <UserXsIcon />
                     1
                 </Badge>
-                <Badge variant="secondary" size="sm" className="">
+                <Badge variant="secondary" size="sm">
                     <RouteIcon />
                     {getItem("One_way")}
                 </Badge>
-                <Badge variant="secondary" size="sm" className="" onClick={() => toggle()}>
+                <Badge variant="secondary" size="sm" onClick={() => toggle()}>
                     {getItem("Details")}
                     <IoChevronDownOutline className="h-4 w-4" />
                 </Badge>

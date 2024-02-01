@@ -9,9 +9,10 @@ type ActiveTicketInfoType = {
     className?: string,
     outboundTicket: ticketChooseType | null
     returnTicket: ticketChooseType | null
+    onContinue: () => void
 }
 
-export default function ActiveTicketInfo({ className, outboundTicket, returnTicket }: ActiveTicketInfoType) {
+export default function ActiveTicketInfo({ className, outboundTicket, returnTicket, onContinue }: ActiveTicketInfoType) {
     const { getItem } = useLanguage()
 
     if (!outboundTicket && !returnTicket) return null
@@ -40,9 +41,11 @@ export default function ActiveTicketInfo({ className, outboundTicket, returnTick
                 </>
             )}
 
-            <Button className='justify-between'>
+            <Button
+                className='justify-between'
+                onClick={onContinue}
+            >
                 {getItem("Continue")}
-
                 <span>55.00 ₾</span>
             </Button>
         </div>

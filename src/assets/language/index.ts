@@ -306,6 +306,18 @@ export const languageData = {
         en: "Continue",
         ge: "გაგრძელება"
     },
+    Choose_tickets: {
+        en: "Choose tickets",
+        ge: "აირჩიეთ ბილეთები"
+    },
+    Passenger_details: {
+        en: "Passenger details",
+        ge: "მგზავრის დეტალები"
+    },
+    Review_and_pay: {
+        en: "Review and pay",
+        ge: "გადახედვა და გადახდა"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {
