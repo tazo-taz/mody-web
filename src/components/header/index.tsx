@@ -85,7 +85,7 @@ export default function Header() {
 
 
     return (
-        <div className="border-b-1 border-gray-200">
+        <div className="border-b-1 border-gray-200 bg-white">
             <div className='container mx-auto py-[20px] flex items-center'>
 
                 <Link to="/" className="flex">

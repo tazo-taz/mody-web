@@ -67,7 +67,7 @@ export default function Dropdown({ children, items, exact = false, width = 250, 
                                     if ("isSeparator" in item) {
                                         return <div key={inx} className='h-[1px] bg-[#EAECF0]' />
                                     } else if ("custom" in item) {
-                                        return item.element
+                                        return <div key={inx}>{item.element}</div>
                                     }
                                     return <Item toggle={toggle} {...item} key={inx} />
                                 })}

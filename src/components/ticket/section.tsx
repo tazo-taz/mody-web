@@ -4,6 +4,7 @@ import { getTicketsFromBusDates } from '../../lib/ticket'
 import TicketCard, { ticketChooseType } from './card'
 import TicketDatesSlider from './dates-slider'
 import useLanguage from '../../stores/useLanguage'
+import Title from '../title'
 
 type TicketsSectionType = {
     title: string,
@@ -41,9 +42,7 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
 
     return (
         <>
-            <div className='pt-10 mb-5'>
-                <h2 className='text-xl font-bold'>{title}</h2>
-            </div>
+            <Title>{title}</Title>
 
             <TicketDatesSlider
                 onChange={setCurrentDate}

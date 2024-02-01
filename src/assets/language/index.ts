@@ -318,6 +318,26 @@ export const languageData = {
         en: "Review and pay",
         ge: "გადახედვა და გადახდა"
     },
+    You_must_present_valid_identification_national_ID_card_passport_or_BahnCard__during_the_ticket_inspection: {
+        en: "You must present valid identification (national ID card, passport or BahnCard) during the ticket inspection.",
+        ge: "ბილეთის შემოწმებისას უნდა წარმოადგინოთ მოქმედი პირადობის მოწმობა (სახელმწიფო პირადობის მოწმობა, პასპორტი ან BahnCard)."
+    },
+    Main_Passanger: {
+        en: "Main Passanger",
+        ge: "მთავარი მგზავრი"
+    },
+    Required: {
+        en: "Required",
+        ge: "სავალდებულო"
+    },
+    Optional: {
+        en: "Optional",
+        ge: "არასავალდებულო"
+    },
+    Save_these_details_to_your_profile: {
+        en: "Save these details to your profile",
+        ge: "შეინახეთ ეს დეტალები თქვენს პროფილში"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

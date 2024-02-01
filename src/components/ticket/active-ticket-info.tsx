@@ -19,7 +19,7 @@ export default function ActiveTicketInfo({ className, outboundTicket, returnTick
 
     return (
         <div className={cn(
-            "p-5 bg-white rounded-primary flex flex-col",
+            "p-5 bg-white rounded-primary flex flex-col shadow-md",
             className
         )}>
             {outboundTicket && (

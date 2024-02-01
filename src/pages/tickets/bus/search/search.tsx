@@ -3,6 +3,7 @@ import ActiveTicketInfo from '../../../../components/ticket/active-ticket-info';
 import { ticketChooseType } from '../../../../components/ticket/card';
 import TicketsSection from '../../../../components/ticket/section';
 import TicketSearchHorizontal from '../../../../components/ticket/ticket-search-horizontal';
+import useGrayBg from "../../../../hooks/useGrayBg";
 import useQuery from '../../../../hooks/useQuery';
 import { getCityNameByValue, parseTicketQuery } from '../../../../lib/ticket';
 import useLanguage from '../../../../stores/useLanguage';
@@ -26,14 +27,16 @@ export default function TicketsSearchScreen({ activeOutbound, activeReturn, setA
     const cityFrom = getCityNameByValue(ticketQuery.cityFrom)
     const cityTo = getCityNameByValue(ticketQuery.cityTo)
 
+    useGrayBg()
+
     return (
         <>
-            <div className='shadow-md z-[1] py-1.5 relative'>
+            <div className='shadow-md z-[1] py-1.5 relative bg-white'>
                 <div className='container mx-auto'>
                     <TicketSearchHorizontal className='px-0' />
                 </div>
             </div>
-            <div className='bg-[#F9FAFB]'>
+            <div>
                 <div className='container mx-auto flex gap-9'>
                     <div className='flex-1'>
                         <TicketsSection
@@ -58,7 +61,7 @@ export default function TicketsSearchScreen({ activeOutbound, activeReturn, setA
                     <div className='h-[655px] max-w-[500px] px-5 bg-[#F3F4F6] border-[#E5E7EB] border-1 flex items-center justify-center sticky top-5'>
                         <img src={tbilisBatumiSrc} alt='map' className='w-full' />
                         <ActiveTicketInfo
-                            className='absolute top-3 left-3 right-3 z-[1]'
+                            className='absolute top-5 left-1/2 -translate-x-1/2 z-[1] w-full max-w-[460px]'
                             outboundTicket={activeOutbound}
                             returnTicket={activeReturn}
                             onContinue={onContinue}
