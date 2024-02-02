@@ -338,6 +338,26 @@ export const languageData = {
         en: "Save these details to your profile",
         ge: "შეინახეთ ეს დეტალები თქვენს პროფილში"
     },
+    Fill_main_passenger_information: {
+        en: "Fill main passenger information",
+        ge: "შეავსეთ მთავარი მგზავრის ინფორმაცია"
+    },
+    Review: {
+        en: "Review",
+        ge: "მიმოხილვა"
+    },
+    Bus_ticket: {
+        en: "Bus ticket",
+        ge: "ავტობუსის ბილეთი"
+    },
+    Contact_info: {
+        en: "Contact info",
+        ge: "საკონტაქტო ინფორმაცია"
+    },
+    Where_do_you_want_get_tickets: {
+        en: "Where do you want get tickets?",
+        ge: "სად გინდა ბილეთების მიღება?"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

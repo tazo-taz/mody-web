@@ -6,21 +6,43 @@ import { ticketChooseType } from '../../../../components/ticket/card'
 import PassengerForm from '../../../../components/ticket/passenger-form'
 import Title from '../../../../components/title'
 import useGrayBg from '../../../../hooks/useGrayBg'
+import { objChange } from '../../../../lib/utils'
 import useLanguage from '../../../../stores/useLanguage'
 
 type TicketDetailsScreenType = {
     setScreen: (screen: screenEnum) => void
-    detailsToReviewScreen: () => void
+    detailsToReviewScreen: () => boolean
     outboundTicket: ticketChooseType | null
     returnTicket: ticketChooseType | null,
     adultPassengers: passengerType[],
     childPassengers: passengerType[],
+    setChildPassengers: (arr: passengerType[]) => void,
+    setAdultPassengers: (arr: passengerType[]) => void,
 }
 
-export default function TicketDetailsScreen({ setScreen, outboundTicket, returnTicket, detailsToReviewScreen, adultPassengers, childPassengers }: TicketDetailsScreenType) {
+export default function TicketDetailsScreen({
+    setScreen,
+    outboundTicket,
+    returnTicket,
+    detailsToReviewScreen,
+    adultPassengers,
+    childPassengers,
+    setAdultPassengers,
+    setChildPassengers
+}: TicketDetailsScreenType) {
     const { getItem } = useLanguage()
 
     useGrayBg()
+
+    const onChange = (index: number, type: "child" | "adult") => {
+        return (key: keyof passengerType, value: any) => {
+            const passengers = type === "adult" ? adultPassengers : childPassengers
+            const setPassengers = type === "adult" ? setAdultPassengers : setChildPassengers
+            const newArr = structuredClone(passengers)
+            newArr[index] = objChange(newArr[index], key, value)
+            setPassengers(newArr)
+        }
+    }
 
     return (
         <>
@@ -34,13 +56,15 @@ export default function TicketDetailsScreen({ setScreen, outboundTicket, returnT
                     ]}
                     active={screenEnum.DETAILS}
                     choose={(screen) => {
-                        if (screen === screenEnum.PAY) { }
+                        if (screen === screenEnum.PAY) {
+                            if (detailsToReviewScreen()) setScreen(screen)
+                        }
                         else setScreen(screen)
                     }}
                 />
             </div>
 
-            <div className=''>
+            <>
                 <div className='container mx-auto flex gap-[120px]'>
                     <div className='flex-1'>
                         <Title>
@@ -54,18 +78,14 @@ export default function TicketDetailsScreen({ setScreen, outboundTicket, returnT
                                 required
                                 isAdult
                                 {...adultPassengers[0]}
-                                onChange={(key, value) => {
-
-                                }}
+                                onChange={onChange(0, "adult")}
                             />
                             {adultPassengers.slice(1).map((item, inx) => (
                                 <PassengerForm
                                     title={getItem("Passenger") + " " + (inx + 1)}
                                     isAdult
                                     {...item}
-                                    onChange={(key, value) => {
-
-                                    }}
+                                    onChange={onChange(inx + 1, "adult")}
                                     key={inx}
                                 />
                             ))}
@@ -73,9 +93,7 @@ export default function TicketDetailsScreen({ setScreen, outboundTicket, returnT
                                 <PassengerForm
                                     title={getItem("Passenger") + " " + (adultPassengers.length + inx + 1)}
                                     {...item}
-                                    onChange={(key, value) => {
-
-                                    }}
+                                    onChange={onChange(inx, "child")}
                                     key={inx}
                                 />
                             ))}
@@ -90,7 +108,7 @@ export default function TicketDetailsScreen({ setScreen, outboundTicket, returnT
                         />
                     </div>
                 </div>
-            </div>
+            </>
         </>
     )
 }

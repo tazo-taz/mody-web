@@ -22,8 +22,8 @@ export default function Breadcrumbs<T>({ className, choose, data, active }: Brea
                     <div
                         onClick={() => choose(item.id)}
                         className={cn(
-                            "cursor-pointer",
-                            isActive(item.id) ? "font-bold" : "text-[#4B5563] hover:text-primary transition"
+                            "cursor-pointer active:scale-95 transition",
+                            isActive(item.id) ? "font-bold" : "text-[#4B5563] hover:text-primary"
                         )}
                     >{item.title}</div>
                     {inx !== data.length - 1 && (

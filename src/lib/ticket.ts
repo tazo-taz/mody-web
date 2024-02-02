@@ -4,6 +4,7 @@ import { getLanguageItem } from "../assets/language"
 import { busDatesType } from "../hooks/useSearchTickets"
 import { sum } from "lodash"
 import { BatumiGeo, KutaisiGeo, TbilisiGeo, BatumiEng, KutaisiEng, TbilisiEng } from "../assets/language/cities"
+import { passengerType } from "../pages/tickets/bus/search"
 
 const dateFormat = "yyyy-MM-DD"
 
@@ -164,3 +165,6 @@ export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Da
         return time1 - time2
     })
 }
+
+export const filterPassengers = (passengers: passengerType[]) =>
+    passengers.filter(({ firstName, lastName, userId }) => firstName && lastName && userId)

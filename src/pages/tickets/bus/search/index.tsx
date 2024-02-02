@@ -7,6 +7,7 @@ import TicketDetailsScreen from './details';
 import useQuery from '../../../../hooks/useQuery';
 import { parseTicketQuery } from '../../../../lib/ticket';
 import useUser from '../../../../stores/useUser';
+import TicketPayScreen from './pay';
 
 export enum screenEnum {
     SEARCH,
@@ -17,7 +18,8 @@ export enum screenEnum {
 export type passengerType = {
     firstName: string,
     lastName: string,
-    userId: string
+    userId: string,
+    save: boolean
 }
 
 export default function BusTicketsSearchPage() {
@@ -40,15 +42,17 @@ export default function BusTicketsSearchPage() {
                     firstName: "",
                     lastName: "",
                     userId: "",
+                    save: true
                 }))
 
-                if (user.user) adultPassengers[0] = structuredClone(user.user)
+                if (user.user) adultPassengers[0] = structuredClone({ ...user.user, save: true })
 
                 setAdultPassengers(adultPassengers)
                 setChildPassengers([...new Array(child)].map(() => ({
                     firstName: "",
                     lastName: "",
                     userId: "",
+                    save: true
                 })))
                 return setScreen(screenEnum.DETAILS)
             }
@@ -57,7 +61,17 @@ export default function BusTicketsSearchPage() {
     }
 
     const detailsToReviewScreen = () => {
-        setScreen(screenEnum.PAY)
+        const mainPassenger = adultPassengers[0]
+        if (mainPassenger.firstName && mainPassenger.lastName && mainPassenger.userId) {
+            setScreen(screenEnum.PAY)
+            return true
+        }
+        toast.error(getItem("Fill_main_passenger_information"))
+        return false
+    }
+
+    const handlePay = () => {
+
     }
 
 
@@ -80,9 +94,20 @@ export default function BusTicketsSearchPage() {
                 detailsToReviewScreen={detailsToReviewScreen}
                 adultPassengers={adultPassengers}
                 childPassengers={childPassengers}
+                setAdultPassengers={setAdultPassengers}
+                setChildPassengers={setChildPassengers}
             />
         )
     }
 
-    return null
+    return (
+        <TicketPayScreen
+            setScreen={setScreen}
+            handlePay={handlePay}
+            outboundTicket={activeOutbound}
+            returnTicket={activeReturn}
+            adultPassengers={adultPassengers}
+            childPassengers={childPassengers}
+        />
+    )
 }

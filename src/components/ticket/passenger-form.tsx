@@ -6,29 +6,32 @@ import IdNumberIcon from '../../assets/images/svgs/icons/id-number'
 import { cn } from '../../lib/utils'
 import LabeledCheckbox from '../fields/checkbox/labeled'
 import { passengerType } from '../../pages/tickets/bus/search'
+import Card from '../card'
 
 type PassengerFormType = {
     title: string,
     required?: boolean
     isAdult?: boolean,
-    onChange: (key: keyof passengerType, value: string) => void
+    onChange: (key: keyof passengerType, value: any) => void
 } & passengerType
 
-export default function PassengerForm({ title, isAdult, required = false, firstName, lastName, userId, onChange }: PassengerFormType) {
+export default function PassengerForm({ title, isAdult, save, required = false, firstName, lastName, userId, onChange }: PassengerFormType) {
     const { getItem } = useLanguage()
     return (
-        <div className='bg-white border-1 rounded-primary'>
-            <div className='p-[25px] flex items-center justify-between border-b-1'>
-                <div className='font-semibold'>
-                    {title}
-                    <span className={cn("ml-1 text-sm", required ? "text-rose-600" : "text-[#6B7280] font-normal")}>
-                        ({getItem(required ? "Required" : "Optional")})
-                    </span>
-                </div>
-                <div className='text-xs text-[#6B7280]'>{getItem(isAdult ? "Adult" : "Child")}</div>
-            </div>
-
-            <div className='flex flex-col gap-[15px] p-[25px]'>
+        <Card
+            title={(
+                <>
+                    <div className='font-semibold'>
+                        {title}
+                        <span className={cn("ml-1 text-sm", required ? "text-rose-600" : "text-[#6B7280] font-normal")}>
+                            ({getItem(required ? "Required" : "Optional")})
+                        </span>
+                    </div>
+                </>)
+            }
+            endTitle={getItem(isAdult ? "Adult" : "Child")}
+        >
+            <div className='flex flex-col gap-[15px]'>
                 <Input
                     value={firstName}
                     icon={<UserIcon />}
@@ -53,8 +56,12 @@ export default function PassengerForm({ title, isAdult, required = false, firstN
                         onChange("userId", value)
                     }}
                 />
-                <LabeledCheckbox title={getItem("Save_these_details_to_your_profile")} />
+                <LabeledCheckbox
+                    title={getItem("Save_these_details_to_your_profile")}
+                    isChecked={save}
+                    onChange={value => onChange("save", value)}
+                />
             </div>
-        </div >
+        </Card>
     )
 }

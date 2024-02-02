@@ -34,3 +34,15 @@ export const fillTheField = (fieldType: string) => {
 export const delay = (delayInms: number) => {
     return new Promise(resolve => setTimeout(resolve, delayInms));
 };
+
+
+export const objChange = <T extends {}>(
+    obj: T,
+    key: keyof T,
+    value: string
+): T => {
+    return {
+        ...obj,
+        [key]: value,
+    };
+};
