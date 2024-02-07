@@ -1,12 +1,12 @@
 import React from 'react'
-import Card from '../card'
-import useLanguage from '../../stores/useLanguage'
-import Input from '../fields/input'
-import UserIcon from '../../assets/images/svgs/icons/user/user'
 import EmailIcon from '../../assets/images/svgs/icons/email'
-import PhoneInput from '../fields/phone-input'
+import UserIcon from '../../assets/images/svgs/icons/user/user'
+import { objValueChange } from '../../lib/utils'
 import { contactInfoType } from '../../pages/tickets/bus/search'
-import { objChange, objValueChange } from '../../lib/utils'
+import useLanguage from '../../stores/useLanguage'
+import Card from '../card'
+import Input from '../fields/input'
+import PhoneInput from '../fields/phone-input'
 
 type TicketContactInfoProps = {
     value: contactInfoType,

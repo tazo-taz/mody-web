@@ -8,6 +8,7 @@ import ActiveTicketInfo from '../../../../../components/ticket/active-ticket-inf
 import { ticketChooseType } from '../../../../../components/ticket/card'
 import PassengerDetails from '../../../../../components/ticket/passenger-details'
 import TicketContactInfo from '../../../../../components/ticket/contact-info'
+import PaymentMethod from '../../../../../components/ticket/payment-method'
 
 type TicketPayScreenType = {
     setScreen: (newScreen: screenEnum) => void,
@@ -60,6 +61,8 @@ export default function TicketPayScreen({
                             value={contactInfo}
                             onChange={setContactInfo}
                         />
+
+                        <PaymentMethod />
                     </div>
                 </div>
 
