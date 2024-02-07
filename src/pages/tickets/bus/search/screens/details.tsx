@@ -6,6 +6,7 @@ import { ticketChooseType } from '../../../../../components/ticket/card'
 import PassengerForm from '../../../../../components/ticket/passenger-form'
 import Title from '../../../../../components/title'
 import useGrayBg from '../../../../../hooks/useGrayBg'
+import useScrollTop from '../../../../../hooks/useScrollTop'
 import { objChange } from '../../../../../lib/utils'
 import useLanguage from '../../../../../stores/useLanguage'
 
@@ -33,6 +34,7 @@ export default function TicketDetailsScreen({
     const { getItem } = useLanguage()
 
     useGrayBg()
+    useScrollTop()
 
     const onChange = (index: number, type: "child" | "adult") => {
         return (key: keyof passengerType, value: any) => {

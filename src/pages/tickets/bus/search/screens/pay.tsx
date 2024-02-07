@@ -9,6 +9,8 @@ import { ticketChooseType } from '../../../../../components/ticket/card'
 import PassengerDetails from '../../../../../components/ticket/passenger-details'
 import TicketContactInfo from '../../../../../components/ticket/contact-info'
 import PaymentMethod from '../../../../../components/ticket/payment-method'
+import UseaDiscount from '../../../../../components/ticket/use-a-discount'
+import useScrollTop from '../../../../../hooks/useScrollTop'
 
 type TicketPayScreenType = {
     setScreen: (newScreen: screenEnum) => void,
@@ -18,15 +20,19 @@ type TicketPayScreenType = {
     adultPassengers: passengerType[]
     childPassengers: passengerType[],
     contactInfo: contactInfoType,
-    setContactInfo: React.Dispatch<React.SetStateAction<contactInfoType>>
+    setContactInfo: React.Dispatch<React.SetStateAction<contactInfoType>>,
+    paymentType: string | number | null,
+    setPaymentType: (value: TicketPayScreenType["paymentType"]) => void
 }
 
 export default function TicketPayScreen({
-    setScreen, outboundTicket, returnTicket, handlePay, adultPassengers, childPassengers, contactInfo, setContactInfo
+    setScreen, outboundTicket, returnTicket, handlePay, adultPassengers, childPassengers, contactInfo, setContactInfo, paymentType, setPaymentType
 }: TicketPayScreenType) {
     const { getItem } = useLanguage()
 
     useGrayBg()
+    useScrollTop()
+
     return (
         <>
             <div className='shadow-md z-[1] relative bg-white'>
@@ -62,7 +68,12 @@ export default function TicketPayScreen({
                             onChange={setContactInfo}
                         />
 
-                        <PaymentMethod />
+                        <PaymentMethod
+                            value={paymentType}
+                            onChange={setPaymentType}
+                        />
+
+                        <UseaDiscount />
                     </div>
                 </div>
 
@@ -72,6 +83,7 @@ export default function TicketPayScreen({
                         returnTicket={returnTicket}
                         onContinue={handlePay}
                         className='absolute top-5 left-1/2 -translate-x-1/2 z-[1] w-full max-w-[460px]'
+                        fullDetails
                     />
                 </div>
 

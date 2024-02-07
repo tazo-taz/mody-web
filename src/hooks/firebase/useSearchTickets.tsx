@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { functions } from '../firebase';
-import { busDirectionType, getBusDirection } from '../lib/ticket';
+import { functions } from '../../firebase';
+import { busDirectionType, getBusDirection } from '../../lib/ticket';
 
 export type busDatesType = Record<string, string[]>[]
 

@@ -1,10 +1,28 @@
 import React from 'react'
 import Card from '../card'
 import useLanguage from '../../stores/useLanguage'
+import useMyCards from '../../hooks/firebase/useMyCards'
+import Radio from '../fields/radio'
+import { CiCreditCard2 } from "react-icons/ci";
 
-export default function PaymentMethod() {
+type PaymentMethodProps = {
+    value: any,
+    onChange: (value: PaymentMethodProps["value"]) => void
+}
+
+export default function PaymentMethod({ value, onChange }: PaymentMethodProps) {
     const { getItem } = useLanguage()
+    const { cards } = useMyCards()
+
     return (
-        <Card title={getItem("Payment_methods")}>PaymentMethod</Card>
+        <Card title={getItem("Payment_methods")}>
+            <Radio
+                value={value}
+                onChange={onChange}
+                items={[
+                    { value: "new", icon: <CiCreditCard2 className='w-6 h-6' />, title: getItem("Pay_with_new_card") }
+                ]}
+            />
+        </Card>
     )
 }

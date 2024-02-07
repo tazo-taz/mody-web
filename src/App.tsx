@@ -22,21 +22,6 @@ import BusTicketsSearchPage from './pages/tickets/bus/search';
 function App() {
   const { isLoading } = useAuth()
 
-  // useEffect(() => {
-  //   const x = async () => {
-  //     await getDocs(collection(db, "users")).then((querySnapshot) => {
-  //       const newData = querySnapshot.docs
-  //         .map((doc) => ({ ...doc.data(), id: doc.id }));
-
-  //       console.log(newData[0]);
-
-  //     })
-
-  //   }
-
-  //   x()
-  // }, [])
-
   useAuthStateChange()
 
   if (isLoading) return <Loader />

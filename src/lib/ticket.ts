@@ -1,7 +1,7 @@
 import moment from "moment"
 import queryString from "query-string"
 import { getLanguageItem } from "../assets/language"
-import { busDatesType } from "../hooks/useSearchTickets"
+import { busDatesType } from "../hooks/firebase/useSearchTickets"
 import { sum } from "lodash"
 import { BatumiGeo, KutaisiGeo, TbilisiGeo, BatumiEng, KutaisiEng, TbilisiEng } from "../assets/language/cities"
 import { passengerType } from "../pages/tickets/bus/search"
@@ -168,3 +168,19 @@ export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Da
 
 export const filterPassengers = (passengers: passengerType[]) =>
     passengers.filter(({ firstName, lastName, userId }) => firstName && lastName && userId)
+
+export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, discountPercentage: number = 0) => {
+    let ticketsPrice = passengersCount * price1
+    if (price2) ticketsPrice *= 2
+    const serviceFee = 5
+    const priceWODiscount = ticketsPrice + serviceFee
+    const discountPrice = priceWODiscount * discountPercentage / 100
+    const totalPrice = priceWODiscount - discountPrice
+
+    return {
+        totalPrice: totalPrice.toFixed(2),
+        serviceFee: serviceFee.toFixed(2),
+        ticketsPrice: ticketsPrice.toFixed(2),
+        discountPrice: discountPrice.toFixed(2),
+    }
+}

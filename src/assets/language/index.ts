@@ -34,6 +34,10 @@ export const languageData = {
         en: "Passenger",
         ge: "მგზავრი"
     },
+    Passengers: {
+        en: "Passengers",
+        ge: "მგზავრები"
+    },
     Child: {
         en: "Child",
         ge: "ბავშვი"
@@ -357,6 +361,50 @@ export const languageData = {
     Where_do_you_want_get_tickets: {
         en: "Where do you want get tickets?",
         ge: "სად გინდა ბილეთების მიღება?"
+    },
+    Pay_with_new_card: {
+        en: "Pay with new card",
+        ge: "გადაიხადე ახალი ბარათით"
+    },
+    Use_a_Discount: {
+        en: "Use a Discount",
+        ge: "გამოიყენე ფასდაკლება"
+    },
+    Apply: {
+        en: "Apply",
+        ge: "გამოყენება"
+    },
+    Code: {
+        en: "Code",
+        ge: "კოდი"
+    },
+    Tickets: {
+        en: "Tickets",
+        ge: "ბილეთები"
+    },
+    Make_sure_that_upper_and_lower_case_characters_are_correct: {
+        en: "Make sure that upper and lower case characters are correct",
+        ge: "დარწმუნდით, რომ დიდი და პატარა ასოები სწორია"
+    },
+    Service_fee: {
+        en: "Service fee",
+        ge: "მომსახურების საფასური"
+    },
+    Discount: {
+        en: "Discount",
+        ge: "ფასდაკლება"
+    },
+    Total: {
+        en: "Total",
+        ge: "სულ"
+    },
+    Pay_now: {
+        en: "Pay now",
+        ge: "გადახდა"
+    },
+    Choose_payment_method: {
+        en: "Choose payment method",
+        ge: "აირჩიეთ გადახდის მეთოდი"
     },
 }
 

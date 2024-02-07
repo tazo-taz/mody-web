@@ -9,7 +9,7 @@ import 'swiper/css/pagination';
 import { addDays } from '../../lib/date';
 import Scrollable from '../scrollable';
 import TicketDate from './ticket-date';
-import { busDatesType } from '../../hooks/useSearchTickets';
+import { busDatesType } from '../../hooks/firebase/useSearchTickets';
 import { getTicketsFromBusDates } from '../../lib/ticket';
 import { useWindowSize } from 'usehooks-ts';
 import { useEffect, useState } from 'react';
