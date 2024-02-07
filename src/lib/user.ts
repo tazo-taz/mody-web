@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { auth, functions } from "../firebase";
 import { userSchema } from "../schemas/user";
 import useLanguage from "../stores/useLanguage";
-import useUser from "../stores/useUser";
+import useAuth from "../stores/useAuth";
 import { getLanguageItem } from "../assets/language";
 
 export const loadUser = async () => {
@@ -12,20 +12,20 @@ export const loadUser = async () => {
     if (res.data.result) {
         try {
             const user = userSchema.parse(res.data.user)
-            useUser.setState({ user, isLoading: false })
+            useAuth.setState({ user, isLoading: false })
 
         } catch (error) {
             console.log(error);
-            useUser.setState({ isLoading: false })
+            useAuth.setState({ isLoading: false })
             toast.error(getLanguageItem("Something_went_wrong_please_try_again"))
         }
     } else {
-        useUser.setState({ isLoading: false })
+        useAuth.setState({ isLoading: false })
     }
 }
 
 export const signOut = async () => {
     await signOutAuth(auth)
-    useUser.setState({ user: null, isLoading: false })
+    useAuth.setState({ user: null, isLoading: false })
     toast.success(getLanguageItem("Successfully_logged_out"))
 }

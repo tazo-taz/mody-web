@@ -1,13 +1,13 @@
 import React from 'react'
-import Breadcrumbs from '../../../../components/breadcrumbs'
-import { passengerType, screenEnum } from '.'
-import useLanguage from '../../../../stores/useLanguage'
-import useGrayBg from '../../../../hooks/useGrayBg'
-import Title from '../../../../components/title'
-import ActiveTicketInfo from '../../../../components/ticket/active-ticket-info'
-import { ticketChooseType } from '../../../../components/ticket/card'
-import PassengerDetails from '../../../../components/ticket/passenger-details'
-import TicketContactInfo from '../../../../components/ticket/contact-info'
+import Breadcrumbs from '../../../../../components/breadcrumbs'
+import { contactInfoType, passengerType, screenEnum } from '..'
+import useLanguage from '../../../../../stores/useLanguage'
+import useGrayBg from '../../../../../hooks/useGrayBg'
+import Title from '../../../../../components/title'
+import ActiveTicketInfo from '../../../../../components/ticket/active-ticket-info'
+import { ticketChooseType } from '../../../../../components/ticket/card'
+import PassengerDetails from '../../../../../components/ticket/passenger-details'
+import TicketContactInfo from '../../../../../components/ticket/contact-info'
 
 type TicketPayScreenType = {
     setScreen: (newScreen: screenEnum) => void,
@@ -15,10 +15,14 @@ type TicketPayScreenType = {
     returnTicket: ticketChooseType | null,
     handlePay: () => void,
     adultPassengers: passengerType[]
-    childPassengers: passengerType[]
+    childPassengers: passengerType[],
+    contactInfo: contactInfoType,
+    setContactInfo: React.Dispatch<React.SetStateAction<contactInfoType>>
 }
 
-export default function TicketPayScreen({ setScreen, outboundTicket, returnTicket, handlePay, adultPassengers, childPassengers }: TicketPayScreenType) {
+export default function TicketPayScreen({
+    setScreen, outboundTicket, returnTicket, handlePay, adultPassengers, childPassengers, contactInfo, setContactInfo
+}: TicketPayScreenType) {
     const { getItem } = useLanguage()
 
     useGrayBg()
@@ -52,7 +56,10 @@ export default function TicketPayScreen({ setScreen, outboundTicket, returnTicke
                             childPassengers={childPassengers}
                         />
 
-                        <TicketContactInfo />
+                        <TicketContactInfo
+                            value={contactInfo}
+                            onChange={setContactInfo}
+                        />
                     </div>
                 </div>
 

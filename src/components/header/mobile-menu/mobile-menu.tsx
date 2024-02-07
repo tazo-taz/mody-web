@@ -16,7 +16,7 @@ import { signOut } from '../../../lib/user'
 import { cn, hideScrollbar, showScrollbar } from '../../../lib/utils'
 import useLanguage from '../../../stores/useLanguage'
 import useModal from '../../../stores/useModal'
-import useUser from '../../../stores/useUser'
+import useAuth from '../../../stores/useAuth'
 import Badge from '../../badge'
 import Button from '../../fields/button'
 import TicketSelectContent from '../ticket-select/content'
@@ -32,7 +32,7 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
     const { getItem, setLanguage, language } = useLanguage()
 
     const modal = useModal()
-    const { isLoading, user } = useUser()
+    const { isLoading, user } = useAuth()
 
     useEffect(() => {
         hideScrollbar()

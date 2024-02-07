@@ -8,11 +8,11 @@ import SettingsForm from './form'
 import useUserForm from '../../../hooks/forms/useUserForm'
 import Button from '../../../components/fields/button'
 import { Link } from 'react-router-dom'
-import useUser from '../../../stores/useUser'
+import useAuth from '../../../stores/useAuth'
 
 export default function AccountSettingsPage() {
     const { getItem } = useLanguage()
-    const { user } = useUser()
+    const { user } = useAuth()
 
     const { formState, handleSubmit, register, reset, watch } = useUserForm(user)
 

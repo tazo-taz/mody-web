@@ -46,3 +46,13 @@ export const objChange = <T extends {}>(
         [key]: value,
     };
 };
+
+export const objValueChange = <T extends {}>(
+    onChange: React.Dispatch<React.SetStateAction<T>>,
+    key: keyof T,
+): ((value: string) => void) => {
+    return (value: string) => onChange((obj) => ({
+        ...obj,
+        [key]: value,
+    }));
+};

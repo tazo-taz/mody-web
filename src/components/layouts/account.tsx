@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom'
-import useUser from '../../stores/useUser'
+import useAuth from '../../stores/useAuth'
 import AccountNav from '../account/nav'
 export default function AccountLayout() {
-    const { user, isLoading } = useUser()
+    const { user, isLoading } = useAuth()
 
     if (isLoading) return null
 

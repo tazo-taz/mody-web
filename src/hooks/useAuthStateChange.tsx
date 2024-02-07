@@ -2,7 +2,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { auth } from "../firebase";
 import { loadUser } from "../lib/user";
-import useUser from "../stores/useUser";
+import useAuth from "../stores/useAuth";
 
 export default function useAuthStateChange() {
     useEffect(() => {
@@ -10,7 +10,7 @@ export default function useAuthStateChange() {
             if (user) {
                 await loadUser()
             } else {
-                useUser.setState({ isLoading: false })
+                useAuth.setState({ isLoading: false })
             }
         });
         return subscriber;

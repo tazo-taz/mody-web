@@ -1,13 +1,13 @@
-import { passengerType, screenEnum } from '.'
-import WarningMessage from '../../../../components/Messages/Warning'
-import Breadcrumbs from '../../../../components/breadcrumbs'
-import ActiveTicketInfo from '../../../../components/ticket/active-ticket-info'
-import { ticketChooseType } from '../../../../components/ticket/card'
-import PassengerForm from '../../../../components/ticket/passenger-form'
-import Title from '../../../../components/title'
-import useGrayBg from '../../../../hooks/useGrayBg'
-import { objChange } from '../../../../lib/utils'
-import useLanguage from '../../../../stores/useLanguage'
+import { passengerType, screenEnum } from '..'
+import WarningMessage from '../../../../../components/Messages/Warning'
+import Breadcrumbs from '../../../../../components/breadcrumbs'
+import ActiveTicketInfo from '../../../../../components/ticket/active-ticket-info'
+import { ticketChooseType } from '../../../../../components/ticket/card'
+import PassengerForm from '../../../../../components/ticket/passenger-form'
+import Title from '../../../../../components/title'
+import useGrayBg from '../../../../../hooks/useGrayBg'
+import { objChange } from '../../../../../lib/utils'
+import useLanguage from '../../../../../stores/useLanguage'
 
 type TicketDetailsScreenType = {
     setScreen: (screen: screenEnum) => void

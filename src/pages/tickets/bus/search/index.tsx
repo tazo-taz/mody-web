@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ticketChooseType } from '../../../../components/ticket/card';
-import TicketsSearchScreen from './search';
+import TicketsSearchScreen from './screens/search';
 import toast from 'react-hot-toast';
 import useLanguage from '../../../../stores/useLanguage';
-import TicketDetailsScreen from './details';
+import TicketDetailsScreen from './screens/details';
 import useQuery from '../../../../hooks/useQuery';
 import { parseTicketQuery } from '../../../../lib/ticket';
-import useUser from '../../../../stores/useUser';
-import TicketPayScreen from './pay';
+import useAuth from '../../../../stores/useAuth';
+import TicketPayScreen from './screens/pay';
+import { userSchemaType } from '../../../../schemas/user';
 
 export enum screenEnum {
     SEARCH,
@@ -22,6 +23,8 @@ export type passengerType = {
     save: boolean
 }
 
+export type contactInfoType = Pick<userSchemaType, "email" | "firstName" | "phoneNumber"> & { email: string }
+
 export default function BusTicketsSearchPage() {
     const [screen, setScreen] = useState<screenEnum>(screenEnum.SEARCH)
 
@@ -31,8 +34,21 @@ export default function BusTicketsSearchPage() {
     const [activeReturn, setActiveReturn] = useState<ticketChooseType | null>(null)
     const [adultPassengers, setAdultPassengers] = useState<passengerType[]>([])
     const [childPassengers, setChildPassengers] = useState<passengerType[]>([])
+    const auth = useAuth()
+    const [contactInfo, setContactInfo] = useState<contactInfoType>({
+        email: "",
+        firstName: "",
+        phoneNumber: ""
+    })
+
+    useEffect(() => {
+        if (auth.user) {
+            const { firstName, phoneNumber, email } = auth.user
+            setContactInfo({ firstName, phoneNumber: phoneNumber.slice(3), email: email || "" })
+        }
+    }, [auth.user])
+
     const query = useQuery()
-    const user = useUser()
 
     const searchToDetailsScreen = () => {
         if (activeOutbound)
@@ -45,7 +61,7 @@ export default function BusTicketsSearchPage() {
                     save: true
                 }))
 
-                if (user.user) adultPassengers[0] = structuredClone({ ...user.user, save: true })
+                if (auth.user) adultPassengers[0] = structuredClone({ ...auth.user, save: true })
 
                 setAdultPassengers(adultPassengers)
                 setChildPassengers([...new Array(child)].map(() => ({
@@ -108,6 +124,8 @@ export default function BusTicketsSearchPage() {
             returnTicket={activeReturn}
             adultPassengers={adultPassengers}
             childPassengers={childPassengers}
+            contactInfo={contactInfo}
+            setContactInfo={setContactInfo}
         />
     )
 }

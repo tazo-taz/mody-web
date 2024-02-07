@@ -5,8 +5,15 @@ import Input from '../fields/input'
 import UserIcon from '../../assets/images/svgs/icons/user/user'
 import EmailIcon from '../../assets/images/svgs/icons/email'
 import PhoneInput from '../fields/phone-input'
+import { contactInfoType } from '../../pages/tickets/bus/search'
+import { objChange, objValueChange } from '../../lib/utils'
 
-export default function TicketContactInfo() {
+type TicketContactInfoProps = {
+    value: contactInfoType,
+    onChange: React.Dispatch<React.SetStateAction<contactInfoType>>
+}
+
+export default function TicketContactInfo({ onChange, value }: TicketContactInfoProps) {
     const { getItem } = useLanguage()
     return (
         <Card
@@ -17,12 +24,19 @@ export default function TicketContactInfo() {
                 <Input
                     icon={<UserIcon />}
                     placeholder={getItem("First_name")}
+                    value={value.firstName}
+                    onValueChange={objValueChange(onChange, "firstName")}
                 />
                 <Input
                     icon={<EmailIcon />}
                     placeholder={getItem("Email")}
+                    value={value.email}
+                    onValueChange={objValueChange(onChange, "email")}
                 />
-                <PhoneInput />
+                <PhoneInput
+                    value={value.phoneNumber}
+                    onValueChange={objValueChange(onChange, "phoneNumber")}
+                />
             </div>
         </Card>
     )

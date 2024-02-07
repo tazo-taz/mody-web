@@ -12,10 +12,10 @@ export type userStore = {
     isLoading: false
 };
 
-const useUser = create<userStore>((set) => ({
+const useAuth = create<userStore>((set) => ({
     user: null,
     isLoading: true,
 }));
 
 
-export default useUser;
+export default useAuth;

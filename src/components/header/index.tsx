@@ -14,7 +14,7 @@ import { signOut } from "../../lib/user";
 import useHeaderMenuOpen from "../../stores/useHeaderMenuOpen";
 import useLanguage from "../../stores/useLanguage";
 import useModal from "../../stores/useModal";
-import useUser from "../../stores/useUser";
+import useAuth from "../../stores/useAuth";
 import Button from "../fields/button";
 import LanguageSwitch from "../language-switch";
 import MyLink from "../my-link";
@@ -26,7 +26,7 @@ import IconDropdown from "../dropdown/types/icon";
 export default function Header() {
     const { isOpen, toggle } = useHeaderMenuOpen()
     const modal = useModal()
-    const { isLoading, user } = useUser()
+    const { isLoading, user } = useAuth()
     const { getItem } = useLanguage()
     const { width } = useWindowSize()
 

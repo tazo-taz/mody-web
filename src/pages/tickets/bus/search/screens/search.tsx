@@ -1,12 +1,12 @@
-import tbilisBatumiSrc from "../../../../assets/images/maps/tbilisi-batumi.png";
-import ActiveTicketInfo from '../../../../components/ticket/active-ticket-info';
-import { ticketChooseType } from '../../../../components/ticket/card';
-import TicketsSection from '../../../../components/ticket/section';
-import TicketSearchHorizontal from '../../../../components/ticket/ticket-search-horizontal';
-import useGrayBg from "../../../../hooks/useGrayBg";
-import useQuery from '../../../../hooks/useQuery';
-import { getCityNameByValue, parseTicketQuery } from '../../../../lib/ticket';
-import useLanguage from '../../../../stores/useLanguage';
+import tbilisBatumiSrc from "../../../../../assets/images/maps/tbilisi-batumi.png";
+import ActiveTicketInfo from '../../../../../components/ticket/active-ticket-info';
+import { ticketChooseType } from '../../../../../components/ticket/card';
+import TicketsSection from '../../../../../components/ticket/section';
+import TicketSearchHorizontal from '../../../../../components/ticket/ticket-search-horizontal';
+import useGrayBg from "../../../../../hooks/useGrayBg";
+import useQuery from '../../../../../hooks/useQuery';
+import { getCityNameByValue, parseTicketQuery } from '../../../../../lib/ticket';
+import useLanguage from '../../../../../stores/useLanguage';
 
 type TicketsSearchScreenProsp = {
     activeOutbound: ticketChooseType | null,

@@ -15,12 +15,12 @@ import AccountSettingsPage from './pages/account/settings';
 import HomePage from './pages/home';
 import BusTicketsPage from './pages/tickets/bus';
 import { saveLoadingReference } from './references/loading';
-import useUser from './stores/useUser';
+import useAuth from './stores/useAuth';
 import Loader from './components/loading/Loader';
 import BusTicketsSearchPage from './pages/tickets/bus/search';
 
 function App() {
-  const { isLoading } = useUser()
+  const { isLoading } = useAuth()
 
   // useEffect(() => {
   //   const x = async () => {
