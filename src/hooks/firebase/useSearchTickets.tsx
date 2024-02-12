@@ -9,9 +9,6 @@ export default function useSearchTickets(from?: string, to?: string) {
     const [busDirection, setBusDirection] = useState<busDirectionType>(null)
     const [isLoading, setIsLoading] = useState(true)
 
-    console.log(from, to, 22);
-
-
     useEffect(() => {
         const fetchData = async () => {
             if (!from || !to) return setIsLoading(false)

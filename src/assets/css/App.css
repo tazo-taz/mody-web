@@ -69,3 +69,7 @@ input:-webkit-autofill:active{
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.balance-bg {
+  background: linear-gradient(86.88deg, rgba(100, 93, 255, 0.05) 1.98%, rgba(100, 93, 255, 0.2) 100%);
+}

@@ -58,7 +58,7 @@ export default function Header() {
                     {
                         icon: <PaymentIcon />,
                         title: getItem("Payment"),
-                        href: "/account/payment"
+                        href: "/account/payments"
                     },
                     {
                         icon: <RedeemIcon />,

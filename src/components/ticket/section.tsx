@@ -19,9 +19,6 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
     const { busDirection, busDates, isLoading } = useSearchTickets(cityFrom, cityTo)
     const { getItem } = useLanguage()
 
-    console.log(busDates);
-
-
     const [currentDate, setCurrentDate] = useState(dateFrom)
     const currentTickets = getTicketsFromBusDates(busDates, currentDate)
 

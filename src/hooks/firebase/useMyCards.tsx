@@ -2,31 +2,36 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { db } from '../../firebase';
+import { cardsSchema, cardsSchemaType } from '../../schemas/card';
 import useAuth from '../../stores/useAuth';
 import useLanguage from '../../stores/useLanguage';
 
-export type busDatesType = Record<string, string[]>[]
-
 export default function useMyCards() {
-    const [cards, setCards] = useState<busDatesType>([])
+    const [cards, setCards] = useState<cardsSchemaType>([])
+    const [activeCard, setActiveCard] = useState("")
     const [isLoading, setIsLoading] = useState(true)
     const { getItem } = useLanguage()
     const { user } = useAuth()
 
+    const removeCard = (recId: string) =>
+        setCards(cards => cards.filter((card) => card.recId !== recId))
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (user?.uid) {
-                    const paymentDocRef = doc(db, "payment-management", user.uid);
-                    const paymentDocSnapshot = await getDoc(paymentDocRef);
+                    const docRef = doc(db, "payment-management", user.uid);
+                    const docSnapshot = await getDoc(docRef);
 
-                    if (paymentDocSnapshot.exists()) {
+                    if (docSnapshot.exists()) {
                         // Document found, you can access its data using paymentDocSnapshot.data()
-                        const paymentData = paymentDocSnapshot.data();
-                        console.log("Found payment document:", paymentData);
+                        const data = docSnapshot.data();
+                        const parsedCards = cardsSchema.safeParse(data.cards)
+                        if (parsedCards.success) {
+                            setCards(parsedCards.data)
+                            setActiveCard(data.selectedCardId)
+                        }
                     } else {
-                        console.log("Document with ID", "not found.");
                     }
                 }
             } catch (error) {
@@ -38,5 +43,5 @@ export default function useMyCards() {
         fetchData()
     }, [user?.uid, getItem])
 
-    return { isLoading, cards } as const
+    return { isLoading, activeCard, setActiveCard, cards, removeCard }
 }

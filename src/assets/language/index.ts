@@ -410,6 +410,14 @@ export const languageData = {
         en: "Choose payment method",
         ge: "აირჩიეთ გადახდის მეთოდი"
     },
+    Total_balance: {
+        en: "Total balance",
+        ge: "ბალანსი"
+    },
+    Add_payment_method: {
+        en: "Add payment method",
+        ge: "დაამატეთ გადახდის მეთოდი"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

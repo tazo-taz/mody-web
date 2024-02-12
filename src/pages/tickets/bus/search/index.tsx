@@ -109,7 +109,7 @@ export default function BusTicketsSearchPage() {
                 adult: `${adultPassengers.length}`,
                 child: `${childPassengers.length}`,
                 requestId: `xxx${Math.random()}`,
-                driverAppCallbackUrl: "http://localhost:3000/account/my-tickets"
+                driverAppCallbackUrl: `${window.location.origin}/account/my-tickets`
             }
 
             if (adultPassengers[0].save) {

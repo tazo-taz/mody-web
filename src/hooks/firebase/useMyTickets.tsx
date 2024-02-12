@@ -27,8 +27,6 @@ export default function useMyTickets() {
 
                         if (parsedData.success) setTickets(parsedData.data)
                         else toast.error(getItem('Something_went_wrong_please_try_again_or_contact_us'))
-                    } else {
-                        console.log("Document with ID", "not found.");
                     }
                 }
             } catch (error) {

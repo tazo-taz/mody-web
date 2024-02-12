@@ -7,7 +7,6 @@ import MyTicketCard from '../../../components/ticket/card/myCard';
 export default function MyTicketsPage() {
     const { tickets, isLoading } = useMyTickets()
     const { getItem } = useLanguage()
-    console.log(tickets);
 
     if (isLoading) {
         return null
