@@ -53,7 +53,7 @@ export default function Select({ placeholder, icon, items, onChange, value, sort
 
                 <div ref={scope} className='flex flex-col relative'>
                     <h2 className='text-gray-500'>{placeholder}</h2>
-                    <h1 className='absolute top-2 left-0'>{valueText}</h1>
+                    <h1 className='absolute top-2 left-0 whitespace-nowrap'>{valueText}</h1>
                 </div>
 
                 {value && (

@@ -2,7 +2,7 @@ import { passengerType, screenEnum } from '..'
 import WarningMessage from '../../../../../components/Messages/Warning'
 import Breadcrumbs from '../../../../../components/breadcrumbs'
 import ActiveTicketInfo from '../../../../../components/ticket/active-ticket-info'
-import { ticketChooseType } from '../../../../../components/ticket/card'
+import { ticketChooseType } from '../../../../../components/ticket/card/card'
 import PassengerForm from '../../../../../components/ticket/passenger-form'
 import Title from '../../../../../components/title'
 import useGrayBg from '../../../../../hooks/useGrayBg'
@@ -93,7 +93,7 @@ export default function TicketDetailsScreen({
                             ))}
                             {childPassengers.map((item, inx) => (
                                 <PassengerForm
-                                    title={getItem("Passenger") + " " + (adultPassengers.length + inx + 1)}
+                                    title={getItem("Passenger") + " " + (adultPassengers.length + inx)}
                                     {...item}
                                     onChange={onChange(inx, "child")}
                                     key={inx}

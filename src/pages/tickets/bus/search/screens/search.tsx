@@ -1,6 +1,6 @@
 import tbilisBatumiSrc from "../../../../../assets/images/maps/tbilisi-batumi.png";
 import ActiveTicketInfo from '../../../../../components/ticket/active-ticket-info';
-import { ticketChooseType } from '../../../../../components/ticket/card';
+import { ticketChooseType } from '../../../../../components/ticket/card/card';
 import TicketsSection from '../../../../../components/ticket/section';
 import TicketSearchHorizontal from '../../../../../components/ticket/ticket-search-horizontal';
 import useGrayBg from "../../../../../hooks/useGrayBg";

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import useSearchTickets from '../../hooks/firebase/useSearchTickets'
 import { getTicketsFromBusDates } from '../../lib/ticket'
-import TicketCard, { ticketChooseType } from './card'
+import TicketCard, { ticketChooseType } from './card/card'
 import TicketDatesSlider from './dates-slider'
 import useLanguage from '../../stores/useLanguage'
 import Title from '../title'
@@ -18,6 +18,9 @@ type TicketsSectionType = {
 export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onChoose, activeDate }: TicketsSectionType) {
     const { busDirection, busDates, isLoading } = useSearchTickets(cityFrom, cityTo)
     const { getItem } = useLanguage()
+
+    console.log(busDates);
+
 
     const [currentDate, setCurrentDate] = useState(dateFrom)
     const currentTickets = getTicketsFromBusDates(busDates, currentDate)

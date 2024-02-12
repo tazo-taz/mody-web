@@ -2,7 +2,7 @@ import React from 'react'
 import useLanguage from '../../stores/useLanguage'
 import { calculateTicketsFullPrice, parseTicketQuery } from '../../lib/ticket'
 import useQuery from '../../hooks/useQuery'
-import { ticketChooseType } from './card'
+import { ticketChooseType } from './card/card'
 import { cn } from '../../lib/utils'
 
 type TicketsFullPriceProps = {

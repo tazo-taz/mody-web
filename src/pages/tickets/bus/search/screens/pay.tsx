@@ -1,11 +1,11 @@
 import React from 'react'
 import Breadcrumbs from '../../../../../components/breadcrumbs'
-import { contactInfoType, passengerType, screenEnum } from '..'
+import { contactInfoType, passengerType, screenEnum, typePaymentType } from '..'
 import useLanguage from '../../../../../stores/useLanguage'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import Title from '../../../../../components/title'
 import ActiveTicketInfo from '../../../../../components/ticket/active-ticket-info'
-import { ticketChooseType } from '../../../../../components/ticket/card'
+import { ticketChooseType } from '../../../../../components/ticket/card/card'
 import PassengerDetails from '../../../../../components/ticket/passenger-details'
 import TicketContactInfo from '../../../../../components/ticket/contact-info'
 import PaymentMethod from '../../../../../components/ticket/payment-method'
@@ -21,7 +21,7 @@ type TicketPayScreenType = {
     childPassengers: passengerType[],
     contactInfo: contactInfoType,
     setContactInfo: React.Dispatch<React.SetStateAction<contactInfoType>>,
-    paymentType: string | number | null,
+    paymentType: typePaymentType,
     setPaymentType: (value: TicketPayScreenType["paymentType"]) => void
 }
 

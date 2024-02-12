@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ticketChooseType } from '../../../../components/ticket/card';
+import { ticketChooseType } from '../../../../components/ticket/card/card';
 import TicketsSearchScreen from './screens/search';
 import toast from 'react-hot-toast';
 import useLanguage from '../../../../stores/useLanguage';
@@ -25,6 +25,8 @@ export type passengerType = {
     save: boolean
 }
 
+export type typePaymentType = "new" | number | null
+
 export type contactInfoType = Pick<userSchemaType, "email" | "firstName" | "phoneNumber"> & { email: string }
 
 export default function BusTicketsSearchPage() {
@@ -37,7 +39,7 @@ export default function BusTicketsSearchPage() {
     const [activeReturn, setActiveReturn] = useState<ticketChooseType | null>(null)
     const [adultPassengers, setAdultPassengers] = useState<passengerType[]>([])
     const [childPassengers, setChildPassengers] = useState<passengerType[]>([])
-    const [paymentType, setPaymentType] = useState<string | number | null>(null)
+    const [paymentType, setPaymentType] = useState<typePaymentType>(null)
     const [contactInfo, setContactInfo] = useState<contactInfoType>({
         email: "",
         firstName: "",
@@ -106,7 +108,8 @@ export default function BusTicketsSearchPage() {
                 paymentType,
                 adult: `${adultPassengers.length}`,
                 child: `${childPassengers.length}`,
-                requestId: `xxx${Math.random()}`
+                requestId: `xxx${Math.random()}`,
+                driverAppCallbackUrl: "http://localhost:3000/account/my-tickets"
             }
 
             if (adultPassengers[0].save) {
@@ -128,11 +131,11 @@ export default function BusTicketsSearchPage() {
             // return
             const data = await functions('payBusPrice', payBusPriceData);
             if (data.data.uri) window.location.href = data.data.uri
-            else toast.error(getItem("Something_went_wrong_please_try_again"))
+            else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
 
         } catch (error) {
             console.log(error);
-            toast.error(getItem("Something_went_wrong_please_try_again"))
+            toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
         } finally {
             stopLoading()
         }

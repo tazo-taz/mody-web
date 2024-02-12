@@ -17,7 +17,7 @@ export const loadUser = async () => {
         } catch (error) {
             console.log(error);
             useAuth.setState({ isLoading: false })
-            toast.error(getLanguageItem("Something_went_wrong_please_try_again"))
+            toast.error(getLanguageItem("Something_went_wrong_please_try_again_or_contact_us"))
         }
     } else {
         useAuth.setState({ isLoading: false })

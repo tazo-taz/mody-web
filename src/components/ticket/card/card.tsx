@@ -1,23 +1,23 @@
 
-import busImg from "../../assets/images/georgiabusapi.png"
-import UserSmIcon from '../../assets/images/svgs/icons/user/user-sm'
-import { timeFromTo } from '../../lib/date'
-import { busDirectionType } from '../../lib/ticket'
-import { cn } from '../../lib/utils'
-import useLanguage from '../../stores/useLanguage'
-import SuccessMessage from '../Messages/Success'
+import busImg from "../../../assets/images/georgiabusapi.png"
+import UserSmIcon from '../../../assets/images/svgs/icons/user/user-sm'
+import { timeFromTo } from '../../../lib/date'
+import { busDirectionType } from '../../../lib/ticket'
+import { cn } from '../../../lib/utils'
+import useLanguage from '../../../stores/useLanguage'
+import SuccessMessage from '../../Messages/Success'
 
 export type ticketChooseType = {
     id: string,
-    date: string,
+    date: string | Date,
     cityFrom: string,
     cityTo: string,
     busDirection: busDirectionType,
 }
 
 type TicketCardProps = ticketChooseType & {
-    onChoose: (data: ticketChooseType) => void,
-    active: ticketChooseType | null
+    onChoose?: (data: ticketChooseType) => void,
+    active?: ticketChooseType | null
 }
 
 export const TimeDiff = ({ timeDiff }: { timeDiff: number }) => {
@@ -51,7 +51,7 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
                 'flex flex-col gap-5 p-5 rounded-primary bg-white hover:bg-gray-50 transition cursor-pointer border-1',
                 isActive ? "border-primary" : "border-[#E5E7EB]"
             )}
-            onClick={() => onChoose({
+            onClick={() => onChoose?.({
                 busDirection,
                 cityFrom,
                 cityTo,

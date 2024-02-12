@@ -182,9 +182,9 @@ export const languageData = {
         en: "Go Back",
         ge: "უკან დაბრუნება"
     },
-    Something_went_wrong_please_try_again: {
-        en: "Something went wrong please try again",
-        ge: "რაღაც შეფერხდა, გთხოვთ, სცადოთ ხელახლა"
+    Something_went_wrong_please_try_again_or_contact_us: {
+        en: "Something went wrong please try again or contact us",
+        ge: "რაღაც შეფერხდა, გთხოვთ, სცადოთ ხელახლა ან დაგვიკავშირდით"
     },
     Account_Settings: {
         en: "Account Settings",
@@ -205,6 +205,10 @@ export const languageData = {
     Log_out: {
         en: "Log out",
         ge: "გამოსვლა"
+    },
+    Loading: {
+        en: "Loading",
+        ge: "იტვირთება"
     },
     Successfully_logged_out: {
         en: "Successfully logged out!",

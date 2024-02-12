@@ -9,14 +9,15 @@ import { timeFromTo } from '../../lib/date'
 import { getStationByCity } from "../../lib/ticket"
 import useLanguage from "../../stores/useLanguage"
 import Badge from "../badge"
-import { TimeDiff, ticketChooseType } from './card'
+import { TimeDiff, ticketChooseType } from './card/card'
 import { AnimatePresence, motion } from "framer-motion"
 
 type TicketMiniCardType = ticketChooseType & {
-    type: "outbound" | "return"
+    type: "outbound" | "return",
+    passengersCount: number
 }
 
-export default function TicketMiniCard({ busDirection, cityFrom, cityTo, date, id, type }: TicketMiniCardType) {
+export default function TicketMiniCard({ busDirection, cityFrom, cityTo, date, id, type, passengersCount }: TicketMiniCardType) {
     const { isOpen, toggle } = useOpen()
 
     const typeSvg = type === "outbound" ? <OutboundSvg /> : <ReturnSvg />
@@ -47,7 +48,7 @@ export default function TicketMiniCard({ busDirection, cityFrom, cityTo, date, i
             <div className="flex gap-3.5 mt-3.5">
                 <Badge variant="secondary" size="sm">
                     <UserXsIcon />
-                    1
+                    {passengersCount}
                 </Badge>
                 <Badge variant="secondary" size="sm">
                     <RouteIcon />

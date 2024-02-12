@@ -4,7 +4,7 @@ import { calculateTicketsFullPrice, parseTicketQuery } from '../../lib/ticket'
 import { cn } from '../../lib/utils'
 import useLanguage from '../../stores/useLanguage'
 import Button from '../fields/button'
-import { ticketChooseType } from './card'
+import { ticketChooseType } from './card/card'
 import TicketMiniCard from './mini-card'
 import TicketsFullPrice from './tickets-full-price'
 
@@ -35,6 +35,7 @@ export default function ActiveTicketInfo({ className, outboundTicket, returnTick
                     <TicketMiniCard
                         {...outboundTicket}
                         type='outbound'
+                        passengersCount={child + passenger}
                     />
                     <div className='border-b-1 my-4' />
                 </>
@@ -44,6 +45,7 @@ export default function ActiveTicketInfo({ className, outboundTicket, returnTick
                     <TicketMiniCard
                         {...returnTicket}
                         type='return'
+                        passengersCount={child + passenger}
                     />
                     <div className='border-b-1 my-4' />
                 </>

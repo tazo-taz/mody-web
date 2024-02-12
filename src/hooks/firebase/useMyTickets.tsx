@@ -2,13 +2,12 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { db } from '../../firebase';
+import { ticketsListSchema, ticketsListSchemaType } from '../../schemas/ticket';
 import useAuth from '../../stores/useAuth';
 import useLanguage from '../../stores/useLanguage';
 
-export type busDatesType = Record<string, string[]>[]
-
-export default function useMyCards() {
-    const [cards, setCards] = useState<busDatesType>([])
+export default function useMyTickets() {
+    const [tickets, setTickets] = useState<ticketsListSchemaType>([])
     const [isLoading, setIsLoading] = useState(true)
     const { getItem } = useLanguage()
     const { user } = useAuth()
@@ -18,13 +17,16 @@ export default function useMyCards() {
         const fetchData = async () => {
             try {
                 if (user?.uid) {
-                    const paymentDocRef = doc(db, "payment-management", user.uid);
-                    const paymentDocSnapshot = await getDoc(paymentDocRef);
+                    const docRef = doc(db, "client-bus-tickets", user.uid);
+                    const docSnapshot = await getDoc(docRef);
 
-                    if (paymentDocSnapshot.exists()) {
+                    if (docSnapshot.exists()) {
                         // Document found, you can access its data using paymentDocSnapshot.data()
-                        const paymentData = paymentDocSnapshot.data();
-                        console.log("Found payment document:", paymentData);
+                        const data = docSnapshot.data();
+                        const parsedData = ticketsListSchema.safeParse(data?.items)
+
+                        if (parsedData.success) setTickets(parsedData.data)
+                        else toast.error(getItem('Something_went_wrong_please_try_again_or_contact_us'))
                     } else {
                         console.log("Document with ID", "not found.");
                     }
@@ -38,5 +40,5 @@ export default function useMyCards() {
         fetchData()
     }, [user?.uid, getItem])
 
-    return { isLoading, cards } as const
+    return { isLoading, tickets } as const
 }
