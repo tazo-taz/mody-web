@@ -1,43 +1,51 @@
 
-import busImg from "../../assets/images/georgiabusapi.png"
-import UserSmIcon from '../../../assets/images/svgs/icons/user/user-sm'
-import { timeFromTo } from '../../../lib/date'
-import { busDirectionType, getBusDirection, getBusDirectionByCities, ticketNameToCities } from '../../../lib/ticket'
-import { cn } from '../../../lib/utils'
-import useLanguage from '../../../stores/useLanguage'
-import SuccessMessage from '../../Messages/Success'
+import { FaRegCheckCircle } from "react-icons/fa"
+import { ticketNameToCities } from '../../../lib/ticket'
 import { ticketSchemaType } from "../../../schemas/ticket"
-import TicketCard from "."
+import useLanguage from "../../../stores/useLanguage"
+import MinifyDate from "../minify-date"
+import TicketCardContainer from "./container"
+import { TicketCardDash } from "./dash"
 
 type MyTicketCardProps = ticketSchemaType & {
     onChoose?: (data: ticketSchemaType) => void,
+    className?: string,
+    style?: React.CSSProperties
 }
 
-export const TimeDiff = ({ timeDiff }: { timeDiff: number }) => {
-    const minsDiff = String((timeDiff % 1) * 60).padStart(2, "0")
-    const hoursDiff = timeDiff - timeDiff % 1
-    return (
-        <div className='rounded-xl text-xs text-[#9CA3AF] py-[5px] px-2 whitespace-nowrap bg-white border-1 border-[#E5E7EB]'>
-            {hoursDiff}h {minsDiff}m
-        </div>
-    )
-}
-
-export default function MyTicketCard({ adult, child, created_at, item, onChoose, qrCodeLink, requestId, returnItem, transactionId }: MyTicketCardProps) {
-    const { getItem } = useLanguage()
-
-    const { amount, busDirectionId, bus_arrival, bus_departure, date, flightId, name, price_adult, price_child } = item
+export default function MyTicketCard({ adult, child, item, onChoose, className, style }: MyTicketCardProps) {
+    const { date, flightId, name } = item
 
     const { cityFrom, cityTo } = ticketNameToCities(name)
+    const { getItem } = useLanguage()
 
     return (
-        <TicketCard
+        <TicketCardContainer
+            className={className}
+            style={style}
+            amount={adult + child}
             id={flightId}
-            busDirection={getBusDirection(busDirectionId)}
-            cityFrom={cityFrom}
-            cityTo={cityTo}
-            date={date}
-        />
+            bottomEnd={(
+                <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-[#0E9F6E]">{getItem("Successful")}</span>
+                    <FaRegCheckCircle color="#0E9F6E" size={22} />
+                </div>
+            )}
+            active={null}
+        >
+            <div className="flex gap-5 items-center">
+                <span className="font-semibold text-lg">{cityFrom}</span>
+                <TicketCardDash width={124} />
+                <span className="font-semibold text-lg">{cityTo}</span>
+            </div>
+
+            <MinifyDate
+                date={date}
+                timeFrom={item.bus_arrival}
+                timeTo={item.bus_departure}
+                className="text-[#6B7280] text-[13px]"
+            />
+        </TicketCardContainer>
     )
 
 }

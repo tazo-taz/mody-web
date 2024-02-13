@@ -132,8 +132,16 @@ export default function BusTicketsSearchPage() {
             const data = await functions('payBusPrice', payBusPriceData);
             console.log(data);
 
-            if (data.data.uri) window.location.href = data.data.uri
-            else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
+            if (paymentType === "new") {
+                if (data.data.uri) window.location.href = data.data.uri
+                else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
+            } else {
+                if (data.data.result) {
+                    console.log("success");
+                }
+                else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
+            }
+
 
         } catch (error) {
             console.log(error);

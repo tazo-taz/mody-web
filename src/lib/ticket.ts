@@ -7,6 +7,12 @@ import { passengerType } from "../pages/tickets/bus/search"
 
 const dateFormat = "yyyy-MM-DD"
 
+export const formatDate = (date: string | Date) =>
+    moment(date).format(dateFormat)
+
+export const formatDateDayMonth = (date: string | Date) =>
+    moment(date).format("ddd D")
+
 export const getCityNameByValue = (value?: string) => {
     if (value === languageData["Kutaisi_airport"].ge) return getLanguageItem("Kutaisi_airport")
     if (value === languageData["Tbilisi"].ge) return getLanguageItem("Tbilisi")
@@ -40,12 +46,12 @@ export const transformTicketFormToQuery = (
             cityTo,
             passenger,
             child,
-            departureDate: moment(departureDate).format(dateFormat),
+            departureDate: formatDate(departureDate),
             returnDate: null
         }
 
         if (returnDate)
-            query.returnDate = moment(returnDate).format(dateFormat)
+            query.returnDate = formatDate(returnDate)
 
         const url = queryString.stringifyUrl({
             url: "/tickets/bus/search",
@@ -72,9 +78,9 @@ export const parseTicketQuery = (query: URLSearchParams) => {
         passenger: passenger ? +passenger : 1,
         child: child ? +child : 0,
         departureDate: departureDate ? new Date(departureDate) : undefined,
-        departureDateString: departureDate ? moment(new Date(departureDate)).format(dateFormat) : undefined,
+        departureDateString: departureDate ? formatDate(new Date(departureDate)) : undefined,
         returnDate: returnDate ? new Date(returnDate) : undefined,
-        returnDateString: returnDate ? moment(new Date(returnDate)).format(dateFormat) : undefined,
+        returnDateString: returnDate ? formatDate(new Date(returnDate)) : undefined,
     }
 }
 
@@ -139,7 +145,7 @@ export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Da
         const dates: any = busDates[id as any]
 
         dates
-            .filter((date: string) => date.split(" ")[0] === moment(departureDate).format(dateFormat))
+            .filter((date: string) => date.split(" ")[0] === formatDate(departureDate))
             .forEach((date: string) => {
                 if (!dateItems.find((item) => item.date === date))
                     dateItems.push({ id, date });

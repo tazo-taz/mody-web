@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion"
 import { IoBusOutline, IoChevronDownOutline } from "react-icons/io5"
 import busImg from "../../assets/images/georgiabusapi.png"
 import RouteIcon from "../../assets/images/svgs/icons/route"
@@ -9,8 +10,9 @@ import { timeFromTo } from '../../lib/date'
 import { getStationByCity } from "../../lib/ticket"
 import useLanguage from "../../stores/useLanguage"
 import Badge from "../badge"
-import { TimeDiff, ticketChooseType } from './card'
-import { AnimatePresence, motion } from "framer-motion"
+import { ticketChooseType } from './card'
+import { TimeDiff } from "./card/dash"
+import MinifyDate from "./minify-date"
 
 type TicketMiniCardType = ticketChooseType & {
     type: "outbound" | "return",
@@ -22,7 +24,7 @@ export default function TicketMiniCard({ busDirection, cityFrom, cityTo, date, i
 
     const typeSvg = type === "outbound" ? <OutboundSvg /> : <ReturnSvg />
 
-    const { minifiedDate, timeFrom, timeTo } = timeFromTo(date, busDirection?.timeDiff)
+    const { timeFrom, timeTo } = timeFromTo(date, busDirection?.timeDiff)
     const stationFrom = getStationByCity(cityFrom)
     const stationTo = getStationByCity(cityTo)
     const { getItem } = useLanguage()
@@ -41,10 +43,9 @@ export default function TicketMiniCard({ busDirection, cityFrom, cityTo, date, i
             </div>
 
             <div>
-                <h3 className='text-sm font-semibold'>{minifiedDate} {timeFrom} - {timeTo}</h3>
+                <MinifyDate date={date} timeDiff={busDirection.timeDiff} className='text-sm font-semibold' />
                 <p className="text-[#6B7280] text-xs mt-1">{stationFrom} - {stationTo}</p>
             </div>
-
             <div className="flex gap-3.5 mt-3.5">
                 <Badge variant="secondary" size="sm">
                     <UserXsIcon />

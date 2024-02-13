@@ -417,6 +417,10 @@ export const languageData = {
         en: "Add payment method",
         ge: "დაამატეთ გადახდის მეთოდი"
     },
+    Successful: {
+        en: "Successful",
+        ge: "წარმატებული"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

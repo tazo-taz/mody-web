@@ -1,11 +1,8 @@
 
-import busImg from "../../../assets/images/georgiabusapi.png"
-import UserSmIcon from '../../../assets/images/svgs/icons/user/user-sm'
 import { timeFromTo } from '../../../lib/date'
 import { busDirectionType } from '../../../lib/ticket'
-import { cn } from '../../../lib/utils'
-import useLanguage from '../../../stores/useLanguage'
-import SuccessMessage from '../../Messages/Success'
+import TicketCardContainer from "./container"
+import { TicketCardDash } from './dash'
 
 export type ticketChooseType = {
     id: string,
@@ -20,19 +17,9 @@ type TicketCardProps = ticketChooseType & {
     active?: ticketChooseType | null
 }
 
-export const TimeDiff = ({ timeDiff }: { timeDiff: number }) => {
-    const minsDiff = String((timeDiff % 1) * 60).padStart(2, "0")
-    const hoursDiff = timeDiff - timeDiff % 1
-    return (
-        <div className='rounded-xl text-xs text-[#9CA3AF] py-[5px] px-2 whitespace-nowrap bg-white border-1 border-[#E5E7EB]'>
-            {hoursDiff}h {minsDiff}m
-        </div>
-    )
-}
+
 
 export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, onChoose, active }: TicketCardProps) {
-    const { getItem } = useLanguage()
-
     if (!busDirection) return null
 
     const { timeFrom, timeTo } = timeFromTo(date, busDirection.timeDiff)
@@ -41,63 +28,28 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
     const timeWidth = 80
     const timeDiffWidth = 220
 
-
-
-    const isActive = active?.id === id
-
     return (
-        <div
-            className={cn(
-                'flex flex-col gap-2 p-3.5 rounded-primary bg-white hover:bg-gray-50 transition cursor-pointer border-1',
-                isActive ? "border-primary" : "border-[#E5E7EB]"
-            )}
-            onClick={() => onChoose?.({
+        <TicketCardContainer
+            onChoose={() => onChoose?.({
                 busDirection,
                 cityFrom,
                 cityTo,
                 id,
                 date
             })}
+            bottomEnd={<h2 className='text-xl font-semibold'>{busDirection.price} ₾</h2>}
+            active={active}
+            id={id}
         >
-            <div className='flex justify-between items-center'>
-                <div className='flex gap-2 items-center'>
-                    <img src={busImg} alt='logo' className='h-10' />
-                    <h6 className='text-[#6B7280] text-xs'>#{id}</h6>
-                </div>
-                <SuccessMessage text={getItem("CHEAPEST")} />
-            </div>
-
             <div className='flex items-center gap-5'>
                 <div className={timeClass} style={{ width: timeWidth }}>
                     {timeFrom}
                 </div>
-                <div className='relative flex gap-1.5' style={{ width: timeDiffWidth }}>
-                    <div className='absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#E5E7EB]' />
-                    <div className='absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#E5E7EB]' />
 
-                    <div className='center'>
-                        <TimeDiff timeDiff={busDirection.timeDiff} />
-                    </div>
-
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                    <div className='w-1.5 h-[2px] bg-[#E5E7EB]' />
-                </div>
+                <TicketCardDash
+                    timeDiff={busDirection.timeDiff}
+                    width={timeDiffWidth}
+                />
 
                 <div className={timeClass} style={{ width: timeWidth, textAlign: "right" }}>
                     {timeTo}
@@ -110,15 +62,6 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
                 <h3>{cityFrom}</h3>
                 <h3>{cityTo}</h3>
             </div>
-
-            <div className='flex items-center gap-1 justify-between'>
-                <div className='flex items-center'>
-                    <UserSmIcon />
-                    <p className='text-[#6B7280] text-xs ml-1'>1, {getItem("One_way")}</p>
-                </div>
-
-                <h2 className='text-xl font-semibold'>{busDirection.price} ₾</h2>
-            </div>
-        </div>
+        </TicketCardContainer>
     )
 }

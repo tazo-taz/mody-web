@@ -1,25 +1,28 @@
-import React from 'react'
-import useMyTickets from '../../../hooks/firebase/useMyTickets'
-import useLanguage from '../../../stores/useLanguage';
-import TicketCard from '../../../components/ticket/card';
+import AccountTitle from '../../../components/account/title';
 import MyTicketCard from '../../../components/ticket/card/myCard';
+import useMyTickets from '../../../hooks/firebase/useMyTickets';
+import useGrayBg from '../../../hooks/useGrayBg';
+import useLanguage from '../../../stores/useLanguage';
 
 export default function MyTicketsPage() {
-    const { tickets, isLoading } = useMyTickets()
+    const { tickets } = useMyTickets()
     const { getItem } = useLanguage()
 
-    if (isLoading) {
-        return null
-    }
+    useGrayBg()
 
     return (
-        <div>
-            {tickets.map((ticket, inx) => (
-                <MyTicketCard
-                    {...ticket}
-                    key={inx}
-                />
-            ))}
-        </div>
+        <>
+            <AccountTitle className='mb-5'>{getItem("My_tickets")}</AccountTitle>
+            <div className='flex flex-col gap-5'>
+                {tickets.map((ticket, inx) => (
+                    <MyTicketCard
+                        {...ticket}
+                        className='view-anim'
+                        style={{ "--delay": inx } as any}
+                        key={inx}
+                    />
+                ))}
+            </div>
+        </>
     )
 }
