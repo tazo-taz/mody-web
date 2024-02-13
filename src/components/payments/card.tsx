@@ -2,7 +2,7 @@ import React from 'react'
 import { cardSchemaType } from '../../schemas/card'
 import MasterCardIcon from '../../assets/images/svgs/icons/mastercard'
 import { FaRegTrashAlt } from "react-icons/fa";
-import { cn } from '../../lib/utils';
+import { cn, getCardName } from '../../lib/utils';
 import { functions } from '../../firebase';
 import { startLoading, stopLoading } from '../../references/loading';
 
@@ -47,7 +47,7 @@ export default function PaymentCard({ activeCard, cardMask, onChooseCard, onRemo
                 <MasterCardIcon />
             </div>
 
-            <p className='font-semibold text-sm ml-2'>Mastercard **** {cardMask.slice(-4)}</p>
+            <p className='font-semibold text-sm ml-2'>{getCardName(cardMask)}</p>
 
             <FaRegTrashAlt
                 onClick={removeCard}

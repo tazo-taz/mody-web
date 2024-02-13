@@ -1,5 +1,4 @@
 import useLanguage from "../../stores/useLanguage"
-import { BatumiEng, BatumiGeo, KutaisiEng, KutaisiGeo, TbilisiEng, TbilisiGeo } from "./cities"
 
 export const languageData = {
     Find_Official_Tickets: {
@@ -19,16 +18,16 @@ export const languageData = {
         ge: "ში"
     },
     Tbilisi: {
-        en: TbilisiEng,
-        ge: TbilisiGeo
+        en: "Tbilisi",
+        ge: "თბილისი"
     },
     Batumi: {
-        en: BatumiEng,
-        ge: BatumiGeo
+        en: "Batumi",
+        ge: "ბათუმი"
     },
     Kutaisi: {
-        en: KutaisiEng,
-        ge: KutaisiGeo
+        en: "Kutaisi",
+        ge: "ქუთაისი"
     },
     Passenger: {
         en: "Passenger",

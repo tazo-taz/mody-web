@@ -9,7 +9,7 @@ import { timeFromTo } from '../../lib/date'
 import { getStationByCity } from "../../lib/ticket"
 import useLanguage from "../../stores/useLanguage"
 import Badge from "../badge"
-import { TimeDiff, ticketChooseType } from './card/card'
+import { TimeDiff, ticketChooseType } from './card'
 import { AnimatePresence, motion } from "framer-motion"
 
 type TicketMiniCardType = ticketChooseType & {

@@ -4,7 +4,7 @@ import { calculateTicketsFullPrice, parseTicketQuery } from '../../lib/ticket'
 import { cn } from '../../lib/utils'
 import useLanguage from '../../stores/useLanguage'
 import Button from '../fields/button'
-import { ticketChooseType } from './card/card'
+import { ticketChooseType } from './card'
 import TicketMiniCard from './mini-card'
 import TicketsFullPrice from './tickets-full-price'
 

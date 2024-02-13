@@ -5,6 +5,8 @@ import useMyCards from '../../hooks/firebase/useMyCards'
 import Radio from '../fields/radio'
 import { CiCreditCard2 } from "react-icons/ci";
 import { typePaymentType } from '../../pages/tickets/bus/search'
+import MasterCardIcon from '../../assets/images/svgs/icons/mastercard'
+import { getCardName } from '../../lib/utils'
 
 type PaymentMethodProps = {
     value: typePaymentType,
@@ -30,7 +32,10 @@ export default function PaymentMethod({ value, onChange }: PaymentMethodProps) {
                 value={value}
                 onChange={onChange}
                 items={[
-                    { value: "new", icon: <CiCreditCard2 className='w-6 h-6' />, title: getItem("Pay_with_new_card") }
+                    { value: "new", icon: <CiCreditCard2 className='w-6 h-6' />, title: getItem("Pay_with_new_card") },
+                    ...cards.map((card, inx) =>
+                        ({ value: inx, icon: <MasterCardIcon />, title: getCardName(card.cardMask) })
+                    )
                 ]}
             />
         </Card>

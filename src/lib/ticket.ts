@@ -1,9 +1,8 @@
+import { sum } from "lodash"
 import moment from "moment"
 import queryString from "query-string"
 import { getLanguageItem, languageData } from "../assets/language"
 import { busDatesType } from "../hooks/firebase/useSearchTickets"
-import { sum } from "lodash"
-import { BatumiGeo, KutaisiGeo, TbilisiGeo, BatumiEng, KutaisiEng, TbilisiEng } from "../assets/language/cities"
 import { passengerType } from "../pages/tickets/bus/search"
 
 const dateFormat = "yyyy-MM-DD"
@@ -127,9 +126,9 @@ export const getBusDirection = (id: number) => {
 }
 
 export const getStationByCity = (city: string) => {
-    if ([KutaisiEng, KutaisiGeo].includes(city)) return getLanguageItem("Kutaisi_airport")
-    if ([TbilisiEng, TbilisiGeo].includes(city)) return getLanguageItem("Tbilisi_Station_square_1")
-    if ([BatumiEng, BatumiGeo].includes(city)) return getLanguageItem("Batumi_Station_2")
+    if ([languageData["Kutaisi_airport"].en, languageData["Kutaisi_airport"].ge].includes(city)) return getLanguageItem("Kutaisi_airport")
+    if ([languageData["Tbilisi"].en, languageData["Tbilisi"].ge].includes(city)) return getLanguageItem("Tbilisi_Station_square_1")
+    if ([languageData["Batumi"].en, languageData["Batumi"].ge].includes(city)) return getLanguageItem("Batumi_Station_2")
 
     return null
 }

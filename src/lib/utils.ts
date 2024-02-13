@@ -56,3 +56,6 @@ export const objValueChange = <T extends {}>(
         [key]: value,
     }));
 };
+
+export const getCardName = (cardMask: string) =>
+    `Mastercard **** ${cardMask.slice(-4)}`

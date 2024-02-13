@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ticketChooseType } from '../../../../components/ticket/card/card';
+import { ticketChooseType } from '../../../../components/ticket/card';
 import TicketsSearchScreen from './screens/search';
 import toast from 'react-hot-toast';
 import useLanguage from '../../../../stores/useLanguage';
@@ -108,7 +108,7 @@ export default function BusTicketsSearchPage() {
                 paymentType,
                 adult: `${adultPassengers.length}`,
                 child: `${childPassengers.length}`,
-                requestId: `xxx${Math.random()}`,
+                requestId: `8d24ade2-3e37-4d45-bba1-8ddf7deb86a1`,
                 driverAppCallbackUrl: `${window.location.origin}/account/my-tickets`
             }
 
@@ -130,6 +130,8 @@ export default function BusTicketsSearchPage() {
 
             // return
             const data = await functions('payBusPrice', payBusPriceData);
+            console.log(data);
+
             if (data.data.uri) window.location.href = data.data.uri
             else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
 

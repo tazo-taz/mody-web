@@ -48,7 +48,7 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
     return (
         <div
             className={cn(
-                'flex flex-col gap-5 p-5 rounded-primary bg-white hover:bg-gray-50 transition cursor-pointer border-1',
+                'flex flex-col gap-2 p-3.5 rounded-primary bg-white hover:bg-gray-50 transition cursor-pointer border-1',
                 isActive ? "border-primary" : "border-[#E5E7EB]"
             )}
             onClick={() => onChoose?.({
@@ -104,7 +104,7 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
                 </div>
             </div>
 
-            <div className='flex justify-between text-[#6B7280] -mt-5 text-sm' style={{
+            <div className='flex justify-between text-[#6B7280] -mt-2 text-sm' style={{
                 width: timeWidth * 2 + timeDiffWidth + 40
             }}>
                 <h3>{cityFrom}</h3>

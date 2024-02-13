@@ -7,7 +7,7 @@ import { cn } from '../../../lib/utils'
 import useLanguage from '../../../stores/useLanguage'
 import SuccessMessage from '../../Messages/Success'
 import { ticketSchemaType } from "../../../schemas/ticket"
-import TicketCard from "./card"
+import TicketCard from "."
 
 type MyTicketCardProps = ticketSchemaType & {
     onChoose?: (data: ticketSchemaType) => void,

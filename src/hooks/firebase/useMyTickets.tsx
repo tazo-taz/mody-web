@@ -17,19 +17,22 @@ export default function useMyTickets() {
         const fetchData = async () => {
             try {
                 if (user?.uid) {
+                    console.log(user.uid);
+
                     const docRef = doc(db, "client-bus-tickets", user.uid);
                     const docSnapshot = await getDoc(docRef);
 
                     if (docSnapshot.exists()) {
                         // Document found, you can access its data using paymentDocSnapshot.data()
                         const data = docSnapshot.data();
-                        const parsedData = ticketsListSchema.safeParse(data?.items)
+                        console.log(data.items);
 
-                        if (parsedData.success) setTickets(parsedData.data)
-                        else toast.error(getItem('Something_went_wrong_please_try_again_or_contact_us'))
+                        const parsedData = ticketsListSchema.parse(data?.items)
+                        setTickets(parsedData)
                     }
                 }
             } catch (error) {
+                console.log(error);
                 toast.error(getItem('Something_went_wrong_please_try_again_or_contact_us'))
             } finally {
                 setIsLoading(false)

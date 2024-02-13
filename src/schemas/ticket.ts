@@ -2,7 +2,7 @@ import { z } from "zod"
 
 const itemSchema = z.object({
     amount: z.number(),
-    busDirectionId: z.number(),
+    busDirectionId: z.coerce.number(),
     bus_arrival: z.coerce.date(),
     bus_departure: z.coerce.date(),
     date: z.coerce.date(),
@@ -13,8 +13,8 @@ const itemSchema = z.object({
 })
 
 export const ticketSchema = z.object({
-    adult: z.number(),
-    child: z.number(),
+    adult: z.coerce.number(),
+    child: z.coerce.number(),
     created_at: z.coerce.date(),
     qrCodeLink: z.string(),
     transactionId: z.string(),
