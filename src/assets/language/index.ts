@@ -421,6 +421,14 @@ export const languageData = {
         en: "Successful",
         ge: "წარმატებული"
     },
+    Book_your_trip: {
+        en: "Book your trip",
+        ge: "დაჯავშნეთ თქვენი ბილეთი"
+    },
+    No_bookings_yet: {
+        en: "No bookings yet",
+        ge: "ჯავშნები არ არის"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

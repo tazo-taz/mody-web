@@ -17,18 +17,15 @@ export default function useMyTickets() {
         const fetchData = async () => {
             try {
                 if (user?.uid) {
-                    console.log(user.uid);
-
                     const docRef = doc(db, "client-bus-tickets", user.uid);
                     const docSnapshot = await getDoc(docRef);
 
                     if (docSnapshot.exists()) {
                         // Document found, you can access its data using paymentDocSnapshot.data()
                         const data = docSnapshot.data();
-                        console.log(data.items);
 
                         const parsedData = ticketsListSchema.parse(data?.items)
-                        setTickets(parsedData)
+                        setTickets(parsedData.reverse())
                     }
                 }
             } catch (error) {
