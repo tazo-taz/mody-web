@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ticketChooseType } from '../../../../components/ticket/card';
+import { ticketChooseType } from '../../../../components/ticket/card/simple';
 import TicketsSearchScreen from './screens/search';
 import toast from 'react-hot-toast';
 import useLanguage from '../../../../stores/useLanguage';

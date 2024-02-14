@@ -421,6 +421,18 @@ export const languageData = {
         en: "Successful",
         ge: "წარმატებული"
     },
+    OUTBOUND: {
+        en: "OUTBOUND",
+        ge: "გამავალი"
+    },
+    RETURN: {
+        en: "RETURN",
+        ge: "დაბრუნების"
+    },
+    Saved_Passengers: {
+        en: "Saved Passengers",
+        ge: "დამახსოვრებული მგზავრები"
+    },
     Back_to_my_tickets: {
         en: "Back to my tickets",
         ge: "ბილეთებზე დაბრუნება"

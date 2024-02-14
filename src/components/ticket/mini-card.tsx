@@ -10,8 +10,8 @@ import { timeFromTo } from '../../lib/date'
 import { getStationByCity } from "../../lib/ticket"
 import useLanguage from "../../stores/useLanguage"
 import Badge from "../badge"
-import { ticketChooseType } from './card'
-import { TimeDiff } from "./card/dash"
+import { ticketChooseType } from './card/simple'
+import { TimeDiff } from "./card/simple/dash"
 import MinifyDate from "./minify-date"
 
 type TicketMiniCardType = ticketChooseType & {

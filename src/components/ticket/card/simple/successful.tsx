@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaRegCheckCircle } from 'react-icons/fa'
-import useLanguage from '../../../stores/useLanguage'
+import useLanguage from '../../../../stores/useLanguage'
 
 export default function Successful() {
     const { getItem } = useLanguage()

@@ -7,15 +7,18 @@ import { cn } from '../../lib/utils'
 import LabeledCheckbox from '../fields/checkbox/labeled'
 import { passengerType } from '../../pages/tickets/bus/search'
 import Card from '../card'
+import { ticketUsersSchemaType } from '../../schemas/ticket/user'
+import Badge from '../badge'
 
 type PassengerFormType = {
     title: string,
     required?: boolean
     isAdult?: boolean,
-    onChange: (key: keyof passengerType, value: any) => void
+    onChange: (key: keyof passengerType, value: any) => void,
+    users?: ticketUsersSchemaType
 } & passengerType
 
-export default function PassengerForm({ title, isAdult, save, required = false, firstName, lastName, userId, onChange }: PassengerFormType) {
+export default function PassengerForm({ title, isAdult, save, required = false, firstName, lastName, userId, onChange, users = [] }: PassengerFormType) {
     const { getItem } = useLanguage()
     return (
         <Card
@@ -32,6 +35,25 @@ export default function PassengerForm({ title, isAdult, save, required = false, 
             endTitle={getItem(isAdult ? "Adult" : "Child")}
         >
             <div className='flex flex-col gap-[15px]'>
+                <div className='flex flex-wrap gap-4 items-center'>
+                    <span className='text-xs text-[#6B7280]'>
+                        {getItem("Saved_Passengers")}:
+                    </span>
+
+                    {users.filter((user) => isAdult ? !user.isChild : user.isChild).map((user) => (
+                        <Badge
+                            key={user.userId}
+                            size='sm'
+                            variant='secondary'
+                            className='font-bold'
+                            onClick={() => {
+                                onChange("firstName", user.firstName)
+                                onChange("lastName", user.lastName)
+                                onChange("userId", user.userId)
+                            }}
+                        >{user.firstName}</Badge>
+                    ))}
+                </div>
                 <Input
                     value={firstName}
                     icon={<UserIcon />}

@@ -5,7 +5,8 @@ import useGrayBg from '../../../../hooks/useGrayBg'
 import useLanguage from '../../../../stores/useLanguage'
 import { getBusDirection, ticketNameToCities } from '../../../../lib/ticket'
 import MinifyDate from '../../../../components/ticket/minify-date'
-import Successful from '../../../../components/ticket/card/successful'
+import Successful from '../../../../components/ticket/card/simple/successful'
+import RealTicketsSection from '../../../../components/ticket/card/real/section'
 
 export default function MyTicketPage() {
     const { getItem } = useLanguage()
@@ -47,7 +48,7 @@ export default function MyTicketPage() {
 
 
     return (
-        <div>
+        <>
             {goBack}
 
 
@@ -59,6 +60,8 @@ export default function MyTicketPage() {
 
                 <Successful />
             </div>
-        </div>
+
+            <RealTicketsSection className='mt-10' />
+        </>
     )
 }

@@ -1,5 +1,5 @@
 import AccountTitle from '../../../components/account/title';
-import MyTicketCard from '../../../components/ticket/card/myCard';
+import MyTicketCard from '../../../components/ticket/card/simple/myCard';
 import useMyTickets from '../../../hooks/firebase/useMyTickets';
 import useGrayBg from '../../../hooks/useGrayBg';
 import useLanguage from '../../../stores/useLanguage';

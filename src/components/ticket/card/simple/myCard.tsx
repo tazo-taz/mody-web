@@ -1,7 +1,7 @@
 
-import { getBusDirection, ticketNameToCities } from '../../../lib/ticket'
-import { ticketSchemaType } from "../../../schemas/ticket"
-import MinifyDate from "../minify-date"
+import { getBusDirection, ticketNameToCities } from '../../../../lib/ticket'
+import { ticketSchemaType } from "../../../../schemas/ticket"
+import MinifyDate from "../../minify-date"
 import TicketCardContainer from "./container"
 import { TicketCardDash } from "./dash"
 import Successful from "./successful"

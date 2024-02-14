@@ -1,9 +1,9 @@
 
-import busImg from "../../../assets/images/georgiabusapi.png"
-import UserSmIcon from '../../../assets/images/svgs/icons/user/user-sm'
-import { cn } from '../../../lib/utils'
-import useLanguage from '../../../stores/useLanguage'
-import SuccessMessage from '../../Messages/Success'
+import busImg from "../../../../assets/images/georgiabusapi.png"
+import UserSmIcon from '../../../../assets/images/svgs/icons/user/user-sm'
+import { cn } from '../../../../lib/utils'
+import useLanguage from '../../../../stores/useLanguage'
+import SuccessMessage from '../../../Messages/Success'
 
 
 type TicketCardContainerProps = {

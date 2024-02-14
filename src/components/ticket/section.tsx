@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import useSearchTickets from '../../hooks/firebase/useSearchTickets'
 import { getTicketsFromBusDates } from '../../lib/ticket'
-import TicketCard, { ticketChooseType } from './card'
+import TicketCard, { ticketChooseType } from './card/simple'
 import TicketDatesSlider from './dates-slider'
 import useLanguage from '../../stores/useLanguage'
 import Title from '../title'

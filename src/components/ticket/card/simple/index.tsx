@@ -1,6 +1,6 @@
 
-import { timeFromTo } from '../../../lib/date'
-import { busDirectionType } from '../../../lib/ticket'
+import { timeFromTo } from '../../../../lib/date'
+import { busDirectionType } from '../../../../lib/ticket'
 import TicketCardContainer from "./container"
 import { TicketCardDash } from './dash'
 

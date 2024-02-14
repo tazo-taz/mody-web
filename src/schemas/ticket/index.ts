@@ -27,8 +27,6 @@ export const ticketSchema = z.object({
 
 export const ticketsListSchema = z.array(ticketSchema)
 
-
-
 export type ticketSchemaType = z.infer<typeof ticketSchema>
 
 export type ticketsListSchemaType = z.infer<typeof ticketsListSchema>

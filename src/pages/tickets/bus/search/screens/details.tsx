@@ -2,9 +2,10 @@ import { passengerType, screenEnum } from '..'
 import WarningMessage from '../../../../../components/Messages/Warning'
 import Breadcrumbs from '../../../../../components/breadcrumbs'
 import ActiveTicketInfo from '../../../../../components/ticket/active-ticket-info'
-import { ticketChooseType } from '../../../../../components/ticket/card'
+import { ticketChooseType } from '../../../../../components/ticket/card/simple'
 import PassengerForm from '../../../../../components/ticket/passenger-form'
 import Title from '../../../../../components/title'
+import useTicketUsers from '../../../../../hooks/firebase/useTicketUsers'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import useScrollTop from '../../../../../hooks/useScrollTop'
 import { objChange } from '../../../../../lib/utils'
@@ -17,8 +18,8 @@ type TicketDetailsScreenType = {
     returnTicket: ticketChooseType | null,
     adultPassengers: passengerType[],
     childPassengers: passengerType[],
-    setChildPassengers: (arr: passengerType[]) => void,
-    setAdultPassengers: (arr: passengerType[]) => void,
+    setChildPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
+    setAdultPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
 }
 
 export default function TicketDetailsScreen({
@@ -32,17 +33,19 @@ export default function TicketDetailsScreen({
     setChildPassengers
 }: TicketDetailsScreenType) {
     const { getItem } = useLanguage()
+    const { users } = useTicketUsers()
 
     useGrayBg()
     useScrollTop()
 
     const onChange = (index: number, type: "child" | "adult") => {
         return (key: keyof passengerType, value: any) => {
-            const passengers = type === "adult" ? adultPassengers : childPassengers
             const setPassengers = type === "adult" ? setAdultPassengers : setChildPassengers
-            const newArr = structuredClone(passengers)
-            newArr[index] = objChange(newArr[index], key, value)
-            setPassengers(newArr)
+            setPassengers(passengers => {
+                const newArr = structuredClone(passengers)
+                newArr[index] = objChange(newArr[index], key, value)
+                return newArr
+            })
         }
     }
 
@@ -76,6 +79,7 @@ export default function TicketDetailsScreen({
                         <div className='flex flex-col gap-[25px]'>
                             <WarningMessage text={getItem("You_must_present_valid_identification_national_ID_card_passport_or_BahnCard__during_the_ticket_inspection")} />
                             <PassengerForm
+                                users={users}
                                 title={getItem("Main_Passanger")}
                                 required
                                 isAdult
@@ -84,6 +88,7 @@ export default function TicketDetailsScreen({
                             />
                             {adultPassengers.slice(1).map((item, inx) => (
                                 <PassengerForm
+                                    users={users}
                                     title={getItem("Passenger") + " " + (inx + 1)}
                                     isAdult
                                     {...item}
@@ -93,6 +98,7 @@ export default function TicketDetailsScreen({
                             ))}
                             {childPassengers.map((item, inx) => (
                                 <PassengerForm
+                                    users={users}
                                     title={getItem("Passenger") + " " + (adultPassengers.length + inx)}
                                     {...item}
                                     onChange={onChange(inx, "child")}
