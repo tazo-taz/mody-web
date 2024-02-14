@@ -14,29 +14,35 @@ export default function useMyTickets() {
 
 
     useEffect(() => {
+        let isMounted = true;
+
         const fetchData = async () => {
             try {
                 if (user?.uid) {
                     const docRef = doc(db, "client-bus-tickets", user.uid);
                     const docSnapshot = await getDoc(docRef);
 
-                    if (docSnapshot.exists()) {
-                        // Document found, you can access its data using paymentDocSnapshot.data()
+                    if (isMounted && docSnapshot.exists()) {
                         const data = docSnapshot.data();
-
-                        const parsedData = ticketsListSchema.parse(data?.items)
-                        setTickets(parsedData.reverse())
+                        const parsedData = ticketsListSchema.parse(data?.items);
+                        setTickets(parsedData.reverse());
                     }
                 }
             } catch (error) {
                 console.log(error);
-                toast.error(getItem('Something_went_wrong_please_try_again_or_contact_us'))
+                toast.error(getItem('Something_went_wrong_please_try_again_or_contact_us'));
             } finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
-        }
-        fetchData()
-    }, [user?.uid, getItem])
+        };
+
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [user?.uid, getItem]);
+
 
     return { isLoading, tickets } as const
 }

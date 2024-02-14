@@ -5,11 +5,12 @@ import useGrayBg from '../../../hooks/useGrayBg';
 import useLanguage from '../../../stores/useLanguage';
 import ticketImg from "../../../assets/images/tickets.png"
 import Button from '../../../components/fields/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function MyTicketsPage() {
     const { tickets, isLoading } = useMyTickets()
     const { getItem } = useLanguage()
+    const navigate = useNavigate()
 
     useGrayBg()
 
@@ -19,7 +20,8 @@ export default function MyTicketsPage() {
                 {...ticket}
                 className='view-anim'
                 style={{ "--delay": inx } as any}
-                key={inx}
+                onChoose={() => navigate(`/account/my-tickets/${ticket.uid}`)}
+                key={ticket.uid}
             />
         ))}
     </div> : (

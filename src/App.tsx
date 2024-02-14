@@ -18,6 +18,7 @@ import { saveLoadingReference } from './references/loading';
 import useAuth from './stores/useAuth';
 import Loader from './components/loading/Loader';
 import BusTicketsSearchPage from './pages/tickets/bus/search';
+import MyTicketPage from './pages/account/my-tickets/my-ticket';
 
 function App() {
   const { isLoading } = useAuth()
@@ -38,6 +39,7 @@ function App() {
           <Route path='account' element={<AccountLayout />}>
             <Route path="" element={<AccountSettingsPage />} />
             <Route path="my-tickets" element={<MyTicketsPage />} />
+            <Route path='my-tickets/:id' element={<MyTicketPage />} />
             <Route path="payments" element={<PaymentsPage />} />
             <Route path="redeem-codes" element={<RedeemCodesPage />} />
             <Route path="invite-friends" element={<InviteFriendsPage />} />
