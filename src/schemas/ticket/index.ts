@@ -12,6 +12,9 @@ const itemSchema = z.object({
     price_child: z.number(),
 })
 
+export type ticketItemSchemaType = z.infer<typeof itemSchema>
+
+
 export const ticketSchema = z.object({
     adult: z.coerce.number(),
     child: z.coerce.number(),

@@ -2,9 +2,9 @@
 import { getBusDirection, ticketNameToCities } from '../../../../lib/ticket'
 import { ticketSchemaType } from "../../../../schemas/ticket"
 import MinifyDate from "../../minify-date"
-import TicketCardContainer from "./container"
-import { TicketCardDash } from "./dash"
-import Successful from "./successful"
+import TicketCardContainer from "../components/container"
+import { TicketCardDash } from "../components/dash"
+import Successful from "../components/successful"
 
 type MyTicketCardProps = ticketSchemaType & {
     onChoose?: (data: ticketSchemaType) => void,

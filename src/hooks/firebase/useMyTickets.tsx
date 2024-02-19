@@ -1,8 +1,7 @@
-import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { db } from '../../firebase';
-import { ticketsListSchema, ticketsListSchemaType } from '../../schemas/ticket';
+import { getMyTickets } from '../../lib/ticket';
+import { ticketsListSchemaType } from '../../schemas/ticket';
 import useAuth from '../../stores/useAuth';
 import useLanguage from '../../stores/useLanguage';
 
@@ -19,13 +18,10 @@ export default function useMyTickets() {
         const fetchData = async () => {
             try {
                 if (user?.uid) {
-                    const docRef = doc(db, "client-bus-tickets", user.uid);
-                    const docSnapshot = await getDoc(docRef);
+                    const docSnapshot = await getMyTickets();
 
-                    if (isMounted && docSnapshot.exists()) {
-                        const data = docSnapshot.data();
-                        const parsedData = ticketsListSchema.parse(data?.items);
-                        setTickets(parsedData.reverse());
+                    if (isMounted && docSnapshot) {
+                        setTickets(docSnapshot)
                     }
                 }
             } catch (error) {

@@ -1,8 +1,8 @@
 
 import { timeFromTo } from '../../../../lib/date'
 import { busDirectionType } from '../../../../lib/ticket'
-import TicketCardContainer from "./container"
-import { TicketCardDash } from './dash'
+import TicketCardContainer from "../components/container"
+import { TicketCardDash } from '../components/dash'
 
 export type ticketChooseType = {
     id: string,

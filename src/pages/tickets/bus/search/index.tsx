@@ -5,12 +5,13 @@ import toast from 'react-hot-toast';
 import useLanguage from '../../../../stores/useLanguage';
 import TicketDetailsScreen from './screens/details';
 import useQuery from '../../../../hooks/useQuery';
-import { filterUnfilledPassengers, parseTicketQuery } from '../../../../lib/ticket';
+import { filterUnfilledPassengers, getMyTickets, parseTicketQuery } from '../../../../lib/ticket';
 import useAuth from '../../../../stores/useAuth';
 import TicketPayScreen from './screens/pay';
 import { userSchemaType } from '../../../../schemas/user';
 import { functions } from '../../../../firebase';
 import { startLoading, stopLoading } from '../../../../references/loading';
+import useModal from '../../../../stores/useModal';
 
 export enum screenEnum {
     SEARCH,
@@ -34,6 +35,7 @@ export default function BusTicketsSearchPage() {
 
     const { getItem } = useLanguage()
     const auth = useAuth()
+    const modal = useModal()
 
     const [activeOutbound, setActiveOutbound] = useState<ticketChooseType | null>(null)
     const [activeReturn, setActiveReturn] = useState<ticketChooseType | null>(null)
@@ -140,7 +142,11 @@ export default function BusTicketsSearchPage() {
                 else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
             } else {
                 if (data.data.result) {
-                    console.log("success");
+                    const myTickets = await getMyTickets()
+                    if (myTickets) {
+                        modal.onOpen("purchased-ticket", { ticket: myTickets[0] })
+                        console.log("success");
+                    }
                 }
                 else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
             }

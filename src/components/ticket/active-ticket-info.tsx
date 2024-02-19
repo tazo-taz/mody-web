@@ -5,7 +5,7 @@ import { cn } from '../../lib/utils'
 import useLanguage from '../../stores/useLanguage'
 import Button from '../fields/button'
 import { ticketChooseType } from './card/simple'
-import TicketMiniCard from './mini-card'
+import TicketMiniCard from './card/simple/mini'
 import TicketsFullPrice from './tickets-full-price'
 
 type ActiveTicketInfoType = {

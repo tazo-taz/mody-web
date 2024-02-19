@@ -4,6 +4,10 @@ import queryString from "query-string"
 import { getLanguageItem, languageData } from "../assets/language"
 import { busDatesType } from "../hooks/firebase/useSearchTickets"
 import { passengerType } from "../pages/tickets/bus/search"
+import { doc, getDoc } from "firebase/firestore"
+import { db } from "../firebase"
+import useAuth from "../stores/useAuth"
+import { ticketsListSchema } from "../schemas/ticket"
 
 const dateFormat = "yyyy-MM-DD"
 
@@ -193,4 +197,16 @@ export const ticketNameToCities = (name: string) => {
         cityFrom: getCityNameByValue(from),
         cityTo: getCityNameByValue(to),
     }
+}
+
+export const getMyTickets = async () => {
+    const user = useAuth.getState().user
+    if (!user) return null
+    const docRef = doc(db, "client-bus-tickets", user.uid);
+    const docSnapshot = await getDoc(docRef);
+    if (docSnapshot.exists()) {
+        const parsedData = ticketsListSchema.parse(docSnapshot.data()?.items);
+        return parsedData.reverse()
+    }
+    return null
 }

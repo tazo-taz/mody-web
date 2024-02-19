@@ -289,6 +289,10 @@ export const languageData = {
         en: "One-way",
         ge: "ერთი გზა"
     },
+    Two_way: {
+        en: "Two-way",
+        ge: "ორი გზა"
+    },
     Tickets_not_found: {
         en: "Tickets not found",
         ge: "ბილეთები ვერ მოიძებნა"
@@ -444,6 +448,10 @@ export const languageData = {
     No_bookings_yet: {
         en: "No bookings yet",
         ge: "ჯავშნები არ არის"
+    },
+    You_have_successfully_purchased_tickets: {
+        en: "You have successfully \npurchased tickets",
+        ge: "თქვენ წარმატებით შეიძინეთ \nბილეთები"
     },
 }
 

@@ -4,6 +4,8 @@ import UserSmIcon from '../../../../assets/images/svgs/icons/user/user-sm'
 import { cn } from '../../../../lib/utils'
 import useLanguage from '../../../../stores/useLanguage'
 import SuccessMessage from '../../../Messages/Success'
+import Cheapest from "./cheapest"
+import OneWay from "./one-way"
 
 
 type TicketCardContainerProps = {
@@ -37,16 +39,13 @@ export default function TicketCardContainer({ id, onChoose, active, bottomEnd, c
                     <img src={busImg} alt='logo' className='h-10' />
                     <h6 className='text-[#6B7280] text-xs'>#{id}</h6>
                 </div>
-                <SuccessMessage text={getItem("CHEAPEST")} />
+                <Cheapest />
             </div>
 
             {children}
 
             <div className='flex items-center gap-1 justify-between'>
-                <div className='flex items-center'>
-                    <UserSmIcon />
-                    <p className='text-[#6B7280] text-xs ml-1'>{amount}, {getItem("One_way")}</p>
-                </div>
+                <OneWay amount={amount} />
 
                 {bottomEnd}
             </div>

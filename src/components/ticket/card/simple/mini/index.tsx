@@ -1,25 +1,25 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { IoBusOutline, IoChevronDownOutline } from "react-icons/io5"
-import busImg from "../../assets/images/georgiabusapi.png"
-import RouteIcon from "../../assets/images/svgs/icons/route"
-import UserXsIcon from "../../assets/images/svgs/icons/user/user-xs"
-import OutboundSvg from '../../assets/images/svgs/outbound'
-import ReturnSvg from '../../assets/images/svgs/return'
-import useOpen from "../../hooks/useOpen"
-import { timeFromTo } from '../../lib/date'
-import { getStationByCity } from "../../lib/ticket"
-import useLanguage from "../../stores/useLanguage"
-import Badge from "../badge"
-import { ticketChooseType } from './card/simple'
-import { TimeDiff } from "./card/simple/dash"
-import MinifyDate from "./minify-date"
+import busImg from "../../../../../assets/images/georgiabusapi.png"
+import RouteIcon from "../../../../../assets/images/svgs/icons/route"
+import UserXsIcon from "../../../../../assets/images/svgs/icons/user/user-xs"
+import OutboundSvg from '../../../../../assets/images/svgs/outbound'
+import ReturnSvg from '../../../../../assets/images/svgs/return'
+import useOpen from "../../../../../hooks/useOpen"
+import { timeFromTo } from '../../../../../lib/date'
+import { getStationByCity } from "../../../../../lib/ticket"
+import useLanguage from "../../../../../stores/useLanguage"
+import Badge from "../../../../badge"
+import { TimeDiff } from "../../components/dash"
+import MinifyDate from "../../../minify-date"
+import { ticketChooseType } from ".."
 
 type TicketMiniCardType = ticketChooseType & {
     type: "outbound" | "return",
     passengersCount: number
 }
 
-export default function TicketMiniCard({ busDirection, cityFrom, cityTo, date, id, type, passengersCount }: TicketMiniCardType) {
+export default function TicketMiniCardPurchased({ busDirection, cityFrom, cityTo, date, id, type, passengersCount }: TicketMiniCardType) {
     const { isOpen, toggle } = useOpen()
 
     const typeSvg = type === "outbound" ? <OutboundSvg /> : <ReturnSvg />

@@ -1,21 +1,23 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect } from 'react'
 import XIcon from '../../assets/images/svgs/icons/x'
-import { hideScrollbar, showScrollbar } from '../../lib/utils'
+import { cn, hideScrollbar, showScrollbar } from '../../lib/utils'
 import useModal, { modalStore } from '../../stores/useModal'
 import Button from '../fields/button'
 import { useWindowSize } from 'usehooks-ts'
 
 type ModalType = {
     children: React.ReactNode,
-    title: string,
+    title?: string,
     modalType: modalStore["modalType"],
-    onClose?: () => void
+    onClose?: () => void,
+    childrenClassName?: string,
+    width?: number
 }
 
-export default function Modal({ children, title, modalType, onClose: onCloseCb }: ModalType) {
+export default function Modal({ children, title, modalType, onClose: onCloseCb, childrenClassName, width = 430 }: ModalType) {
     const modal = useModal()
-    const { width } = useWindowSize()
+    const { width: windowWidth } = useWindowSize()
 
     useEffect(() => {
         if (modal.modalType === modalType) {
@@ -24,8 +26,8 @@ export default function Modal({ children, title, modalType, onClose: onCloseCb }
         }
     }, [modalType, modal.modalType])
 
-    const modalTranslateYFrom = width > 767 ? "10%" : "100%"
-    const modalTranslateYTo = width < 767 ? "0%" : "-50%"
+    const modalTranslateYFrom = windowWidth > 767 ? "10%" : "100%"
+    const modalTranslateYTo = windowWidth < 767 ? "0%" : "-50%"
 
     const onClose = () => {
         modal.onClose()
@@ -45,15 +47,19 @@ export default function Modal({ children, title, modalType, onClose: onCloseCb }
                         initial={{ opacity: 0, translateY: modalTranslateYFrom, translateX: "-50%" }}
                         animate={{ opacity: 1, translateY: modalTranslateYTo, translateX: "-50%" }}
                         exit={{ opacity: 0, translateY: modalTranslateYFrom, translateX: "-50%" }}
-                        className='fixed z-10 top-auto bottom-0 md:bottom-auto md:top-1/2 left-1/2 w-[430px] bg-white rounded-primary'>
-                        <div className='flex justify-between items-center px-6 py-4 border-b-1'>
-                            <h2 className='text-lg font-bold'>{title}</h2>
-                            <Button size="icon" variant='secondary' onClick={onClose}>
-                                <XIcon />
-                            </Button>
-                        </div>
+                        className='fixed z-10 w-full top-auto bottom-0 md:bottom-auto md:top-1/2 left-1/2 bg-white rounded-primary'
+                        style={{ maxWidth: width }}
+                    >
+                        {title && (
+                            <div className='flex justify-between items-center px-6 py-4 border-b-1'>
+                                <h2 className='text-lg font-bold'>{title}</h2>
+                                <Button size="icon" variant='secondary' onClick={onClose}>
+                                    <XIcon />
+                                </Button>
+                            </div>
+                        )}
 
-                        <div className='p-6 flex flex-col'>
+                        <div className={cn('p-6 flex flex-col', childrenClassName)}>
                             {children}
                         </div>
                     </motion.div>
