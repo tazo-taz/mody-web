@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import useLanguage from '../../../../stores/useLanguage';
 import TicketDetailsScreen from './screens/details';
 import useQuery from '../../../../hooks/useQuery';
-import { parseTicketQuery } from '../../../../lib/ticket';
+import { filterUnfilledPassengers, parseTicketQuery } from '../../../../lib/ticket';
 import useAuth from '../../../../stores/useAuth';
 import TicketPayScreen from './screens/pay';
 import { userSchemaType } from '../../../../schemas/user';
@@ -127,6 +127,9 @@ export default function BusTicketsSearchPage() {
                     flightId: activeReturn!.id
                 }
             }
+
+            payBusPriceData.adultPassengers = filterUnfilledPassengers(adultPassengers)
+            payBusPriceData.childPassengers = filterUnfilledPassengers(childPassengers)
 
             // return
             const data = await functions('payBusPrice', payBusPriceData);

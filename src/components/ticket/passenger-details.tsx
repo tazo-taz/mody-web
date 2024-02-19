@@ -1,4 +1,4 @@
-import { filterPassengers } from '../../lib/ticket'
+import { filterUnfilledPassengers } from '../../lib/ticket'
 import { passengerType } from '../../pages/tickets/bus/search'
 import useLanguage from '../../stores/useLanguage'
 import Card from '../card'
@@ -15,8 +15,8 @@ export default function PassengerDetails({
 }: PassengerDetailsType) {
     const { getItem } = useLanguage()
 
-    const filteredAdultPassengers = filterPassengers(adultPassengers)
-    const filteredChildPassengers = filterPassengers(childPassengers)
+    const filteredAdultPassengers = filterUnfilledPassengers(adultPassengers)
+    const filteredChildPassengers = filterUnfilledPassengers(childPassengers)
 
     return (
         <Card title={getItem("Passenger_details")}>

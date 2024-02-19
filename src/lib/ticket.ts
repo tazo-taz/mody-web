@@ -168,7 +168,7 @@ export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Da
     })
 }
 
-export const filterPassengers = (passengers: passengerType[]) =>
+export const filterUnfilledPassengers = (passengers: passengerType[]) =>
     passengers.filter(({ firstName, lastName, userId }) => firstName && lastName && userId)
 
 export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, discountPercentage: number = 0) => {
