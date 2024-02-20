@@ -1,5 +1,5 @@
 import busImg from "../../../../../assets/images/georgiabusapi.png"
-import { getBusDirection, ticketNameToCities } from "../../../../../lib/ticket"
+import { getBusDirection, getCitiesByName } from "../../../../../lib/ticket"
 import { ticketSchemaType } from "../../../../../schemas/ticket"
 import MinifyDate from "../../../minify-date"
 import Cheapest from "../../components/cheapest"
@@ -8,7 +8,7 @@ import OneWay from "../../components/one-way"
 
 export default function TicketMiniCardPurchased({ item: { busDirectionId, name, date, flightId }, adult, child, returnItem }: ticketSchemaType) {
     const busDirection = getBusDirection(busDirectionId)
-    const { cityFrom, cityTo } = ticketNameToCities(name)
+    const { cityFrom, cityTo } = getCitiesByName(name)
     const id = flightId
     const passengersCount = adult + child
 

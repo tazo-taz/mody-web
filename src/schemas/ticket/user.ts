@@ -9,4 +9,6 @@ const ticketUserSchema = z.object({
 
 export const ticketUsersSchema = z.array(z.object({ ...ticketUserSchema.shape }))
 
+export type ticketUserSchemaType = z.infer<typeof ticketUserSchema>
+
 export type ticketUsersSchemaType = z.infer<typeof ticketUsersSchema>

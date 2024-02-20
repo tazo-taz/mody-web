@@ -3,7 +3,7 @@ import GoBack from '../../../../components/go-back'
 import useMyTickets from '../../../../hooks/firebase/useMyTickets'
 import useGrayBg from '../../../../hooks/useGrayBg'
 import useLanguage from '../../../../stores/useLanguage'
-import { getBusDirection, ticketNameToCities } from '../../../../lib/ticket'
+import { getBusDirection, getCitiesByName } from '../../../../lib/ticket'
 import MinifyDate from '../../../../components/ticket/minify-date'
 import Successful from '../../../../components/ticket/card/components/successful'
 import RealTicketsSection from '../../../../components/ticket/card/real/section'
@@ -43,14 +43,13 @@ export default function MyTicketPage() {
         )
     }
 
-    const { cityFrom, cityTo } = ticketNameToCities(ticket.item.name)
+    const { cityFrom, cityTo } = getCitiesByName(ticket.item.name)
     const busDirection = getBusDirection(ticket.item.busDirectionId)!
 
 
     return (
         <>
             {goBack}
-
 
             <div className='mt-6 flex justify-between border-b-1 pb-3'>
                 <div>
@@ -61,7 +60,10 @@ export default function MyTicketPage() {
                 <Successful />
             </div>
 
-            <RealTicketsSection className='mt-10' />
+            <RealTicketsSection
+                ticket={ticket}
+                className='mt-10'
+            />
         </>
     )
 }

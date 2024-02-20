@@ -191,7 +191,7 @@ export const calculateTicketsFullPrice = (passengersCount: number, price1: numbe
     }
 }
 
-export const ticketNameToCities = (name: string) => {
+export const getCitiesByName = (name: string) => {
     const [from, to] = name.split(" - ")
     return {
         cityFrom: getCityNameByValue(from),

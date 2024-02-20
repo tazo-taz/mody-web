@@ -12,11 +12,26 @@ export const formatTime = (date: string | Date) =>
 export const minifyDate = (date: Date | string) =>
     moment(date).format("ddd, MMM D")
 
-export const timeFromTo = (date: Date | string, timeDiff?: number) => {
+export const timeFromTo = (date: Date | string, timeDiff?: number, withAmPm: boolean = true) => {
     const timeFrom = formatTime(date)
     const timeTo = moment(date).add(timeDiff, "h").format("h:mm A").replace(":01", ":00")
     const minifiedDate = minifyDate(date)
-    return { timeFrom, timeTo, minifiedDate }
+    return {
+        timeFrom: (withAmPm ? timeFrom : timeFrom.slice(0, -3)).padStart(5, "0"),
+        timeTo: (withAmPm ? timeTo : timeTo.slice(0, -3)).padStart(5, "0"),
+        minifiedDate
+    }
+}
+
+export const timeToFrom = (date: Date | string, timeDiff?: number, withAmPm?: boolean) => {
+    const timeFrom = formatTime(date)
+    const timeTo = moment(date).subtract(timeDiff, "h").format("h:mm A").replace(":01", ":00")
+    const minifiedDate = minifyDate(date)
+    return {
+        timeFrom: (withAmPm ? timeFrom : timeFrom.slice(0, -3)).padStart(5, "0"),
+        timeTo: (withAmPm ? timeTo : timeTo.slice(0, -3)).padStart(5, "0"),
+        minifiedDate
+    }
 }
 
 export const timeDifference = (date1: Date | string, date2: Date | string) => {
@@ -31,4 +46,8 @@ export const timeDifference = (date1: Date | string, date2: Date | string) => {
     msec -= ss * 1000;
 
     return `${hh}:${mm}`
+}
+
+export const getFullDayAndMonth = (date: Date) => {
+    return moment(date).format("dddd, D MMMM")
 }

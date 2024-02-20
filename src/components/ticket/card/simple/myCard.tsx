@@ -1,5 +1,5 @@
 
-import { getBusDirection, ticketNameToCities } from '../../../../lib/ticket'
+import { getBusDirection, getCitiesByName } from '../../../../lib/ticket'
 import { ticketSchemaType } from "../../../../schemas/ticket"
 import MinifyDate from "../../minify-date"
 import TicketCardContainer from "../components/container"
@@ -15,7 +15,7 @@ type MyTicketCardProps = ticketSchemaType & {
 
 export default function MyTicketCard({ adult, child, item, onChoose, className, style }: MyTicketCardProps) {
     const { date, flightId, name } = item
-    const { cityFrom, cityTo } = ticketNameToCities(name)
+    const { cityFrom, cityTo } = getCitiesByName(name)
 
     const busDirection = getBusDirection(item.busDirectionId)!
 

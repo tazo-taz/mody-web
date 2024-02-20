@@ -33,6 +33,22 @@ export const languageData = {
         en: "Passenger",
         ge: "მგზავრი"
     },
+    PASSENGER: {
+        en: "PASSENGER",
+        ge: "მგზავრი"
+    },
+    CLASS: {
+        en: "CLASS",
+        ge: "კლასი"
+    },
+    SECTION: {
+        en: "SECTION",
+        ge: "განყოფილება"
+    },
+    Storey_1: {
+        en: "1 Storey",
+        ge: "1 სართული"
+    },
     Passengers: {
         en: "Passengers",
         ge: "მგზავრები"

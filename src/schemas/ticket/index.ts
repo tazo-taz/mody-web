@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { ticketUsersSchema } from "./user"
 
 const itemSchema = z.object({
     amount: z.number(),
@@ -23,6 +24,8 @@ export const ticketSchema = z.object({
     transactionId: z.string(),
     requestId: z.string(),
     uid: z.string(),
+    filteredChildPassengers: ticketUsersSchema.optional().default([]),
+    filteredAdultPassengers: ticketUsersSchema.optional().default([]),
 
     item: itemSchema,
     returnItem: itemSchema.nullable()
