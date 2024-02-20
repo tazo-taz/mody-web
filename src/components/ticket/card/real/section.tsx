@@ -16,10 +16,10 @@ export default function RealTicketsSection({ className, ticket }: RealTicketsSec
     const passengers = [...ticket.filteredAdultPassengers, ...ticket.filteredChildPassengers]
 
     return (
-        <div className={className}>
+        <div className={cn("flex flex-col gap-10", className)}>
             <div className="flex flex-col gap-5">
                 <h2 className={cn(
-                    "text-lg font-semibold mb-6",
+                    "text-lg font-semibold",
                     "text-[#0E9F6E]"
                 )}>{getItem("OUTBOUND")}</h2>
 
@@ -36,7 +36,7 @@ export default function RealTicketsSection({ className, ticket }: RealTicketsSec
             {ticket.returnItem && (
                 <div className="flex flex-col gap-5">
                     <h2 className={cn(
-                        "text-lg font-semibold mb-6",
+                        "text-lg font-semibold",
                         "text-[#C27803]"
                     )}>{getItem("OUTBOUND")}</h2>
 

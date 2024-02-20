@@ -469,6 +469,14 @@ export const languageData = {
         en: "You have successfully \npurchased tickets",
         ge: "თქვენ წარმატებით შეიძინეთ \nბილეთები"
     },
+    Print: {
+        en: "Print",
+        ge: "ბეჭდვა"
+    },
+    Share: {
+        en: "Share",
+        ge: "გაზიარება"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

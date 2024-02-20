@@ -92,3 +92,9 @@ input:-webkit-autofill:active{
     opacity: 1;
   }
 }
+
+.vertical-dash {
+  background: linear-gradient(180deg, #E5E7EB 50%, transparent 50%);
+  background-size: 2px 13px;
+  background-repeat: repeat-y;
+}
