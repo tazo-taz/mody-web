@@ -1,4 +1,5 @@
 
+import { useWindowSize } from 'usehooks-ts'
 import { timeFromTo } from '../../../../lib/date'
 import { busDirectionType } from '../../../../lib/ticket'
 import TicketCardContainer from "../components/container"
@@ -20,6 +21,7 @@ type TicketCardProps = ticketChooseType & {
 
 
 export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, onChoose, active }: TicketCardProps) {
+    const { width } = useWindowSize()
     if (!busDirection) return null
 
     const { timeFrom, timeTo } = timeFromTo(date, busDirection.timeDiff)
@@ -27,6 +29,8 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
     const timeClass = "font-medium text-lg whitespace-nowrap"
     const timeWidth = 80
     const timeDiffWidth = 220
+
+
 
     return (
         <TicketCardContainer
@@ -57,7 +61,7 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
             </div>
 
             <div className='flex justify-between text-[#6B7280] -mt-2 text-sm' style={{
-                width: timeWidth * 2 + timeDiffWidth + 40
+                width: width < 670 ? "auto" : timeWidth * 2 + timeDiffWidth + 40
             }}>
                 <h3>{cityFrom}</h3>
                 <h3>{cityTo}</h3>

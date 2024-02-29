@@ -19,7 +19,7 @@ export default function PurchasedTicketModal() {
   return (
     <Modal
       modalType={"purchased-ticket"}
-      childrenClassName='p-12'
+      className='p-12'
       width={540}
     >
       <div className='flex justify-center'>

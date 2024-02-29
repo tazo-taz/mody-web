@@ -1,23 +1,19 @@
-import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect } from 'react'
-import XIcon from '../../assets/images/svgs/icons/x'
-import { cn, hideScrollbar, showScrollbar } from '../../lib/utils'
+import { hideScrollbar, showScrollbar } from '../../lib/utils'
 import useModal, { modalStore } from '../../stores/useModal'
-import Button from '../fields/button'
-import { useWindowSize } from 'usehooks-ts'
+import StaticModal from './static'
 
 type ModalType = {
     children: React.ReactNode,
     title?: string,
     modalType: modalStore["modalType"],
     onClose?: () => void,
-    childrenClassName?: string,
-    width?: number
+    className?: string,
+    width?: number | string
 }
 
-export default function Modal({ children, title, modalType, onClose: onCloseCb, childrenClassName, width = 430 }: ModalType) {
+export default function Modal({ children, title, modalType, onClose: onCloseCb, className, width = 430 }: ModalType) {
     const modal = useModal()
-    const { width: windowWidth } = useWindowSize()
 
     useEffect(() => {
         if (modal.modalType === modalType) {
@@ -26,45 +22,17 @@ export default function Modal({ children, title, modalType, onClose: onCloseCb, 
         }
     }, [modalType, modal.modalType])
 
-    const modalTranslateYFrom = windowWidth > 767 ? "10%" : "100%"
-    const modalTranslateYTo = windowWidth < 767 ? "0%" : "-50%"
-
     const onClose = () => {
         modal.onClose()
         onCloseCb?.()
     }
 
-    return (
-        <AnimatePresence>
-            {modal.modalType === modalType && (
-                <>
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.4 }}
-                        exit={{ opacity: 0 }}
-                        className='fixed inset-0 bg-black z-10' onClick={onClose} />
-                    <motion.div
-                        initial={{ opacity: 0, translateY: modalTranslateYFrom, translateX: "-50%" }}
-                        animate={{ opacity: 1, translateY: modalTranslateYTo, translateX: "-50%" }}
-                        exit={{ opacity: 0, translateY: modalTranslateYFrom, translateX: "-50%" }}
-                        className='fixed z-10 w-full top-auto bottom-0 md:bottom-auto md:top-1/2 left-1/2 bg-white rounded-t-primary'
-                        style={{ maxWidth: width }}
-                    >
-                        {title && (
-                            <div className='flex justify-between items-center px-6 py-4 border-b-1'>
-                                <h2 className='text-lg font-bold'>{title}</h2>
-                                <Button size="icon" variant='secondary' onClick={onClose}>
-                                    <XIcon />
-                                </Button>
-                            </div>
-                        )}
-
-                        <div className={cn('p-6 flex flex-col', childrenClassName)}>
-                            {children}
-                        </div>
-                    </motion.div>
-                </>
-            )}
-        </AnimatePresence>
-    )
+    return <StaticModal
+        children={children}
+        isOpen={modal.modalType === modalType}
+        onClose={onClose}
+        className={className}
+        title={title}
+        width={width}
+    />
 }
