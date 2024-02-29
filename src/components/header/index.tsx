@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import BurgerIcon from "../../assets/images/svgs/icons/burger";
 import DollarIcon from "../../assets/images/svgs/icons/dollar-icon";
 import LogOutIcon from "../../assets/images/svgs/icons/log-out";
@@ -29,8 +29,9 @@ export default function Header() {
     const { isLoading, user } = useAuth()
     const { getItem } = useLanguage()
     const { width } = useWindowSize()
+    const location = useLocation()
 
-    if (width < 768) return null
+    if (width < 768 && location.pathname.startsWith("/tickets/bus/search")) return null
 
     let userButton = null
 
