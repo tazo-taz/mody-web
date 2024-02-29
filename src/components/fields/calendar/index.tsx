@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useAnimate } from 'framer-motion';
+import { useAnimate } from 'framer-motion';
 import moment from 'moment';
 import React, { useEffect } from 'react';
 import Calendar from 'react-calendar';
@@ -7,7 +7,8 @@ import { LooseValue } from 'react-calendar/dist/cjs/shared/types';
 import { useWindowSize } from 'usehooks-ts';
 import XCircleIcon from '../../../assets/images/svgs/icons/x-circle';
 import useOpen from '../../../hooks/useOpen';
-import { cn, hideScrollbar, scrollToTop, showScrollbar } from '../../../lib/utils';
+import { cn } from '../../../lib/utils';
+import useModal from '../../../stores/useModal';
 
 type CalendarInputProps = {
     placeholder: string,
@@ -16,28 +17,19 @@ type CalendarInputProps = {
     value?: Date,
     sort?: number,
     className?: string,
-    modalBottom?: number
     calendarBottom?: boolean
 }
 
-export default function CalendarInput({ placeholder, icon, onChange, value, sort = 1, className, modalBottom = 400, calendarBottom = false }: CalendarInputProps) {
+export default function CalendarInput({ placeholder, icon, onChange, value, sort = 1, className, calendarBottom = false }: CalendarInputProps) {
     const { isOpen, open, close } = useOpen(false)
     const [scope, animate] = useAnimate()
+    const { onOpen, onClose } = useModal()
 
     const handleOpen = () => {
-        open()
-        if (width <= 767 || !calendarBottom) {
-            hideScrollbar()
-            scrollToTop()
-        }
-    }
-
-    const handleClose = () => {
-        close()
-        if (width <= 767 || !calendarBottom) {
-            showScrollbar()
-            scrollToTop()
-        }
+        if (width <= 767 || !calendarBottom)
+            onOpen("calendar", { calendar: { ownOnChange, value } })
+        else
+            open()
     }
 
     const { width } = useWindowSize()
@@ -52,7 +44,8 @@ export default function CalendarInput({ placeholder, icon, onChange, value, sort
         if (date instanceof Date && !isNaN(date.valueOf())) {
             onChange(date)
             animate("h2", { y: -10, x: -3.5, scale: 0.8 })
-            handleClose()
+            if (width <= 767) onClose()
+            else close()
         }
     }
 
@@ -74,28 +67,12 @@ export default function CalendarInput({ placeholder, icon, onChange, value, sort
 
     const renderCalendar = () => {
         if (width <= 767) {
-            return (<AnimatePresence>
-                {isOpen && (
-                    <>
-                        <div className='fixed inset-0 z-10 bg-[#0000003b]' onClick={handleClose} />
-                        <motion.div
-                            initial={{ width: "100%", left: 0, position: "absolute", bottom: modalBottom - 400 }}
-                            animate={{ width: "100%", left: 0, position: "absolute", bottom: modalBottom }}
-                            exit={{ width: "100%", left: 0, position: "absolute", bottom: modalBottom - 400 }}
-                        >
-                            <div className={cn('z-10 transition absolute w-full pb-14 md:pb-4 pt-4 md:pt-4 right-0 md:right-auto left-0 md:left-[104%] shadow-[black_0px_0px_10px_-6px] md:rounded-primary rounded-t-[30px] overflow-hidden md:px-4 flex items-center justify-center bg-white gap-3 flex-col')}>
-                                <div className='h-[5px] w-16 bg-gray-200 rounded-md' />
-                                <Calendar onChange={ownOnChange} value={value} />
-                            </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>)
+            return null;
         }
 
         return isOpen && (
             <>
-                <div className='fixed inset-0 z-10' onClick={handleClose} />
+                <div className='fixed inset-0 z-10' onClick={close} />
                 <div className={cn('z-10 transition absolute w-full pb-14 md:pb-4 pt-8 md:pt-4 right-0 md:right-auto left-0 md:left-[104%] shadow-[black_0px_0px_10px_-6px] md:rounded-primary rounded-t-[30px] overflow-hidden md:px-4 flex items-center justify-center bg-white', calendarBottom && "top-[120%] md:right-0 right-0 md:left-auto left-auto w-[340px]")}>
                     <Calendar onChange={ownOnChange} value={value} />
                 </div>

@@ -27,8 +27,6 @@ export default function MyTicketPage() {
         {getItem("Back_to_my_tickets")}
     </GoBack>
 
-    console.log(ticket);
-
     if (isLoading) {
         return goBack
     }

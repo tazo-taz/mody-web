@@ -1,10 +1,15 @@
 import { create } from "zustand";
 import { ticketSchemaType } from "../schemas/ticket";
+import { LooseValue } from "react-calendar/dist/cjs/shared/types";
 
 export type modalStore = {
-    modalType: "auth" | "purchased-ticket" | null
+    modalType: "auth" | "purchased-ticket" | "calendar" | null
     data?: {
-        ticket?: ticketSchemaType
+        ticket?: ticketSchemaType,
+        calendar?: {
+            ownOnChange: (date: LooseValue) => void,
+            value: Date | undefined
+        }
     }
     onOpen: (modalType: modalStore["modalType"], data?: modalStore["data"]) => void
     onClose: () => void

@@ -133,9 +133,7 @@ export default function BusTicketsSearchPage() {
             payBusPriceData.adultPassengers = filterUnfilledPassengers(adultPassengers)
             payBusPriceData.childPassengers = filterUnfilledPassengers(childPassengers)
 
-            // return
             const data = await functions('payBusPrice', payBusPriceData);
-            console.log(data);
 
             if (paymentType === "new") {
                 if (data.data.uri) window.location.href = data.data.uri
@@ -145,7 +143,6 @@ export default function BusTicketsSearchPage() {
                     const myTickets = await getMyTickets()
                     if (myTickets) {
                         modal.onOpen("purchased-ticket", { ticket: myTickets[0] })
-                        console.log("success");
                     }
                 }
                 else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))

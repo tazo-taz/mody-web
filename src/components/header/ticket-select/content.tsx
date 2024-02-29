@@ -64,7 +64,6 @@ const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true,
 
     const departureDateElement = (
         <CalendarInput
-            modalBottom={modalBottom}
             placeholder={getItem("Departure")}
             icon={<CalendarIcon />}
             value={departureDate}
@@ -77,7 +76,6 @@ const TicketSelectContent = forwardRef(({ showButton = true, showWarning = true,
 
     const returnDateElement = (
         <CalendarInput
-            modalBottom={modalBottom}
             placeholder={getItem("Return")}
             icon={<CalendarIcon />}
             value={returnDate}

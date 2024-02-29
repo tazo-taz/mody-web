@@ -1,11 +1,13 @@
 import AuthModal from '../modals/auth'
-import PurchasedTicket from '../modals/purchased-ticket'
+import CalendarModal from '../modals/calendar'
+import PurchasedTicketModal from '../modals/purchased-ticket'
 
 export default function ModalProviders() {
     return (
         <>
             <AuthModal />
-            <PurchasedTicket />
+            <PurchasedTicketModal />
+            <CalendarModal />
         </>
     )
 }

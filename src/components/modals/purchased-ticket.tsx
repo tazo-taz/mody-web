@@ -6,7 +6,7 @@ import Modal from '../modal'
 import TicketMiniCardPurchased from '../ticket/card/simple/mini/purchased'
 import TicketImage from '../ticket/image'
 
-export default function PurchasedTicket() {
+export default function PurchasedTicketModal() {
   const { getItem } = useLanguage()
   const { data, onClose } = useModal()
   const navigate = useNavigate()

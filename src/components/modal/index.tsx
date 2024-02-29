@@ -47,7 +47,7 @@ export default function Modal({ children, title, modalType, onClose: onCloseCb, 
                         initial={{ opacity: 0, translateY: modalTranslateYFrom, translateX: "-50%" }}
                         animate={{ opacity: 1, translateY: modalTranslateYTo, translateX: "-50%" }}
                         exit={{ opacity: 0, translateY: modalTranslateYFrom, translateX: "-50%" }}
-                        className='fixed z-10 w-full top-auto bottom-0 md:bottom-auto md:top-1/2 left-1/2 bg-white rounded-primary'
+                        className='fixed z-10 w-full top-auto bottom-0 md:bottom-auto md:top-1/2 left-1/2 bg-white rounded-t-primary'
                         style={{ maxWidth: width }}
                     >
                         {title && (

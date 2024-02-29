@@ -22,7 +22,7 @@ export default function TicketHero() {
 
             </div>
             <div className='container mx-auto block md:hidden'>
-                <div className='bg-white flex flex-col gap-4 px-5 pb-5 pt-8 flex-1 -mt-36 shadow-md rounded-primary relative'><TicketSelectContent modalBottom={250} /></div>
+                <div className='bg-white flex flex-col gap-4 px-5 pb-5 pt-8 flex-1 -mt-36 shadow-md rounded-primary relative'><TicketSelectContent modalBottom={320} /></div>
             </div>
         </>
     )

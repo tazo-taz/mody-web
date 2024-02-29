@@ -11,7 +11,6 @@ type RealTicketsSectionProps = {
 export default function RealTicketsSection({ className, ticket }: RealTicketsSectionProps) {
     const { getItem } = useLanguage()
     const array = [...new Array(ticket.child + ticket.adult)]
-    console.log({ ticket });
 
     const passengers = [...ticket.filteredAdultPassengers, ...ticket.filteredChildPassengers]
 
