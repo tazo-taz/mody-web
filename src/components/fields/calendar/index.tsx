@@ -24,15 +24,14 @@ export default function CalendarInput({ placeholder, icon, onChange, value, sort
     const { isOpen, open, close } = useOpen(false)
     const [scope, animate] = useAnimate()
     const { onOpen, onClose } = useModal()
+    const { width } = useWindowSize()
 
     const handleOpen = () => {
-        if (width <= 767 || !calendarBottom)
+        if (width <= 767)
             onOpen("calendar", { calendar: { ownOnChange, value } })
         else
             open()
     }
-
-    const { width } = useWindowSize()
 
     const ownIcon = (
         <div className='w-[30px]'>

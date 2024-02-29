@@ -6,13 +6,22 @@ import 'swiper/css/pagination';
 
 // import required modules
 
-import { addDays } from '../../lib/date';
-import Scrollable from '../scrollable';
-import TicketDate from './ticket-date';
 import { busDatesType } from '../../hooks/firebase/useSearchTickets';
+import { addDays } from '../../lib/date';
 import { getTicketsFromBusDates } from '../../lib/ticket';
-import { useWindowSize } from 'usehooks-ts';
-import { useEffect, useState } from 'react';
+import TicketDate from './ticket-date';
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/scrollbar';
+
+import { FreeMode, Mousewheel } from 'swiper';
+
+// import required modules
 
 type TicketDatesSliderProps = {
     dateFrom: Date,
@@ -22,37 +31,29 @@ type TicketDatesSliderProps = {
     height: number
 }
 export default function TicketDatesSlider({ dateFrom, active, onChange, tickets, height }: TicketDatesSliderProps) {
-    const { width } = useWindowSize()
-    const [isLoaded, setIsLoaded] = useState(false)
-
-    useEffect(() => {
-        setIsLoaded(false)
-        const timeout = setTimeout(() => setIsLoaded(true), 500)
-        return () => clearTimeout(timeout)
-    }, [width])
-
-    if (!isLoaded) {
-        return (
-            <div className='text-gray-400 bg-[#F3F4F6] border-1 border-[#E5E7EB] flex items-center justify-center rounded-md text-center' style={{
-                height
-            }}>Loading</div>
-        )
-    }
-
     return (
-        <Scrollable height={height}>
+        <Swiper
+            direction={'horizontal'}
+            slidesPerView={'auto'}
+            freeMode={true}
+            mousewheel={true}
+            modules={[FreeMode, Mousewheel]}
+        >
             {[...new Array(11)].map((item, inx) => {
                 const date = addDays(dateFrom, inx)
                 return (
-                    <TicketDate
+                    <SwiperSlide
                         key={inx}
-                        active={active}
-                        date={date}
-                        count={getTicketsFromBusDates(tickets, date).length}
-                        onChange={onChange}
-                    />
+                        style={{ marginLeft: 10, flexShrink: "unset" }}
+                    >
+                        <TicketDate active={active}
+                            date={date}
+                            count={getTicketsFromBusDates(tickets, date).length}
+                            onChange={onChange}
+                        />
+                    </SwiperSlide>
                 )
             })}
-        </Scrollable>
+        </Swiper >
     )
 }

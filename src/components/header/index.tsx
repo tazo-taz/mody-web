@@ -30,6 +30,8 @@ export default function Header() {
     const { getItem } = useLanguage()
     const { width } = useWindowSize()
 
+    if (width < 768) return null
+
     let userButton = null
 
     if (!isLoading) {

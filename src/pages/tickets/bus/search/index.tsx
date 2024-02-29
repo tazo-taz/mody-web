@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ticketChooseType } from '../../../../components/ticket/card/simple';
-import TicketsSearchScreen from './screens/search';
 import toast from 'react-hot-toast';
 import useLanguage from '../../../../stores/useLanguage';
 import TicketDetailsScreen from './screens/details';
@@ -12,6 +11,12 @@ import { userSchemaType } from '../../../../schemas/user';
 import { functions } from '../../../../firebase';
 import { startLoading, stopLoading } from '../../../../references/loading';
 import useModal from '../../../../stores/useModal';
+import useOpen from '../../../../hooks/useOpen';
+import ActiveTicketInfoModalContent from '../../../../components/ticket/active-ticket-info/modal-content';
+import TicketsSearchScreen from './screens/search';
+import TicketHeader from '../../../../components/ticket/header';
+import { languageData } from '../../../../assets/language';
+import Breadcrumbs from '../../../../components/breadcrumbs';
 
 export enum screenEnum {
     SEARCH,
@@ -32,6 +37,8 @@ export type contactInfoType = Pick<userSchemaType, "email" | "firstName" | "phon
 
 export default function BusTicketsSearchPage() {
     const [screen, setScreen] = useState<screenEnum>(screenEnum.SEARCH)
+    const query = useQuery()
+    let ticketQuery = parseTicketQuery(query)
 
     const { getItem } = useLanguage()
     const auth = useAuth()
@@ -48,14 +55,15 @@ export default function BusTicketsSearchPage() {
         phoneNumber: ""
     })
 
+    const { isOpen: isActiveTicketInfoOpen, toggle: toggleActiveTicketInfo } = useOpen(true)
+
+
     useEffect(() => {
         if (auth.user) {
             const { firstName, phoneNumber, email } = auth.user
             setContactInfo({ firstName, phoneNumber: phoneNumber.slice(3), email: email || "" })
         }
     }, [auth.user])
-
-    const query = useQuery()
 
     const searchToDetailsScreen = () => {
         if (activeOutbound)
@@ -157,33 +165,7 @@ export default function BusTicketsSearchPage() {
         }
     }
 
-
-    if (screen === screenEnum.SEARCH) {
-        return (
-            <TicketsSearchScreen
-                activeOutbound={activeOutbound}
-                activeReturn={activeReturn}
-                setActiveOutbound={setActiveOutbound}
-                setActiveReturn={setActiveReturn}
-                onContinue={searchToDetailsScreen}
-            />
-        )
-    } else if (screen === screenEnum.DETAILS) {
-        return (
-            <TicketDetailsScreen
-                setScreen={setScreen}
-                outboundTicket={activeOutbound}
-                returnTicket={activeReturn}
-                detailsToReviewScreen={detailsToReviewScreen}
-                adultPassengers={adultPassengers}
-                childPassengers={childPassengers}
-                setAdultPassengers={setAdultPassengers}
-                setChildPassengers={setChildPassengers}
-            />
-        )
-    }
-
-    return (
+    let currentScreen: React.ReactNode = (
         <TicketPayScreen
             setScreen={setScreen}
             handlePay={handlePay}
@@ -196,5 +178,80 @@ export default function BusTicketsSearchPage() {
             paymentType={paymentType}
             setPaymentType={setPaymentType}
         />
+    )
+
+    let onContinueCB: () => void = handlePay
+    let buttonTitle: keyof typeof languageData = "Pay_now"
+    let goBack: (() => void) | undefined = () => setScreen(screenEnum.DETAILS)
+
+    if (screen === screenEnum.SEARCH) {
+        currentScreen = (
+            <TicketsSearchScreen
+                activeOutbound={activeOutbound}
+                activeReturn={activeReturn}
+                setActiveOutbound={setActiveOutbound}
+                setActiveReturn={setActiveReturn}
+                onContinue={searchToDetailsScreen}
+            />
+        )
+
+        onContinueCB = searchToDetailsScreen
+        buttonTitle = "Continue"
+        goBack = undefined
+    } else if (screen === screenEnum.DETAILS) {
+        currentScreen = (
+            <TicketDetailsScreen
+                setScreen={setScreen}
+                activeOutbound={activeOutbound}
+                activeReturn={activeReturn}
+                detailsToReviewScreen={detailsToReviewScreen}
+                adultPassengers={adultPassengers}
+                childPassengers={childPassengers}
+                setAdultPassengers={setAdultPassengers}
+                setChildPassengers={setChildPassengers}
+            />
+        )
+
+        onContinueCB = detailsToReviewScreen
+        buttonTitle = "Review_Journey_Details"
+        goBack = () => setScreen(screenEnum.SEARCH)
+    }
+
+    return (
+        <>
+            <TicketHeader
+                onClick={goBack}
+                {...ticketQuery}
+            />
+
+            {screen !== screenEnum.SEARCH && (
+                <div className='shadow-md z-[1] relative bg-white'>
+                    <Breadcrumbs
+                        className='h-[90px] container mx-auto md:flex hidden'
+                        data={[
+                            { id: screenEnum.SEARCH, title: getItem("Search") },
+                            { id: screenEnum.DETAILS, title: getItem("Passenger_details") },
+                            { id: screenEnum.PAY, title: getItem("Review_and_pay") },
+                        ]}
+                        active={screen}
+                        choose={(screen) => {
+                            if (screen === screenEnum.PAY) { }
+                            else setScreen(screen)
+                        }}
+                    />
+                </div>
+            )}
+
+            {currentScreen}
+
+            <ActiveTicketInfoModalContent
+                outboundTicket={activeOutbound}
+                returnTicket={activeReturn}
+                onContinue={onContinueCB}
+                toggleActiveTicketInfo={toggleActiveTicketInfo}
+                isActiveTicketInfoOpen={isActiveTicketInfoOpen}
+                buttonTitle={buttonTitle}
+            />
+        </>
     )
 }

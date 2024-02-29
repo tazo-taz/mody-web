@@ -8,7 +8,7 @@ type TicketCardDashProps = {
 export const TicketCardDash = ({ timeDiff, width }: TicketCardDashProps) => {
     const { width: windowWidth } = useWindowSize()
     const styles: any = {}
-    if (windowWidth > 670) {
+    if (windowWidth > 640) {
         styles.width = width
     }
     return (

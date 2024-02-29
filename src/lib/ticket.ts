@@ -21,7 +21,7 @@ export const getCityNameByValue = (value?: string) => {
     if (value === languageData["Kutaisi_airport"].ge) return getLanguageItem("Kutaisi_airport")
     if (value === languageData["Tbilisi"].ge) return getLanguageItem("Tbilisi")
     if (value === languageData["Batumi"].ge) return getLanguageItem("Batumi")
-    return ""
+    return value || ""
 }
 
 export const getCityRoutes = (cityFrom?: string, cityTo?: string) => {
@@ -81,7 +81,7 @@ export const parseTicketQuery = (query: URLSearchParams) => {
         cityTo: cityTo || undefined,
         passenger: passenger ? +passenger : 1,
         child: child ? +child : 0,
-        departureDate: departureDate ? new Date(departureDate) : undefined,
+        departureDate: departureDate ? new Date(departureDate) : new Date(),
         departureDateString: departureDate ? formatDate(new Date(departureDate)) : undefined,
         returnDate: returnDate ? new Date(returnDate) : undefined,
         returnDateString: returnDate ? formatDate(new Date(returnDate)) : undefined,
@@ -119,7 +119,7 @@ const KU_BA = {
 }
 
 
-export const getBusDirectionByCities = (from: string, to: string): busDirectionType => {
+export const getBusDirectionByCities = (from?: string, to?: string): busDirectionType => {
     if ((from === languageData["Tbilisi"].ge && to === languageData["Kutaisi_airport"].ge) || (from === languageData["Tbilisi"].en && to === languageData["Kutaisi_airport"].en)) return TB_KU
     if ((from === languageData["Batumi"].ge && to === languageData["Kutaisi_airport"].ge) || (from === languageData["Batumi"].en && to === languageData["Kutaisi_airport"].en)) return BA_KU
     if ((from === languageData["Kutaisi_airport"].ge && to === languageData["Tbilisi"].ge) || (from === languageData["Kutaisi_airport"].en && to === languageData["Tbilisi"].en)) return KU_TB

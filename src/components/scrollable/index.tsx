@@ -58,6 +58,41 @@ export default function Scrollable({ children, height }: ScrollableType) {
             element.onmouseleave = e => {
                 elementCoordFromRef.current = null
             }
+
+
+
+            element.ontouchmove = e => {
+                if (elementCoordFromRef.current !== null) {
+                    const toMovePx = e.touches[0].clientX - elementCoordFromRef.current;
+                    let movedPx = toMovePx > 0 ? 0 : toMovePx;
+
+                    const maxToTranslate = (toScrollElementRef.current?.offsetWidth || 0) - elementRef.current.offsetWidth;
+
+                    if (maxToTranslate < -movedPx) {
+                        if (maxToTranslate < 0 || Math.abs(maxToTranslate) === Math.abs(movedPx)) {
+                            movedPx = 0;
+                        } else {
+                            movedPx = -maxToTranslate;
+                        }
+                    }
+
+                    if (toScrollElementRef.current) toScrollElementRef.current.style.transform = `translateX(${movedPx}px)`;
+                }
+            };
+
+            element.ontouchstart = e => {
+                const oldTransform = toScrollElementRef.current?.style.transform;
+                const oldTransformTranslate = !oldTransform ? 0 : +oldTransform.slice(11, -3);
+                elementCoordFromRef.current = e.touches[0].clientX - oldTransformTranslate;
+            };
+
+            element.ontouchend = e => {
+                elementCoordFromRef.current = null;
+            };
+
+            element.ontouchcancel = e => {
+                elementCoordFromRef.current = null;
+            };
         }
 
     }, [elementRef, elWidth])

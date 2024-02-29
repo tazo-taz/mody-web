@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ChevronLeft from '../../../assets/images/svgs/icons/chevron/chevron-left'
 import DollarIcon from '../../../assets/images/svgs/icons/dollar-icon'
 import FilterIcon from '../../../assets/images/svgs/icons/filter'
@@ -111,11 +111,7 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
     if (currentItem) {
         return (
             <Container>
-                <HeaderContainer className="relative">
-                    <Button size='icon' variant='secondary' onClick={() => setCurrentItemId(null)}>
-                        <ChevronLeft />
-                    </Button>
-
+                <HeaderContainer onClick={() => setCurrentItemId(null)}>
                     <h2 className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold'>{currentItem.title}</h2>
                 </HeaderContainer>
 
@@ -126,11 +122,11 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
 
     return (
         <Container>
-            <HeaderContainer>
+            <HeaderContainer icon={(
                 <Link to="/" className="flex">
                     <ModyLogoPurple />
                 </Link>
-
+            )}>
                 <Button size='icon' variant="secondary" className="ml-auto" onClick={toggle}>
                     <XIcon />
                 </Button>
@@ -157,12 +153,21 @@ const Container = ({ children }: { children: React.ReactNode }) => (
     </div>
 )
 
-const HeaderContainer = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <div className='border-b-1 border-gray-200'>
-        <div className='container mx-auto flex items-center'>
-            <div className={cn('h-[88px] flex items-center w-full', className)}>
-                {children}
+export const HeaderContainer = ({ children, className, ...props }: { children: React.ReactNode, className?: string } & ({ icon: React.ReactNode } | { onClick?: () => void })) => {
+    const navigate = useNavigate()
+
+    return (
+        <div className={cn('border-b-1 border-gray-200 bg-white relative', className)}>
+            <div className='container mx-auto flex items-center'>
+                <div className='h-[88px] flex items-center w-full'>
+                    {"icon" in props ? props.icon : (
+                        <Button size='icon' variant='secondary' onClick={props.onClick || (() => navigate(-1))}>
+                            <ChevronLeft />
+                        </Button>
+                    )}
+                    {children}
+                </div>
             </div>
         </div>
-    </div>
-)
+    )
+}

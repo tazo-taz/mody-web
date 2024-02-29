@@ -477,6 +477,10 @@ export const languageData = {
         en: "Share",
         ge: "გაზიარება"
     },
+    Review_Journey_Details: {
+        en: "Review Journey Details",
+        ge: "გადახედეთ მოგზაურობის დეტალებს"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

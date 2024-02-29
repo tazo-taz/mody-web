@@ -9,7 +9,7 @@ export function addDays(date: Date, days: number) {
 export const formatTime = (date: string | Date) =>
     moment(date).format("h:mm A").replace(":01", ":00")
 
-export const minifyDate = (date: Date | string) =>
+export const minifyDate = (date?: Date | string) =>
     moment(date).format("ddd, MMM D")
 
 export const timeFromTo = (date: Date | string, timeDiff?: number, withAmPm: boolean = true) => {

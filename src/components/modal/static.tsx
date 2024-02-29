@@ -35,7 +35,7 @@ export default function StaticModal({ isOpen, children, onClose, className, widt
                         initial={{ opacity: 0, translateY: modalTranslateYFrom, translateX: "-50%" }}
                         animate={{ opacity: 1, translateY: modalTranslateYTo, translateX: "-50%" }}
                         exit={{ opacity: 0, translateY: modalTranslateYFrom, translateX: "-50%" }}
-                        className='fixed z-10 shadow-[black_0px_0px_6px_-5px] w-full top-auto bottom-0 md:bottom-auto md:top-1/2 left-1/2 bg-white rounded-t-primary'
+                        className='fixed z-10 shadow-[black_0px_0px_10px_-5px] w-full top-auto bottom-0 md:bottom-auto md:top-1/2 left-1/2 bg-white rounded-t-primary'
                         style={{ maxWidth: width }}
                     >
                         {title && (
