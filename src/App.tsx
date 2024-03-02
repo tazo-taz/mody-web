@@ -35,6 +35,7 @@ function App() {
         <Route element={<HeaderLayout />}>
           <Route element={<FooterLayout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path='/tickets/bus' element={<BusTicketsPage />} />
           </Route>
           <Route path='account' element={<AccountLayout />}>
             <Route path="" element={<AccountSettingsPage />} />
@@ -44,7 +45,6 @@ function App() {
             <Route path="redeem-codes" element={<RedeemCodesPage />} />
             <Route path="invite-friends" element={<InviteFriendsPage />} />
           </Route>
-          <Route path='/tickets/bus' element={<BusTicketsPage />} />
           <Route path='/tickets/bus/search' element={<BusTicketsSearchPage />} />
         </Route>
       </Routes>

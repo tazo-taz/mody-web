@@ -8,7 +8,7 @@ export default function TicketHero() {
 
     return (
         <>
-            <div className='h-[300px] md:h-[520px] rounded-primary relative'>
+            <div className='container mx-auto h-[300px] md:h-[520px] rounded-primary relative'>
                 <img src={BusImg} alt='hero' className='w-full h-full object-cover absolute inset-0 rounded-primary' />
 
                 <div className='absolute top-7 md:top-16 lg:top-1/2 left-1/2 lg:-translate-y-1/2 -translate-x-1/2 flex flex-col gap-2.5 text-center'>

@@ -101,3 +101,7 @@ input:-webkit-autofill:active{
   background-size: 13px 2px;
   background-repeat: repeat-x;
 }
+
+.bottom-linear {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 48.96%, rgba(0, 0, 0, 0.89) 100%);
+}

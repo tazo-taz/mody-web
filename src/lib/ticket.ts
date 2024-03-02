@@ -17,6 +17,16 @@ export const formatDate = (date: string | Date) =>
 export const formatDateDayMonth = (date: string | Date) =>
     moment(date).format("ddd D")
 
+
+export const getCityValueByName = (city?: string) => {
+    if (city === languageData["Tbilisi"].ge || city === languageData["Tbilisi"].en) return languageData["Tbilisi"].ge
+    if (city === languageData["Batumi"].ge || city === languageData["Batumi"].en) return languageData["Batumi"].ge
+    if (city === languageData["Kutaisi_airport"].ge || city === languageData["Kutaisi_airport"].en) return languageData["Kutaisi_airport"].ge
+    if (city === languageData["Kutaisi"].ge || city === languageData["Kutaisi"].en) return languageData["Kutaisi_airport"].ge
+
+    return undefined
+}
+
 export const getCityNameByValue = (value?: string) => {
     if (value === languageData["Kutaisi_airport"].ge) return getLanguageItem("Kutaisi_airport")
     if (value === languageData["Tbilisi"].ge) return getLanguageItem("Tbilisi")
@@ -40,8 +50,8 @@ export const getCityRoutes = (cityFrom?: string, cityTo?: string) => {
 }
 
 export const transformTicketFormToQuery = (
-    { cityFrom, cityTo, passenger, child, departureDate, returnDate }:
-        { cityFrom?: string, cityTo?: string, passenger: number, child: number, departureDate?: Date, returnDate?: Date }
+    { cityFrom, cityTo, passenger = 1, child = 0, departureDate, returnDate }:
+        { cityFrom?: string, cityTo?: string, passenger?: number, child?: number, departureDate?: Date, returnDate?: Date }
 ) => {
     if (cityFrom && cityTo && departureDate) {
 
