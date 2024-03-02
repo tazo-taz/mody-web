@@ -41,6 +41,23 @@ export const TicketCardDash = ({ timeDiff, width }: TicketCardDashProps) => {
                 <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
                 <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
                 <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
+                <div className='min-w-1.5 h-[2px] bg-[#E5E7EB]' />
             </div>
         </div>
     )

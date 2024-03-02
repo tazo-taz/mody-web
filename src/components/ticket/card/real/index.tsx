@@ -95,6 +95,12 @@ export default function RealTicketCard({ item, outbound, passenger }: RealTicket
                         </div>
                     </div>
                 </div>
+
+                <div className='flex flex-col xs:flex-row bg-white group-hover:bg-slate-50 justify-between gap-4 rounded-b-primary flex-1 p-[25px] border-1 border-t-0'>
+                    <Button className='font-semibold w-full' variant='secondary' size='sm' icon={<BiPrinter size={16} />}>{getItem("Print")}</Button>
+                    <Button className='font-semibold w-full' variant='secondary' size='sm' icon={<RiShareBoxFill size={16} />}>{getItem("Share")}</Button>
+                    <Button className='font-semibold w-full' variant='secondary' size='sm' icon={<PiArrowUUpLeftFill size={16} />}>{getItem("Return")}</Button>
+                </div>
             </div>
         )
     }

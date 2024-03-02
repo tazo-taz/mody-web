@@ -18,6 +18,9 @@ module.exports = {
       },
       gridTemplateColumns: {
         "horizontal-tickets-form": "2fr 2fr 2fr 2fr 3fr 3fr"
+      },
+      screens: {
+        "xs": "450px"
       }
     },
   },
