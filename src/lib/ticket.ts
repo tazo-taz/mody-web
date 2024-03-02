@@ -81,7 +81,7 @@ export const parseTicketQuery = (query: URLSearchParams) => {
         cityTo: cityTo || undefined,
         passenger: passenger ? +passenger : 1,
         child: child ? +child : 0,
-        departureDate: departureDate ? new Date(departureDate) : new Date(),
+        departureDate: departureDate ? new Date(departureDate) : undefined,
         departureDateString: departureDate ? formatDate(new Date(departureDate)) : undefined,
         returnDate: returnDate ? new Date(returnDate) : undefined,
         returnDateString: returnDate ? formatDate(new Date(returnDate)) : undefined,

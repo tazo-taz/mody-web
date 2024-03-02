@@ -217,11 +217,14 @@ export default function BusTicketsSearchPage() {
         goBack = () => setScreen(screenEnum.SEARCH)
     }
 
+    const activeDate = activeOutbound?.date ? new Date(activeOutbound?.date) : ticketQuery.departureDate
+
     return (
         <>
             <TicketHeader
                 onClick={goBack}
                 {...ticketQuery}
+                departureDate={activeDate}
             />
 
             {screen !== screenEnum.SEARCH && (

@@ -19,11 +19,26 @@ export default function TicketHeader({ cityFrom, cityTo, departureDate, child, p
     const cityToName = getCityNameByValue(cityTo)
     const passengerAmount = child + passenger
 
+    const isValidTrip = cityFrom && cityTo
+
+    const content = isValidTrip ? (
+        <>
+            <h2 className='font-semibold flex items-center justify-center gap-1'>{cityFromName} <ChevronRight /> {cityToName}</h2>
+            <span className='text-xs text-[#6B7280]'>{minifyDate(departureDate)}, {passengerAmount} {getItem(passengerAmount > 1 ? "Passengers" : "Passenger")}</span>
+        </>
+    ) : (
+        <h2 className='font-semibold flex items-center justify-center gap-1'>Trip not found</h2>
+    )
+
+    const props: any = { className: "md:hidden block" }
+
+    if (isValidTrip) props.onClick = onClick
+    else props.url = "/tickets/bus"
+
     return (
-        <HeaderContainer className='md:hidden block' onClick={onClick}>
+        <HeaderContainer {...props}>
             <div className='flex flex-col justify-center items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-                <h2 className='font-semibold flex items-center justify-center gap-1'>{cityFromName} <ChevronRight /> {cityToName}</h2>
-                <span className='text-xs text-[#6B7280]'>{minifyDate(departureDate)}, {passengerAmount} {getItem(passengerAmount > 1 ? "Passengers" : "Passenger")}</span>
+                {content}
             </div>
         </HeaderContainer>
     )

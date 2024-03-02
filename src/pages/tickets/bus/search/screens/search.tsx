@@ -24,6 +24,7 @@ export default function TicketsSearchScreen({ activeOutbound, activeReturn, setA
     const cityFrom = getCityNameByValue(ticketQuery.cityFrom)
     const cityTo = getCityNameByValue(ticketQuery.cityTo)
 
+    ticketQuery.departureDate ||= new Date()
     useGrayBg()
 
     return (

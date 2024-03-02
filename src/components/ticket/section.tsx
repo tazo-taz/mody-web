@@ -5,6 +5,7 @@ import TicketCard, { ticketChooseType } from './card/simple'
 import TicketDatesSlider from './dates-slider'
 import useLanguage from '../../stores/useLanguage'
 import Title from '../title'
+import { useElementSize } from 'usehooks-ts'
 
 type TicketsSectionType = {
     title: string,
@@ -18,6 +19,7 @@ type TicketsSectionType = {
 export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onChoose, activeDate }: TicketsSectionType) {
     const { busDirection, busDates, isLoading } = useSearchTickets(cityFrom, cityTo)
     const { getItem } = useLanguage()
+    const [squareRef, { width }] = useElementSize()
 
     const [currentDate, setCurrentDate] = useState(dateFrom)
     const currentTickets = getTicketsFromBusDates(busDates, currentDate)
@@ -50,9 +52,12 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
                 dateFrom={dateFrom}
                 tickets={busDates}
                 height={54.5}
+                width={width}
             />
 
-            {tickets}
+            <div ref={squareRef}>
+                {tickets}
+            </div>
 
         </>
     )

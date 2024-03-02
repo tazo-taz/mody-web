@@ -153,7 +153,13 @@ const Container = ({ children }: { children: React.ReactNode }) => (
     </div>
 )
 
-export const HeaderContainer = ({ children, className, ...props }: { children: React.ReactNode, className?: string } & ({ icon: React.ReactNode } | { onClick?: () => void })) => {
+export type HeaderContainerProps = { children: React.ReactNode, className?: string } & (
+    { icon: React.ReactNode } |
+    { onClick?: () => void } |
+    { url: string }
+)
+
+export const HeaderContainer = ({ children, className, ...props }: HeaderContainerProps) => {
     const navigate = useNavigate()
 
     return (
@@ -161,7 +167,10 @@ export const HeaderContainer = ({ children, className, ...props }: { children: R
             <div className='container mx-auto flex items-center'>
                 <div className='h-[88px] flex items-center w-full'>
                     {"icon" in props ? props.icon : (
-                        <Button size='icon' variant='secondary' onClick={props.onClick || (() => navigate(-1))}>
+                        <Button size='icon' variant='secondary' onClick={
+                            "url" in props ? (() => navigate(props.url)) :
+                                props.onClick || (() => navigate(-1))
+                        }>
                             <ChevronLeft />
                         </Button>
                     )}
