@@ -39,10 +39,6 @@ body {
   width: 8px; /* Set the desired scrollbar width */
 }
 
-* {
-  scrollbar-gutter: stable;
-}
-
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
