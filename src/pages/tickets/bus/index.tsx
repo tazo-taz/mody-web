@@ -3,6 +3,7 @@ import TicketHero from '../../../components/ticket/hero'
 import Title from '../../../components/title'
 import useLanguage from '../../../stores/useLanguage'
 import PopularDestinations from '../../../components/ticket/popular-destinations'
+import DownloadApp from '../../../components/download-app'
 
 export default function BusTicketsPage() {
     const { getItem } = useLanguage()
@@ -13,6 +14,7 @@ export default function BusTicketsPage() {
                 <Title>{getItem("Popular_Destinations")}</Title>
                 <PopularDestinations />
             </div>
+            <DownloadApp />
         </div>
     )
 }

@@ -485,6 +485,10 @@ export const languageData = {
         en: "Popular Destinations",
         ge: "პოპულარული ადგილები"
     },
+    Download_Our_free_app: {
+        en: "Download Our free app",
+        ge: "ჩამოტვირთეთ ჩვენი უფასო აპლიკაცია"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {
