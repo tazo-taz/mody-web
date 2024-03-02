@@ -65,7 +65,7 @@ export default function ActiveTicketInfo({ className, outboundTicket, returnTick
             </AnimatePresence>
 
             <AnimatePresence>
-                {fullDetails && (
+                {fullDetails && showTickets && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}

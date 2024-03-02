@@ -23,7 +23,13 @@ export default function TicketHeader({ cityFrom, cityTo, departureDate, child, p
 
     const content = isValidTrip ? (
         <>
-            <h2 className='font-semibold flex items-center justify-center gap-1'>{cityFromName} <ChevronRight /> {cityToName}</h2>
+            <div className='font-semibold flex items-center justify-center gap-1 whitespace-nowrap'>
+                <div>{cityFromName}</div>
+                <div>
+                    <ChevronRight />
+                </div>
+                <div>{cityToName}</div>
+            </div>
             <span className='text-xs text-[#6B7280]'>{minifyDate(departureDate)}, {passengerAmount} {getItem(passengerAmount > 1 ? "Passengers" : "Passenger")}</span>
         </>
     ) : (

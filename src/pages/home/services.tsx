@@ -67,7 +67,7 @@ export default function Services() {
                     <div className='-mt-6'>
                         {service.icon}
                     </div>
-                    <p className='text-xl font-semibold'>{service.title}</p>
+                    <p className='text-xl font-semibold text-center'>{service.title}</p>
                     {!service.href && (
                         <Badge className='absolute bottom-0 translate-y-1/2' size='sm'>
                             {getItem("Soon")}

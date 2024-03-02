@@ -254,6 +254,7 @@ export default function BusTicketsSearchPage() {
                 toggleActiveTicketInfo={toggleActiveTicketInfo}
                 isActiveTicketInfoOpen={isActiveTicketInfoOpen}
                 buttonTitle={buttonTitle}
+                fullDetails={screen === screenEnum.PAY}
             />
         </>
     )
