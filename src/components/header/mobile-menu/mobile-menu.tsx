@@ -30,6 +30,7 @@ type mobileMenuProps = {
 export default function MobileMenu({ toggle }: mobileMenuProps) {
     const [currentItemId, setCurrentItemId] = useState<null | number>(null)
     const { getItem, setLanguage, language } = useLanguage()
+    const navigate = useNavigate()
 
     const modal = useModal()
     const { isLoading, user } = useAuth()
@@ -77,26 +78,31 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
             id: 4,
             icon: <TicketIcon />,
             title: getItem("My_tickets"),
+            url: "/account/my-tickets"
         },
         {
             id: 5,
             icon: <SettingsIcon />,
             title: getItem("Account_Settings"),
+            url: "account"
         },
         {
             id: 6,
             icon: <PaymentIcon />,
             title: getItem("Payment"),
+            url: "/account/payments"
         },
         {
             id: 7,
             icon: <RedeemIcon />,
             title: getItem("Redeem_codes"),
+            url: "/account/redeem-codes"
         },
         {
             id: 8,
             icon: <UserPlusIcon />,
             title: getItem("Invite_friends"),
+            url: "/account/invite-friends"
         },
         {
             id: 9,
@@ -123,7 +129,7 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
     return (
         <Container>
             <HeaderContainer icon={(
-                <Link to="/" className="flex">
+                <Link to="/" onClick={toggle} className="flex">
                     <ModyLogoPurple />
                 </Link>
             )}>
@@ -135,7 +141,13 @@ export default function MobileMenu({ toggle }: mobileMenuProps) {
             <div className='container mx-auto overflow-y-auto'>
                 <div className='flex flex-col mt-4'>
                     {(user ? [...items, ...userItems] : items).map((item) => (
-                        <MobileMenuItem onClick={"onClick" in item && item.onClick ? item.onClick : setCurrentItemId} {...item} key={item.id} />
+                        <MobileMenuItem onClick={
+                            "onClick" in item && item.onClick ? item.onClick :
+                                "url" in item && item.url ? () => {
+                                    navigate(item.url)
+                                    toggle()
+                                } :
+                                    setCurrentItemId} {...item} key={item.id} />
                     ))}
                 </div>
 
