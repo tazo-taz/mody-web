@@ -98,3 +98,10 @@ input:-webkit-autofill:active{
   background-size: 2px 13px;
   background-repeat: repeat-y;
 }
+
+.horizontal-dash {
+  height: 2px;
+  background: linear-gradient(90deg, #E5E7EB 50%, transparent 50%);
+  background-size: 13px 2px;
+  background-repeat: repeat-x;
+}

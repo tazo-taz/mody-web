@@ -1,13 +1,13 @@
 import { useWindowSize } from "usehooks-ts"
 
 type TicketCardDashProps = {
-    width: number,
+    width?: number,
     timeDiff?: number
 }
 
 export const TicketCardDash = ({ timeDiff, width }: TicketCardDashProps) => {
     const { width: windowWidth } = useWindowSize()
-    const styles: any = {}
+    const styles: any = { width: "100%" }
     if (windowWidth > 640) {
         styles.width = width
     }

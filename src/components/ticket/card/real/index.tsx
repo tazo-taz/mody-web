@@ -8,6 +8,7 @@ import { TicketCardDash } from '../components/dash';
 import { BiPrinter } from "react-icons/bi";
 import { RiShareBoxFill } from "react-icons/ri";
 import { PiArrowUUpLeftFill } from "react-icons/pi";
+import { useWindowSize } from 'usehooks-ts';
 
 type RealTicketCardProps = {
     item: ticketItemSchemaType,
@@ -18,6 +19,8 @@ type RealTicketCardProps = {
 export default function RealTicketCard({ item, outbound, passenger }: RealTicketCardProps) {
     const { getItem } = useLanguage()
     const busDirection = getBusDirection(item.busDirectionId)
+    const { width } = useWindowSize()
+
     if (!busDirection) return null
     let timeFrom = "", timeTo = ""
 
@@ -37,6 +40,65 @@ export default function RealTicketCard({ item, outbound, passenger }: RealTicket
 
     const gullDayAndMonth = getFullDayAndMonth(item.date)
 
+    if (width < 700) {
+        return (
+            <div className='flex group flex-col transition hover:bg-slate-50 rounded-primary relative overflow-hidden'>
+                <div className='flex bg-white relative group-hover:bg-slate-50 flex-col justify-between gap-8 rounded-t-primary flex-1 p-[25px] border-1 border-b-0'>
+                    <div className='flex justify-between'>
+                        <div>
+                            <h3 className='font-medium'>{gullDayAndMonth}</h3>
+                            <span className='text-[13px] text-[#6B7280]'>{getStationByCity(cityFrom)}</span>
+                        </div>
+                        <div className='font-semibold'>#{item.flightId}</div>
+                    </div>
+
+
+                    <div className='w-[30px] aspect-square rounded-full border-1 absolute -bottom-[15px] -left-[15px] bg-[#f9fafb] z-[2]' />
+                    <div className='w-[30px] aspect-square rounded-full border-1 absolute -bottom-[15px] -right-[15px] bg-[#f9fafb] z-[2]' />
+                </div>
+
+                <div className='horizontal-dash' />
+
+                <div className='flex bg-white group-hover:bg-slate-50 flex-col justify-between gap-8 rounded-b-primary flex-1 p-[25px] border-1 border-t-0'>
+                    <div className='flex gap-4 justify-between'>
+                        <div className='flex flex-col'>
+                            <h2 className='text-[22px] font-semibold'>{timeFrom}</h2>
+                            <h3 className='text-[#6B7280]'>{cityFrom}</h3>
+                        </div>
+                        <div className='pt-4 flex-1'>
+                            <TicketCardDash />
+                        </div>
+                        <div className='flex flex-col'>
+                            <h2 className='text-[22px] font-semibold'>{timeTo}</h2>
+                            <h3 className='text-[#6B7280]'>{cityTo}</h3>
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col gap-5'>
+                        {passenger && (
+                            <div className='flex flex-col'>
+                                <div className='text-[13px] text-[#6B7280]'>{getItem("PASSENGER")}</div>
+                                <div className='font-semibold'>{passenger.firstName + " " + passenger.lastName}</div>
+                            </div>
+                        )}
+
+                        <div className='flex gap-[52px]'>
+                            <div className='flex flex-col'>
+                                <div className='text-[13px] text-[#6B7280]'>{getItem("CLASS")}</div>
+                                <div className='font-semibold'>1</div>
+                            </div>
+
+                            <div className='flex flex-col'>
+                                <div className='text-[13px] text-[#6B7280]'>{getItem("SECTION")}</div>
+                                <div className='font-semibold'>{getItem("Storey_1")}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className='flex group transition hover:bg-slate-50 rounded-primary relative overflow-hidden'>
             <div className='flex bg-white group-hover:bg-slate-50 flex-col justify-between gap-8 rounded-l-primary flex-1 p-[25px] border-1 border-r-0'>
@@ -47,7 +109,7 @@ export default function RealTicketCard({ item, outbound, passenger }: RealTicket
                             <h3 className='text-[#6B7280]'>{cityFrom}</h3>
                         </div>
                         <div className='pt-4'>
-                            <TicketCardDash width={120} />
+                            <TicketCardDash width={width > 800 ? 120 : 80} />
                         </div>
                         <div className='flex flex-col'>
                             <h2 className='text-[22px] font-semibold'>{timeTo}</h2>
