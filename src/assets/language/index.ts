@@ -497,6 +497,26 @@ export const languageData = {
         en: "PAST",
         ge: "გასული"
     },
+    invalid_user_id: {
+        en: "Incorrect user id",
+        ge: "არასწორი პირადი ნომერი"
+    },
+    no_number_allowed_in_name: {
+        en: "No number allowed in name",
+        ge: "რიცხვი არ შეიძლება სახელში"
+    },
+    no_number_allowed_in_surname: {
+        en: "No number allowed in last name",
+        ge: "რიცხვი არ შეიძლება გვარში"
+    },
+    Edit_Phone: {
+        en: "Edit Phone",
+        ge: "ნომრის შეცვლა"
+    },
+    "code-not-found-or-expired": {
+        en: "Code not found or expired",
+        ge: "კოდი ვერ მოიძებნა ან ვადაგასულია"
+    }
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {

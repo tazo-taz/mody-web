@@ -12,7 +12,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     fullrounded?: boolean
 }
 
-export default function Button({ fullrounded, className, size = "lg", variant = "primary", disabled, icon, children, ...props }: ButtonProps) {
+export default function Button({ fullrounded, className, size = "lg", variant = "primary", disabled, icon, children, onClick, ...props }: ButtonProps) {
     return (
         <button className={cn(
             "flex items-center justify-center transition",
@@ -21,14 +21,17 @@ export default function Button({ fullrounded, className, size = "lg", variant = 
             size === "sm" && "px-[18px] py-[11px] text-sm",
             variant === "primary" && "bg-primary text-white",
             variant === "secondary" && "bg-[#F3F4F6] rounded-full text-[#111928]",
-            variant === "outline" && "bg-white border-1 border-[#111928] text-[#111928] hover:bg-[#111928] hover:text-white",
+            variant === "outline" && "bg-white border-1 border-[#111928] text-[#111928]",
             variant === "dark" && "bg-[#111928] text-white",
             variant === "danger" && "bg-red-700 text-white",
             !disabled && "active:scale-95 hover:opacity-90",
-            disabled && "cursor-auto",
+            !disabled && variant === "outline" && "hover:bg-[#111928] hover:text-white",
+            disabled && "cursor-auto opacity-50",
             fullrounded ? "rounded-full" : "rounded-primary",
             className
-        )} {...props}>
+        )}
+            onClick={!disabled ? onClick : undefined}
+            {...props}>
             {icon && (
                 <div className='w-[30px]'>{icon}</div>
             )}

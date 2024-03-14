@@ -1,19 +1,17 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { signInWithCustomToken } from "firebase/auth"
 import { useCallback, useEffect, useState } from 'react'
-import { useForm } from "react-hook-form"
 import toast from 'react-hot-toast'
 import { auth, functions } from '../../../../firebase'
+import useUserForm from "../../../../hooks/forms/useUserForm"
 import { toGeoNumber } from '../../../../lib/number'
 import { loadUser } from "../../../../lib/user"
 import { delay } from "../../../../lib/utils"
 import { startLoading, stopLoading } from '../../../../references/loading'
-import { unregisteredUserSchema, unregisteredUserSchemaType } from "../../../../schemas/user"
+import { unregisteredUserSchemaType } from "../../../../schemas/user"
 import useLanguage from "../../../../stores/useLanguage"
 import useModal from "../../../../stores/useModal"
 import Stage1 from './stage1'
 import Stage2 from './stage2'
-import useUserForm from "../../../../hooks/forms/useUserForm"
 
 export const codeLength = 6
 

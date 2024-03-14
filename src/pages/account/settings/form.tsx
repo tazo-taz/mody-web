@@ -9,17 +9,28 @@ import { UseFormRegister, UseFormWatch } from 'react-hook-form'
 import { unregisteredUserSchemaType } from '../../../schemas/user'
 import Button from '../../../components/fields/button'
 import WarningMessage from '../../../components/Messages/Warning'
+import useModal from '../../../stores/useModal'
 
 type SettingsFormType = {
     register: UseFormRegister<unregisteredUserSchemaType>,
     watch: UseFormWatch<unregisteredUserSchemaType>,
+    phoneChanged: boolean
 }
 
-export default function SettingsForm({ watch, register }: SettingsFormType) {
+export default function SettingsForm({ watch, register, phoneChanged }: SettingsFormType) {
     const { getItem } = useLanguage()
+    const { onOpen } = useModal()
+    const phone = watch("phoneNumber")
 
-    const updateButton = (
-        <Button className='px-10 w-full' variant='outline'>{getItem("Update")}</Button>
+    const updatePhoneButton = (
+        <Button
+            className='px-10 w-full'
+            variant='outline'
+            onClick={() => onOpen("update-phone", { phone: +phone })}
+            disabled={!phone || !phoneChanged}
+        >
+            {getItem("Update")}
+        </Button>
     )
 
     return (
@@ -57,7 +68,7 @@ export default function SettingsForm({ watch, register }: SettingsFormType) {
                     />
                 </div>
                 <div className='hidden md:block'>
-                    {updateButton}
+                    {updatePhoneButton}
                 </div>
             </div>
             <div className='md:col-span-2'>
@@ -68,7 +79,7 @@ export default function SettingsForm({ watch, register }: SettingsFormType) {
             </div>
 
             <div className='block md:hidden w-full'>
-                {updateButton}
+                {updatePhoneButton}
             </div>
 
         </div>

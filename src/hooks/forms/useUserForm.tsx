@@ -4,11 +4,8 @@ import { unregisteredUserSchema, unregisteredUserSchemaType } from '../../schema
 
 export default function useUserForm(user?: unregisteredUserSchemaType | null) {
     const {
-        reset,
-        register,
-        handleSubmit,
         watch,
-        formState,
+        ...rest
     } = useForm<unregisteredUserSchemaType>({
         resolver: zodResolver(unregisteredUserSchema),
         defaultValues: {
@@ -20,5 +17,16 @@ export default function useUserForm(user?: unregisteredUserSchemaType | null) {
         }
     })
 
-    return { reset, register, handleSubmit, watch, formState } as const
+    const { firstName, lastName, phoneNumber, userId, email } = watch();
+
+    const phoneChanged = phoneNumber === user?.phoneNumber.slice(4)
+
+    const valuesChanged = (
+        firstName === user?.firstName &&
+        lastName === user?.lastName &&
+        userId === user?.userId &&
+        email === user?.email
+    );
+
+    return { watch, valuesChanged, phoneChanged: !phoneChanged, ...rest } as const
 }

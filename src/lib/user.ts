@@ -1,10 +1,9 @@
 import { signOut as signOutAuth } from "firebase/auth";
 import toast from "react-hot-toast";
+import { getLanguageItem } from "../assets/language";
 import { auth, functions } from "../firebase";
 import { userSchema } from "../schemas/user";
-import useLanguage from "../stores/useLanguage";
 import useAuth from "../stores/useAuth";
-import { getLanguageItem } from "../assets/language";
 
 export const loadUser = async () => {
     const res = await functions("MyInfo")
@@ -12,6 +11,8 @@ export const loadUser = async () => {
     if (res.data.result) {
         try {
             const user = userSchema.parse(res.data.user)
+            console.log({ user });
+
             useAuth.setState({ user, isLoading: false })
 
         } catch (error) {
