@@ -1,10 +1,12 @@
+import { FaCheck } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import ticketImg from "../../assets/images/tickets.png"
 import useLanguage from '../../stores/useLanguage'
 import useModal from '../../stores/useModal'
 import Button from '../fields/button'
+import ImageIcon from '../image-icon'
 import Modal from '../modal'
 import TicketMiniCardPurchased from '../ticket/card/simple/mini/purchased'
-import TicketImage from '../ticket/image'
 
 export default function PurchasedTicketModal() {
   const { getItem } = useLanguage()
@@ -23,7 +25,7 @@ export default function PurchasedTicketModal() {
       width={540}
     >
       <div className='flex justify-center'>
-        <TicketImage type='success' />
+        <ImageIcon allowGradient={false} src={ticketImg} Icon={FaCheck} IconContainerClassName='bg-[#0E9F6E]' />
       </div>
 
       <h2 className='text-lg font-semibold whitespace-pre text-center mt-5 mb-8'>{getItem("You_have_successfully_purchased_tickets")}</h2>

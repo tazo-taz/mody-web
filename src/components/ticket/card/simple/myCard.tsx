@@ -28,6 +28,7 @@ export default function MyTicketCard({ adult, child, item, onChoose, className, 
             bottomEnd={<Successful />}
             active={null}
             onChoose={onChoose}
+            date={date}
         >
             <div className="flex gap-5 items-center">
                 <span className="font-semibold text-lg">{cityFrom}</span>

@@ -2,7 +2,7 @@ import busImg from "../../../../../assets/images/georgiabusapi.png"
 import { getBusDirection, getCitiesByName } from "../../../../../lib/ticket"
 import { ticketSchemaType } from "../../../../../schemas/ticket"
 import MinifyDate from "../../../minify-date"
-import Cheapest from "../../components/cheapest"
+import IsUpcoming from "../../components/is-upcoming"
 import { TicketCardDash } from "../../components/dash"
 import OneWay from "../../components/one-way"
 
@@ -25,7 +25,7 @@ export default function TicketMiniCardPurchased({ item: { busDirectionId, name, 
                     </div>
                     <MinifyDate date={date} timeDiff={busDirection.timeDiff} className='text-xs text-[#6B7280]' />
                 </div>
-                <Cheapest />
+                <IsUpcoming date />
             </div>
 
             <div className="flex items-center justify-between">

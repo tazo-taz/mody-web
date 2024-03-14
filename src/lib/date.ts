@@ -51,3 +51,14 @@ export const timeDifference = (date1: Date | string, date2: Date | string) => {
 export const getFullDayAndMonth = (date: Date) => {
     return moment(date).format("dddd, D MMMM")
 }
+
+export function dayDiff(from: Date, to: Date) {
+    return Math.ceil((from.getTime() - to.getTime()) / (1000 * 60 * 60 * 24));
+}
+
+export function isSameDate(date1?: Date, date2?: Date) {
+    if (date1 && date2)
+        return date1.getFullYear() === date2.getFullYear() &&
+            date1.getMonth() === date2.getMonth() &&
+            date1.getDate() === date2.getDate()
+}

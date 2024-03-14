@@ -18,7 +18,6 @@ export default function TicketContactInfo({ onChange, value }: TicketContactInfo
     return (
         <Card
             title={getItem("Contact_info")}
-            secondaryTitle={getItem("Where_do_you_want_get_tickets")}
         >
             <div className='flex flex-col gap-[15px]'>
                 <Input

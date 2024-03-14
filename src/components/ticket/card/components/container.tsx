@@ -1,28 +1,26 @@
 
 import busImg from "../../../../assets/images/georgiabusapi.png"
-import UserSmIcon from '../../../../assets/images/svgs/icons/user/user-sm'
 import { cn } from '../../../../lib/utils'
-import useLanguage from '../../../../stores/useLanguage'
-import SuccessMessage from '../../../Messages/Success'
-import Cheapest from "./cheapest"
+import IsUpcoming from "./is-upcoming"
 import OneWay from "./one-way"
 
 
 type TicketCardContainerProps = {
     id: string
     onChoose?: (data: any) => void,
-    active?: { id: string } | null,
+    active?: { id: string, date: Date | string } | null,
     bottomEnd: React.ReactNode,
     children: React.ReactNode,
     amount?: number,
     className?: string
-    style?: React.CSSProperties
+    style?: React.CSSProperties,
+    date?: Date | string
 }
 
-export default function TicketCardContainer({ id, onChoose, active, bottomEnd, children, amount = 1, className, style }: TicketCardContainerProps) {
-    const { getItem } = useLanguage()
-
-    const isActive = active?.id === id
+export default function TicketCardContainer({ id, onChoose, active, bottomEnd, children, amount = 1, className, style, date }: TicketCardContainerProps) {
+    const isActiveId = active?.id === id
+    const isActiveDate = active?.date && date && new Date(date).getTime() === new Date(active?.date).getTime()
+    const isActive = isActiveId && isActiveDate
 
     return (
         <div
@@ -39,7 +37,9 @@ export default function TicketCardContainer({ id, onChoose, active, bottomEnd, c
                     <img src={busImg} alt='logo' className='h-10' />
                     <h6 className='text-[#6B7280] text-xs'>#{id}</h6>
                 </div>
-                <Cheapest />
+                {date && (
+                    <IsUpcoming date={date} />
+                )}
             </div>
 
             {children}

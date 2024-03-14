@@ -1,21 +1,15 @@
-import React from 'react'
-import WarningIcon from '../../assets/images/svgs/icons/warning'
-import { cn } from '../../lib/utils'
+import { MdInfoOutline } from "react-icons/md";
+import Message, { MessageProps } from '.';
+import { cn } from '../../lib/utils';
 
-type warningProps = {
-    icon?: React.ReactNode,
-    text: string,
-    className?: string,
-}
 
-export default function WarningMessage({ icon = <WarningIcon />, text, className }: warningProps) {
+export default function WarningMessage({ icon = <MdInfoOutline className="text-[#C27803]" />, className, ...props }: MessageProps) {
     return (
-        <div className={cn('pl-3 py-2 bg-yellow-50 flex items-center rounded-primary pr-8', className)}>
-            <div className='w-[30px]'>
-                {icon}
-            </div>
-
-            <h2 className='text-[#C27803] text-xs md:text-[16px]'>{text}</h2>
-        </div>
+        <Message
+            icon={icon}
+            className={cn('bg-yellow-50', className)}
+            textClassName='text-[#C27803]'
+            {...props}
+        />
     )
 }

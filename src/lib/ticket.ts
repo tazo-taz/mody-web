@@ -185,19 +185,21 @@ export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Da
 export const filterUnfilledPassengers = (passengers: passengerType[]) =>
     passengers.filter(({ firstName, lastName, userId }) => firstName && lastName && userId)
 
-export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, discountPercentage: number = 0) => {
+export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, fullPrice: boolean = false) => {
     let ticketsPrice = passengersCount * price1
     if (price2) ticketsPrice *= 2
-    const serviceFee = 5
+    const discount = 0;
+    const serviceFee = 10
     const priceWODiscount = ticketsPrice + serviceFee
-    const discountPrice = priceWODiscount * discountPercentage / 100
-    const totalPrice = priceWODiscount - discountPrice
+    const discountPrice = priceWODiscount * discount / 100
+    const totalPrice = fullPrice ? priceWODiscount - discountPrice : ticketsPrice
 
     return {
         totalPrice: totalPrice.toFixed(2),
         serviceFee: serviceFee.toFixed(2),
         ticketsPrice: ticketsPrice.toFixed(2),
         discountPrice: discountPrice.toFixed(2),
+        discount
     }
 }
 

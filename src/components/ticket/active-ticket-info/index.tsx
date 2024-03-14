@@ -26,7 +26,7 @@ export default function ActiveTicketInfo({ className, outboundTicket, returnTick
     if (!outboundTicket && !returnTicket) return null
 
     const passengersCount = child + passenger
-    const { totalPrice } = calculateTicketsFullPrice(passengersCount, outboundTicket?.busDirection?.price, returnTicket?.busDirection?.price, 0)
+    const { totalPrice } = calculateTicketsFullPrice(passengersCount, outboundTicket?.busDirection?.price, returnTicket?.busDirection?.price, fullDetails)
 
     return (
         <div className={cn(

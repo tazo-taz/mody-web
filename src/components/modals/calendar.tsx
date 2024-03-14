@@ -13,7 +13,7 @@ export default function CalendarModal() {
     >
       <div className='h-[5px] w-16 bg-gray-200 rounded-md absolute top-3 left-1/2 -translate-x-1/2' />
       {data?.calendar && (
-        <Calendar onChange={data.calendar.ownOnChange} value={data.calendar.value} />
+        <Calendar minDate={new Date()} onChange={data.calendar.ownOnChange} value={data.calendar.value} />
       )}
     </Modal>
   )

@@ -30,6 +30,8 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
     const timeWidth = 80
     const timeDiffWidth = 220
 
+    console.log(active);
+
 
 
     return (
@@ -44,6 +46,7 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
             bottomEnd={<h2 className='text-xl font-semibold'>{busDirection.price} ₾</h2>}
             active={active}
             id={id}
+            date={date}
         >
             <div className='flex items-center gap-5'>
                 <div className={timeClass} style={{ width: timeWidth }}>

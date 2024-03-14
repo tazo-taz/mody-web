@@ -24,7 +24,7 @@
 .react-calendar__tile:enabled:hover, .react-calendar__tile:enabled:focus {
     border-radius: 50%;
 }
-.react-calendar__month-view__days__day--weekend:not(.react-calendar__tile--active) {
+.react-calendar__month-view__days__day--weekend:not(.react-calendar__tile--active):not(:disabled) {
     color: var(--primary)!important;
 }
 .react-calendar__navigation > :first-child, .react-calendar__navigation > :last-child {

@@ -318,12 +318,12 @@ export const languageData = {
         ge: "ქუთაისის აეროპორტი"
     },
     Tbilisi_Station_square_1: {
-        en: "Tbilisi Station square 1",
-        ge: "თბილისი სადგური მოედანი 1"
+        en: "Tbilisi Liberty square",
+        ge: "თბილისი თავისუფლების მოედანი"
     },
     Batumi_Station_2: {
-        en: "Batumi Station 2",
-        ge: "ბათუმი სადგური 2"
+        en: "Batumi, Gogebashbili street 2",
+        ge: "ბათუმი, გოგებაშვილის ქუჩა 2"
     },
     Details: {
         en: "Details",
@@ -488,6 +488,14 @@ export const languageData = {
     Download_Our_free_app: {
         en: "Download Our free app",
         ge: "ჩამოტვირთეთ ჩვენი უფასო აპლიკაცია"
+    },
+    UPCOMING: {
+        en: "UPCOMING",
+        ge: "მომავალი"
+    },
+    PAST: {
+        en: "PAST",
+        ge: "გასული"
     },
 }
 

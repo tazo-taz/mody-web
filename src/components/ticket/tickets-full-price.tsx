@@ -17,8 +17,7 @@ export default function TicketsFullPrice({ outboundTicket, returnTicket, classNa
 
     const passengersCount = child + passenger
 
-    const discountPercentage = 0
-    const { serviceFee, ticketsPrice, totalPrice, discountPrice } = calculateTicketsFullPrice(passengersCount, outboundTicket?.busDirection?.price, returnTicket?.busDirection?.price, discountPercentage)
+    const { serviceFee, ticketsPrice, totalPrice, discountPrice, discount } = calculateTicketsFullPrice(passengersCount, outboundTicket?.busDirection?.price, returnTicket?.busDirection?.price)
 
     const items = [
         {
@@ -30,7 +29,7 @@ export default function TicketsFullPrice({ outboundTicket, returnTicket, classNa
             right: "₾ " + serviceFee
         },
         {
-            left: getItem("Discount") + ` (${discountPercentage}%)`,
+            left: getItem("Discount") + ` (${discount}%)`,
             right: "₾ " + discountPrice,
             green: true
         },

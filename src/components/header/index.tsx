@@ -101,8 +101,8 @@ export default function Header() {
 
                     <div className="ml-auto flex gap-[14px]">
                         {userButton}
-                        <Button size="icon" variant="secondary">
-                            <DollarIcon />
+                        <Button size="icon" variant="secondary" className="text-xl">
+                            ₾
                         </Button>
                         <LanguageSwitch />
                     </div>

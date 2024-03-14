@@ -73,7 +73,7 @@ export default function CalendarInput({ placeholder, icon, onChange, value, sort
             <>
                 <div className='fixed inset-0 z-10' onClick={close} />
                 <div className={cn('z-10 transition absolute w-full pb-14 md:pb-4 pt-8 md:pt-4 right-0 md:right-auto left-0 md:left-[104%] shadow-[black_0px_0px_10px_-6px] md:rounded-primary rounded-t-[30px] overflow-hidden md:px-4 flex items-center justify-center bg-white', calendarBottom && "top-[120%] md:right-0 right-0 md:left-auto left-auto w-[340px]")}>
-                    <Calendar onChange={ownOnChange} value={value} />
+                    <Calendar minDate={new Date()} onChange={ownOnChange} value={value} />
                 </div>
             </>
         )

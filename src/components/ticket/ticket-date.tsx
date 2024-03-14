@@ -1,7 +1,7 @@
-import moment from 'moment'
 import TicketPrimaryIcon from '../../assets/images/svgs/icons/ticket/ticket-primary'
-import { cn } from '../../lib/utils'
+import { isSameDate } from '../../lib/date'
 import { formatDateDayMonth } from '../../lib/ticket'
+import { cn } from '../../lib/utils'
 
 type TicketDateType = {
     date: Date,
@@ -16,7 +16,7 @@ export default function TicketDate({ date, count, active, onChange }: TicketDate
         <div
             className={cn(
                 'py-2 px-5 flex items-center justify-center flex-col gap-[2px] border-1 rounded-primary hover:bg-gray-100 transition',
-                active?.getTime() === date.getTime() && "border-primary",
+                isSameDate(active, date) && "border-primary",
                 noTickets ? " cursor-not-allowed" : "cursor-pointer"
             )}
             onClick={() => !noTickets && onChange(date)}

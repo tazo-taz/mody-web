@@ -189,7 +189,11 @@ export default function BusTicketsSearchPage() {
             <TicketsSearchScreen
                 activeOutbound={activeOutbound}
                 activeReturn={activeReturn}
-                setActiveOutbound={setActiveOutbound}
+                setActiveOutbound={(data: ticketChooseType | null) => {
+                    console.log(data);
+                    
+                    setActiveOutbound(data)
+                }}
                 setActiveReturn={setActiveReturn}
                 onContinue={searchToDetailsScreen}
             />

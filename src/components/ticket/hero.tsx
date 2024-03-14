@@ -11,12 +11,12 @@ export default function TicketHero() {
             <div className='container mx-auto h-[300px] md:h-[520px] rounded-primary relative'>
                 <img src={BusImg} alt='hero' className='w-full h-full object-cover absolute inset-0 rounded-primary' />
 
-                <div className='absolute top-7 md:top-16 lg:top-1/2 left-1/2 lg:-translate-y-1/2 -translate-x-1/2 flex flex-col gap-2.5 text-center'>
+                <div className='absolute top-7 md:top-16 lg:top-[140px] left-1/2 -translate-x-1/2 flex flex-col gap-2.5 text-center'>
                     <h1 className='text-white text-2xl md:text-4xl lg:text-[40px] xl:text-[50px] font-bold whitespace-nowrap'>{getItem("Search_buses_Tickets")}</h1>
                     <p className='text-[#E5E7EB] text-sm md:text-[16px] xl:text-lg min-w-[320px]'>{getItem("One_app_for_every_step_of_your_journey_travel_planning_has_never_been_easier")}</p>
                 </div>
 
-                <div className="absolute bottom-3 left-3 right-3">
+                <div className="absolute lg:bottom-[140px] bottom-16 left-3 right-3">
                     <TicketSearchHorizontal />
                 </div>
 

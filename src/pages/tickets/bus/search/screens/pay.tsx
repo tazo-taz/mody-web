@@ -64,6 +64,8 @@ export default function TicketPayScreen({
                     onContinue={handlePay}
                     returnTicket={returnTicket}
                     outboundTicket={outboundTicket}
+                    fullDetails
+                    buttonTitle="Pay_now"
                 />
 
             </div>

@@ -3,7 +3,7 @@ import GoBack from '../../../../components/go-back'
 import useMyTickets from '../../../../hooks/firebase/useMyTickets'
 import useGrayBg from '../../../../hooks/useGrayBg'
 import useLanguage from '../../../../stores/useLanguage'
-import { getBusDirection, getCitiesByName } from '../../../../lib/ticket'
+import { getBusDirection, getCitiesByName, getStationByCity } from '../../../../lib/ticket'
 import MinifyDate from '../../../../components/ticket/minify-date'
 import Successful from '../../../../components/ticket/card/components/successful'
 import RealTicketsSection from '../../../../components/ticket/card/real/section'
@@ -43,6 +43,8 @@ export default function MyTicketPage() {
 
     const { cityFrom, cityTo } = getCitiesByName(ticket.item.name)
     const busDirection = getBusDirection(ticket.item.busDirectionId)!
+    const cityFromStation = getStationByCity(cityFrom)
+    const cityToStation = getStationByCity(cityTo)
 
 
     return (
@@ -51,7 +53,7 @@ export default function MyTicketPage() {
 
             <div className='mt-6 flex justify-between border-b-1 pb-3'>
                 <div>
-                    <h2 className='font-bold text-xl'>{cityFrom} - {cityTo}</h2>
+                    <h2 className='font-bold text-xl'>{cityFromStation} - {cityToStation}</h2>
                     <MinifyDate className='text-[#6B7280] text-[13px] mt-2' date={ticket.item.date} timeDiff={busDirection.timeDiff} />
                 </div>
 
