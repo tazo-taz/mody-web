@@ -50,8 +50,8 @@ export default function TicketDatesSlider({ dateFrom, active, onChange, tickets,
     }, [windowWidth])
 
     useLayoutEffect(() => {
-        setTimeout(() => {
-            !isLoading && daysFromActive && swiperRef.current?.slideTo?.(daysFromActive)
+        !isLoading && daysFromActive && setTimeout(() => {
+            swiperRef.current?.slideTo?.(daysFromActive)
         }, 300)
     }, [daysFromActive, isLoading])
 
@@ -68,8 +68,6 @@ export default function TicketDatesSlider({ dateFrom, active, onChange, tickets,
                 ref={swiperRef}
                 onSwiper={(swiper) => {
                     swiperRef.current = swiper
-                    console.log(123);
-
                 }}
                 direction={'horizontal'}
                 freeMode={true}

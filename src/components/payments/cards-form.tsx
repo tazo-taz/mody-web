@@ -15,7 +15,6 @@ type CardsFormProps = {
 export default function CardsForm({ className }: CardsFormProps) {
     const { cards, activeCard, setActiveCard, removeCard } = useMyCards()
     const { getItem } = useLanguage()
-    console.log(cards);
 
     const addCard = async () => {
         try {

@@ -29,7 +29,8 @@ export default function AccountNav() {
     ]
 
     const location = useLocation()
-    const activeIndex = nav.findIndex((item) => item.href === location.pathname) || 0
+    const _activeIndex = nav.findIndex((item) => item.href === location.pathname || item.href + "/" === location.pathname)
+    const activeIndex = _activeIndex === -1 ? 0 : _activeIndex
 
     return (
         <div className='bg-[#F3F4F6] border-1 border-[#E5E7EB] rounded-lg p-1 hidden md:block mb-[35px]'>

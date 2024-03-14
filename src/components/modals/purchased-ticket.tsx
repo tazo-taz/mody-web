@@ -7,22 +7,37 @@ import Button from '../fields/button'
 import ImageIcon from '../image-icon'
 import Modal from '../modal'
 import TicketMiniCardPurchased from '../ticket/card/simple/mini/purchased'
+import { useEffect, useState } from 'react'
 
 export default function PurchasedTicketModal() {
   const { getItem } = useLanguage()
-  const { data, onClose } = useModal()
+  const { data, onClose, modalType } = useModal()
   const navigate = useNavigate()
+  const [isLoaded, setIsLoaded] = useState(false)
 
   const handleClick = () => {
-    navigate(`/account/my-tickets/${data?.ticket?.uid}`)
+    navigate(`/account/my-tickets/` + (data?.ticket?.uid ?? ""))
     onClose()
   }
+
+  useEffect(() => {
+    if (modalType === "purchased-ticket") {
+      const image = new Image()
+      image.src = ticketImg
+      image.onload = () => {
+        setIsLoaded(true)
+      }
+
+      return () => setIsLoaded(false);
+    }
+  }, [modalType])
 
   return (
     <Modal
       modalType={"purchased-ticket"}
       className='p-12'
       width={540}
+      hide={!isLoaded}
     >
       <div className='flex justify-center'>
         <ImageIcon allowGradient={false} src={ticketImg} Icon={FaCheck} IconContainerClassName='bg-[#0E9F6E]' />

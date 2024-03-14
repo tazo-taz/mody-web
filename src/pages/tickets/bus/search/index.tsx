@@ -155,8 +155,6 @@ export default function BusTicketsSearchPage() {
                 }
                 else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
             }
-
-
         } catch (error) {
             console.log(error);
             toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
@@ -189,11 +187,7 @@ export default function BusTicketsSearchPage() {
             <TicketsSearchScreen
                 activeOutbound={activeOutbound}
                 activeReturn={activeReturn}
-                setActiveOutbound={(data: ticketChooseType | null) => {
-                    console.log(data);
-                    
-                    setActiveOutbound(data)
-                }}
+                setActiveOutbound={setActiveOutbound}
                 setActiveReturn={setActiveReturn}
                 onContinue={searchToDetailsScreen}
             />

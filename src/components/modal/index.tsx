@@ -9,10 +9,11 @@ type ModalType = {
     modalType: modalStore["modalType"],
     onClose?: () => void,
     className?: string,
-    width?: number | string
+    width?: number | string,
+    hide?: boolean
 }
 
-export default function Modal({ children, title, modalType, onClose: onCloseCb, className, width = 430 }: ModalType) {
+export default function Modal({ children, title, modalType, onClose: onCloseCb, className, width = 430, hide = false }: ModalType) {
     const modal = useModal()
 
     useEffect(() => {
@@ -21,6 +22,8 @@ export default function Modal({ children, title, modalType, onClose: onCloseCb, 
             return showScrollbar
         }
     }, [modalType, modal.modalType])
+
+    if (hide) return null
 
     const onClose = () => {
         modal.onClose()

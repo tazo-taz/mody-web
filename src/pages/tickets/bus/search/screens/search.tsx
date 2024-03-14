@@ -9,8 +9,7 @@ import useLanguage from '../../../../../stores/useLanguage';
 
 type TicketsSearchScreenProsp = {
     activeOutbound: ticketChooseType | null,
-    setActiveOutbound: any,
-    // setActiveOutbound: React.Dispatch<React.SetStateAction<ticketChooseType | null>>,
+    setActiveOutbound: React.Dispatch<React.SetStateAction<ticketChooseType | null>>,
     activeReturn: ticketChooseType | null,
     setActiveReturn: React.Dispatch<React.SetStateAction<ticketChooseType | null>>,
     onContinue: () => void,

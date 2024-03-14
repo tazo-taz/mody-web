@@ -11,9 +11,6 @@ export default function IsUpcoming({ date }: IsUpcomingProps) {
 
     const IsUpcomingDate = typeof date === "boolean" ? date : new Date().getTime() < new Date(date).getTime()
 
-    if (!IsUpcomingDate)
-        console.log(IsUpcomingDate, date);
-
     if (IsUpcomingDate) return (
         <SuccessMessage icon={null} text={getItem("UPCOMING")} size='sm' />
     )

@@ -30,10 +30,6 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
     const timeWidth = 80
     const timeDiffWidth = 220
 
-    console.log(active);
-
-
-
     return (
         <TicketCardContainer
             onChoose={() => onChoose?.({
