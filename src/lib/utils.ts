@@ -59,3 +59,6 @@ export const objValueChange = <T extends {}>(
 
 export const getCardName = (cardMask: string) =>
     `Mastercard **** ${cardMask.slice(-4)}`
+
+export const generateInviteFriendText = (code: string) =>
+    `Use Mody to travel around the city! Here is my referral code to get free 5 GEL in credits. (code: ${code})`

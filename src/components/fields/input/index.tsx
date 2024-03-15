@@ -3,11 +3,12 @@ import { cn } from '../../../lib/utils';
 
 type InputType = React.InputHTMLAttributes<HTMLInputElement> & {
     value?: string,
+    containerClassName?: string,
     icon?: React.ReactNode,
     onValueChange?: (newValue: string) => void,
 }
 
-const Input = forwardRef<HTMLInputElement, InputType>(({ value = "", icon, placeholder, onValueChange, ...rest }, ref) => {
+const Input = forwardRef<HTMLInputElement, InputType>(({ value = "", icon, placeholder, containerClassName, onValueChange, ...rest }, ref) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
@@ -16,7 +17,7 @@ const Input = forwardRef<HTMLInputElement, InputType>(({ value = "", icon, place
     };
 
     return (
-        <div className='border-1 rounded-primary flex p-[15px]'>
+        <div className={cn('border-1 rounded-primary flex p-[15px]', containerClassName)}>
             {icon && (
                 <div className='w-[30px]'>
                     {icon}

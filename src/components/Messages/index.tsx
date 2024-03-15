@@ -14,7 +14,7 @@ export default function Message({ icon, text, className, textClassName, size = "
     <div className={cn(
       'flex items-center',
       size === "md" && 'px-3 py-2 rounded-primary',
-      size === "sm" && 'p-1.5 rounded-[4px]',
+      size === "sm" && 'p-1.5 rounded-[6px]',
       className
     )}>
       {icon && (

@@ -516,7 +516,39 @@ export const languageData = {
     "code-not-found-or-expired": {
         en: "Code not found or expired",
         ge: "კოდი ვერ მოიძებნა ან ვადაგასულია"
-    }
+    },
+    Just_enter_your_Redeem_code_below: {
+        en: "Just enter your Redeem code below",
+        ge: "უბრალოდ შეიყვანეთ თქვენი კოდი ქვემოთ"
+    },
+    you_successfully_redeemed_code: {
+        en: "You successfully redeemed code",
+        ge: "თქვენ წარმატებით გამოიყენეთ კოდი"
+    },
+    Know_someone_who_needs_a_ride_Invite_them_to_mody_to_get_give_free_credits: {
+        en: "Know someone who needs a ride? Invite them to mody to get & give free credits!",
+        ge: "იცნობთ ვინმეს, ვისაც მგზავრობა სჭირდება? მოიწვიე ისინი მოდიში, რომ მიიღონ და მიიღე უფასო კრედიტები!"
+    },
+    Invite_your_friends_to_ride_with_Mody_so_they_can_get_going_now: {
+        en: "Invite your friends to ride with Mody so they can get going now!",
+        ge: "მოიწვიე შენი მეგობრები მოდიში რათა ახლავე წავიდეთ!"
+    },
+    Invite: {
+        en: "Invite",
+        ge: "მოწვევა"
+    },
+    Send_copied_text_to_your_friend: {
+        en: "Send copied text to your friend",
+        ge: "გაუგზავნეთ კოპირებული ტექსტი თქვენს მეგობარს"
+    },
+    Code_successfully_copied: {
+        en: "Code successfully copied",
+        ge: "კოდი წარმატებით დაკოპირდა"
+    },
+    Click_to_get_the_invite_code: {
+        en: "Click to get the invite code",
+        ge: "დააჭირეთ მოწვევის კოდის მისაღებად"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {
