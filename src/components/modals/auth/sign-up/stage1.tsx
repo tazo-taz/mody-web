@@ -35,7 +35,7 @@ export default function Stage1({ register, watch, sendCode, onLogin }: Stage1Pro
                 />
             </div>
             <Input
-                value={watch("userId")}
+                value={watch("userId") || ""}
                 {...register("userId")}
                 icon={<IdNumberIcon />}
                 type='number'

@@ -71,7 +71,7 @@ export default function PassengerForm({ title, isAdult, save, required = false, 
                     }}
                 />
                 <Input
-                    value={userId}
+                    value={userId || ""}
                     icon={<IdNumberIcon />}
                     placeholder={getItem("ID_Number")}
                     onValueChange={value => {

@@ -6,7 +6,7 @@ export const unregisteredUserSchema = z.object({
     firstName: z.string().min(1, { message: (getLanguageItem("First_name")) }),
     lastName: z.string().min(1, { message: (getLanguageItem("Last_name")) }),
     phoneNumber: z.string().min(1, { message: (getLanguageItem("Phone_number")) }),
-    userId: z.string().min(1, { message: (getLanguageItem("ID_Number")) }),
+    userId: z.string().min(1, { message: (getLanguageItem("ID_Number")) }).nullable(),
     email: z.string().optional().nullable(),
 })
 

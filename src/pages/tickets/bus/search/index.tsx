@@ -27,7 +27,7 @@ export enum screenEnum {
 export type passengerType = {
     firstName: string,
     lastName: string,
-    userId: string,
+    userId: string | null,
     save: boolean
 }
 
@@ -69,7 +69,7 @@ export default function BusTicketsSearchPage() {
         if (activeOutbound)
             if ((parseTicketQuery(query).returnDate && activeReturn) || !parseTicketQuery(query).returnDate) {
                 const { child, passenger } = parseTicketQuery(query)
-                const adultPassengers = [...new Array(passenger)].map(() => ({
+                const adultPassengers: passengerType[] = [...new Array(passenger)].map(() => ({
                     firstName: "",
                     lastName: "",
                     userId: "",

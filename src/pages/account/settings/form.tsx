@@ -48,7 +48,7 @@ export default function SettingsForm({ watch, register, phoneChanged }: Settings
                 placeholder={getItem("Last_name")}
             />
             <Input
-                value={watch("userId")}
+                value={watch("userId") || ""}
                 {...register("userId")}
                 icon={<IdNumberIcon />}
                 type='number'
