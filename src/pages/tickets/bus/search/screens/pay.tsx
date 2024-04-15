@@ -34,7 +34,7 @@ export default function TicketPayScreen({
 
     return (
         <>
-            <div className='container mx-auto flex gap-[120px]'>
+            <div className='container mx-auto flex gap-7 lg:gap-[60px] xl:gap-[120px]'>
                 <div className='flex-1'>
                     <Title>
                         {getItem("Review")}

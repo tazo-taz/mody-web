@@ -6,19 +6,19 @@ export function addDays(date: Date, days: number) {
     return result;
 }
 
-export const formatTime = (date: string | Date) =>
-    moment(date).format("h:mm A").replace(":01", ":00")
+export const formatTime = (date: string | Date, withAmPm: boolean = true) =>
+    moment(date).format(`${withAmPm ? "h:mm A" : "HH:mm"}`).replace(":01", ":00")
 
 export const minifyDate = (date?: Date | string) =>
     moment(date).format("ddd, MMM D")
 
 export const timeFromTo = (date: Date | string, timeDiff?: number, withAmPm: boolean = true) => {
-    const timeFrom = formatTime(date)
-    const timeTo = moment(date).add(timeDiff, "h").format("h:mm A").replace(":01", ":00")
+    const timeFrom = formatTime(date, withAmPm)
+    const timeTo = moment(date).add(timeDiff, "h").format(`${withAmPm ? "h:mm A" : "HH:mm"}`).replace(":01", ":00")
     const minifiedDate = minifyDate(date)
     return {
-        timeFrom: (withAmPm ? timeFrom : timeFrom.slice(0, -3)).padStart(5, "0"),
-        timeTo: (withAmPm ? timeTo : timeTo.slice(0, -3)).padStart(5, "0"),
+        timeFrom,
+        timeTo,
         minifiedDate
     }
 }

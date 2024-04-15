@@ -22,7 +22,7 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
     const { getItem } = useLanguage()
     const [squareRef, { width }] = useElementSize()
 
-    const [currentDate, setCurrentDate] = useState(activeDate?.date ? new Date(activeDate?.date) :  dateFrom)
+    const [currentDate, setCurrentDate] = useState(activeDate?.date ? new Date(activeDate?.date) : dateFrom)
     const currentTickets = getTicketsFromBusDates(busDates, currentDate)
 
     const tickets = currentTickets.length === 0 && !isLoading ? (
@@ -60,7 +60,7 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
                 {isLoading ? <div className='mt-[200px] rounded-primary mr-[4px] flex items-center justify-center'>
                     <IoReload className='animate-spin' size={30} />
                 </div> :
-                tickets
+                    tickets
                 }
             </div>
 

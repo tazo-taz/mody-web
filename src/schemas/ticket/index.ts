@@ -1,38 +1,39 @@
 import { z } from "zod"
 import { ticketUsersSchema } from "./user"
 
-const itemSchema = z.object({
+const orderItem = z.object({
     amount: z.number(),
-    busDirectionId: z.coerce.number(),
     bus_arrival: z.string(),
     bus_departure: z.coerce.date(),
-    date: z.coerce.date(),
-    flightId: z.string(),
     name: z.string(),
     price_adult: z.number(),
     price_child: z.number(),
 })
 
+const itemSchema = z.object({
+    busDirectionId: z.coerce.number(),
+    date: z.coerce.date(),
+    flightId: z.string(),
+    orderItem: orderItem,
+})
+
 export type ticketItemSchemaType = z.infer<typeof itemSchema>
 
 
-export const ticketSchema = z.object({
-    adult: z.coerce.number(),
-    child: z.coerce.number(),
+export const myTicketSchema = z.object({
     created_at: z.coerce.date(),
-    qrCodeLink: z.string(),
-    transactionId: z.string(),
-    requestId: z.string(),
     uid: z.string(),
     filteredChildPassengers: ticketUsersSchema.optional().default([]),
     filteredAdultPassengers: ticketUsersSchema.optional().default([]),
-
+    status: z.enum(["pending", "succeed"]),
     item: itemSchema,
-    returnItem: itemSchema.nullable()
+    returnItem: itemSchema.nullable(),
+    adult: z.coerce.number(),
+    child: z.coerce.number(),
 })
 
-export const ticketsListSchema = z.array(ticketSchema)
+export const ticketsListSchema = z.array(myTicketSchema)
 
-export type ticketSchemaType = z.infer<typeof ticketSchema>
+export type ticketSchemaType = z.infer<typeof myTicketSchema>
 
 export type ticketsListSchemaType = z.infer<typeof ticketsListSchema>

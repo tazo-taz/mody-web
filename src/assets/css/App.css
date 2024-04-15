@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 @import url("./calendar.css");
+@font-face {
+    font-family: "Georgian Font";
+    src: url("../fonts/bpg_glaho_sylfaen.ttf");
+}
 
 :root {
     --primary: #7D57FD;
@@ -13,12 +17,15 @@
     --swiper-pagination-color: white;
 }
 
-* {
-    font-family: "Inter";
-}
-
 body {
     color: var(--secondary);
+}
+
+html:lang(en) * {
+    font-family: "Inter";
+}
+html:lang(ge) * {
+    font-family: "Georgian Font", sans-serif;
 }
 
 @media screen and (max-width: 640px) {

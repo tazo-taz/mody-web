@@ -1,13 +1,14 @@
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 import CameraIcon from '../../../assets/images/svgs/icons/camera'
-import UserWithBg from '../../../assets/images/svgs/icons/user-with-bg'
 import AccountCard from '../../../components/account/card'
 import AccountTitle from '../../../components/account/title'
 import Button from '../../../components/fields/button'
+import UserProfile from '../../../components/user-profile'
 import { functions } from '../../../firebase'
 import useUserForm from '../../../hooks/forms/useUserForm'
-import { loadUser } from '../../../lib/user'
+import { loadUser, uploadProfileImage } from '../../../lib/user'
 import { startLoading, stopLoading } from '../../../references/loading'
 import { unregisteredUserSchemaType } from '../../../schemas/user'
 import useAuth from '../../../stores/useAuth'
@@ -17,6 +18,7 @@ import SettingsForm from './form'
 export default function AccountSettingsPage() {
     const { getItem } = useLanguage()
     const { user } = useAuth()
+    const [image, setImage] = useState({ file: null, image: "" } as { file: File | null, image: string })
 
     const { handleSubmit, register, watch, valuesChanged, phoneChanged } = useUserForm(user)
 
@@ -30,7 +32,8 @@ export default function AccountSettingsPage() {
                 }),
                 email && functions("SetEmail", {
                     email
-                })
+                }),
+                image.file && uploadProfileImage(image.file)
             ]);
 
             if (!fillnamesRes.data.result)
@@ -46,16 +49,41 @@ export default function AccountSettingsPage() {
         }
     }
 
+    const fileDataURL = (file: File) => new Promise((resolve, reject) => {
+        let fr = new FileReader();
+        fr.onload = () => resolve(fr.result as string);
+        fr.onerror = reject;
+        fr.readAsDataURL(file)
+    });
+
     return (
         <div>
             <AccountTitle>{getItem("Account_Settings")}</AccountTitle>
             <AccountCard>
                 <div className='flex items-center justify-center mb-8'>
                     <div className='relative'>
-                        <UserWithBg />
-                        <div className='bg-primary rounded-full p-1.5 absolute right-0 bottom-0 border-2 border-white'>
+                        <UserProfile image={image.image} />
+                        <label
+                            className='bg-primary rounded-full p-1.5 absolute right-0 bottom-0 border-2 border-white'
+                            htmlFor='profile-image'
+                        >
                             <CameraIcon />
-                        </div>
+                        </label>
+                        <input
+                            type='file'
+                            id='profile-image'
+                            className='hidden'
+                            onChange={async (e) => {
+                                const file = e.target.files?.[0]
+                                if (file) {
+                                    const newImage = await fileDataURL(file) as string
+                                    setImage({
+                                        file,
+                                        image: newImage
+                                    })
+                                }
+                            }}
+                        />
                     </div>
                 </div>
                 <SettingsForm

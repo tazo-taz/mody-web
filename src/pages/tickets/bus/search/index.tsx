@@ -31,7 +31,7 @@ export type passengerType = {
     save: boolean
 }
 
-export type typePaymentType = "new" | number | null
+export type typePaymentType = "new" | "cash" | number | null
 
 export type contactInfoType = Pick<userSchemaType, "email" | "firstName" | "phoneNumber"> & { email: string }
 
@@ -124,9 +124,9 @@ export default function BusTicketsSearchPage() {
 
             if (adultPassengers[0].save) {
                 payBusPriceData.info = {
-                    firstNameValue: auth.user!.firstName,
-                    lastNameValue: auth.user!.lastName,
-                    userIdValue: auth.user!.userId,
+                    firstNameValue: adultPassengers[0].firstName,
+                    lastNameValue: adultPassengers[0].lastName,
+                    userIdValue: adultPassengers[0].userId,
                 }
             }
 
@@ -147,13 +147,16 @@ export default function BusTicketsSearchPage() {
                 if (data.data.uri) window.location.href = data.data.uri
                 else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
             } else {
+                console.log(data);
+
                 if (data.data.result) {
                     const myTickets = await getMyTickets()
                     if (myTickets) {
                         modal.onOpen("purchased-ticket", { ticket: myTickets[0] })
                     }
                 }
-                else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
+                else
+                    toast.error(getItem(data.data.message?.error) || getItem("Something_went_wrong_please_try_again_or_contact_us"))
             }
         } catch (error) {
             console.log(error);

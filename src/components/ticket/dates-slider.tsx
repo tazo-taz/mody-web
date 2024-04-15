@@ -52,7 +52,7 @@ export default function TicketDatesSlider({ dateFrom, active, onChange, tickets,
     useLayoutEffect(() => {
         !isLoading && daysFromActive && setTimeout(() => {
             swiperRef.current?.slideTo?.(daysFromActive)
-        }, 300)
+        }, 500)
     }, [daysFromActive, isLoading])
 
 

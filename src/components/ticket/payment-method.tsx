@@ -7,6 +7,7 @@ import { CiCreditCard2 } from "react-icons/ci";
 import { typePaymentType } from '../../pages/tickets/bus/search'
 import MasterCardIcon from '../../assets/images/svgs/icons/mastercard'
 import { getCardName } from '../../lib/utils'
+import { BsCash } from "react-icons/bs";
 
 type PaymentMethodProps = {
     value: typePaymentType,
@@ -32,6 +33,7 @@ export default function PaymentMethod({ value, onChange }: PaymentMethodProps) {
                 value={value}
                 onChange={onChange}
                 items={[
+                    { value: "cash", icon: <BsCash className='w-6 h-6' />, title: getItem("Pay_with_cash") },
                     { value: "new", icon: <CiCreditCard2 className='w-6 h-6' />, title: getItem("Pay_with_new_card") },
                     ...cards.map((card, inx) =>
                         ({ value: inx, icon: <MasterCardIcon />, title: getCardName(card.cardMask) })

@@ -4,6 +4,8 @@ import { ticketSchemaType } from "../../../../schemas/ticket"
 import MinifyDate from "../../minify-date"
 import TicketCardContainer from "../components/container"
 import { TicketCardDash } from "../components/dash"
+import Failed from '../components/failed'
+import Pending from '../components/pending'
 import Successful from "../components/successful"
 
 type MyTicketCardProps = ticketSchemaType & {
@@ -13,11 +15,20 @@ type MyTicketCardProps = ticketSchemaType & {
 
 }
 
-export default function MyTicketCard({ adult, child, item, onChoose, className, style }: MyTicketCardProps) {
-    const { date, flightId, name } = item
+export default function MyTicketCard({ item, onChoose, className, style, adult, child, status, created_at }: MyTicketCardProps) {
+    const { date, flightId, orderItem: { name }, } = item
     const { cityFrom, cityTo } = getCitiesByName(name)
 
     const busDirection = getBusDirection(item.busDirectionId)!
+
+    let bottomEnd = null
+    if (status === "succeed") {
+        bottomEnd = <Successful />
+    } else if ((new Date().getTime() - new Date(created_at).getTime()) / 1000 > 60 * 10) {
+        bottomEnd = <Failed />
+    } else if (status === "pending") {
+        bottomEnd = <Pending />
+    }
 
     return (
         <TicketCardContainer
@@ -25,7 +36,7 @@ export default function MyTicketCard({ adult, child, item, onChoose, className, 
             style={style}
             amount={adult + child}
             id={flightId}
-            bottomEnd={<Successful />}
+            bottomEnd={bottomEnd}
             active={null}
             onChoose={onChoose}
             date={date}

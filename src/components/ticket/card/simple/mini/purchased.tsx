@@ -6,7 +6,7 @@ import IsUpcoming from "../../components/is-upcoming"
 import { TicketCardDash } from "../../components/dash"
 import OneWay from "../../components/one-way"
 
-export default function TicketMiniCardPurchased({ item: { busDirectionId, name, date, flightId }, adult, child, returnItem }: ticketSchemaType) {
+export default function TicketMiniCardPurchased({ item: { busDirectionId, orderItem: { name }, date, flightId }, adult, child, returnItem }: ticketSchemaType) {
     const busDirection = getBusDirection(busDirectionId)
     const { cityFrom, cityTo } = getCitiesByName(name)
     const id = flightId

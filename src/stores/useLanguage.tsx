@@ -15,7 +15,7 @@ const useLanguage = create(persist<languageStore>(
         language: "en",
         setLanguage: (language) => set({ language }),
         getItem: (item) => {
-            const translated = languageData[item][get().language]
+            const translated = languageData[item]?.[get().language]
             return translated
         }
     }),

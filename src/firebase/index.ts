@@ -2,10 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getFunctions, httpsCallable, } from "firebase/functions";
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-// Your web app's Firebase configuration
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBbwbNlgTpzc8n_k23USagY7-Ig5p5wp3o",
@@ -26,9 +23,35 @@ export const auth = getAuth(app);
 
 export const db = getFirestore(app);
 export const functionsApp = getFunctions(app, "europe-west3");
+export const storage = getStorage(app);
+
+export const getFileStorageRef = (filename: string) => {
+    return ref(storage, filename);
+}
 
 export const functions = (name: string, data: any = {}) => {
     return httpsCallable(functionsApp, name)(data) as Promise<{ data: any }>
+}
+
+// generate random id
+export const generateId = () => {
+    return Math.random().toString(36).substr(2, 9);
+}
+
+export const uploadFile = async (imageUpload: File, filename: string) => {
+    try {
+        const imageRef = getFileStorageRef(filename);
+        await uploadBytes(imageRef, imageUpload, {
+            customMetadata: {
+                type: 'client_avatar',
+            },
+        })
+
+        console.log('Uploaded a blob or file!');
+
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export default app;

@@ -19,11 +19,13 @@ import useAuth from './stores/useAuth';
 import Loader from './components/loading/Loader';
 import BusTicketsSearchPage from './pages/tickets/bus/search';
 import MyTicketPage from './pages/account/my-tickets/my-ticket';
+import useHandleLanguageSwitch from './hooks/useHandleLanguageSwitch';
 
 function App() {
   const { isLoading } = useAuth()
 
   useAuthStateChange()
+  useHandleLanguageSwitch()
 
   if (isLoading) return <Loader />
 

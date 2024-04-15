@@ -389,6 +389,10 @@ export const languageData = {
         en: "Pay with new card",
         ge: "გადაიხადე ახალი ბარათით"
     },
+    Pay_with_cash: {
+        en: "Pay with cash",
+        ge: "გადაიხადე ქეშით"
+    },
     Use_a_Discount: {
         en: "Use a Discount",
         ge: "გამოიყენე ფასდაკლება"
@@ -440,6 +444,14 @@ export const languageData = {
     Successful: {
         en: "Successful",
         ge: "წარმატებული"
+    },
+    Pending: {
+        en: "Pending",
+        ge: "მუშავდება"
+    },
+    Failed: {
+        en: "Failed",
+        ge: "ვერ მოხერხდა"
     },
     OUTBOUND: {
         en: "OUTBOUND",
@@ -548,6 +560,10 @@ export const languageData = {
     Click_to_get_the_invite_code: {
         en: "Click to get the invite code",
         ge: "დააჭირეთ მოწვევის კოდის მისაღებად"
+    },
+    "Not enough money on balance": {
+        en: "Not enough money on balance",
+        ge: "ბალანსზე საკმარისი თანხა არ არის"
     },
 }
 

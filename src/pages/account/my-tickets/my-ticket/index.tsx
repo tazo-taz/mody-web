@@ -7,6 +7,8 @@ import { getBusDirection, getCitiesByName, getStationByCity } from '../../../../
 import MinifyDate from '../../../../components/ticket/minify-date'
 import Successful from '../../../../components/ticket/card/components/successful'
 import RealTicketsSection from '../../../../components/ticket/card/real/section'
+import Pending from '../../../../components/ticket/card/components/pending'
+import Failed from '../../../../components/ticket/card/components/failed'
 
 export default function MyTicketPage() {
     const { getItem } = useLanguage()
@@ -41,11 +43,20 @@ export default function MyTicketPage() {
         )
     }
 
-    const { cityFrom, cityTo } = getCitiesByName(ticket.item.name)
+    const { cityFrom, cityTo } = getCitiesByName(ticket.item.orderItem.name)
     const busDirection = getBusDirection(ticket.item.busDirectionId)!
     const cityFromStation = getStationByCity(cityFrom)
     const cityToStation = getStationByCity(cityTo)
 
+    let type = null;
+
+    if (ticket.status === "succeed") {
+        type = <Successful />
+    } else if ((new Date().getTime() - new Date(ticket.created_at).getTime()) / 1000 > 60 * 10) {
+        type = <Failed />
+    } else if (ticket.status === "pending") {
+        type = <Pending />
+    }
 
     return (
         <>
@@ -57,7 +68,7 @@ export default function MyTicketPage() {
                     <MinifyDate className='text-[#6B7280] text-[13px] mt-2' date={ticket.item.date} timeDiff={busDirection.timeDiff} />
                 </div>
 
-                <Successful />
+                {type}
             </div>
 
             <RealTicketsSection
