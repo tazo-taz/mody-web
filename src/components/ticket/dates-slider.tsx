@@ -6,7 +6,6 @@ import 'swiper/css/pagination';
 
 // import required modules
 
-import { busDatesType } from '../../hooks/firebase/useSearchTickets';
 import { addDays, dayDiff } from '../../lib/date';
 import { getTicketsFromBusDates } from '../../lib/ticket';
 import TicketDate from './ticket-date';
@@ -23,8 +22,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { IoReload } from "react-icons/io5";
 import { FreeMode, Mousewheel } from 'swiper';
 import { useWindowSize } from 'usehooks-ts';
-
-// import required modules
+import { busDatesType } from '../../hooks/firebase/useSearchTickets/types';
 
 type TicketDatesSliderProps = {
     dateFrom: Date,

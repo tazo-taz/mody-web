@@ -2,12 +2,12 @@ import { sum } from "lodash"
 import moment from "moment"
 import queryString from "query-string"
 import { getLanguageItem, languageData } from "../assets/language"
-import { busDatesType } from "../hooks/firebase/useSearchTickets"
 import { passengerType } from "../pages/tickets/bus/search"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import useAuth from "../stores/useAuth"
 import { ticketsListSchema } from "../schemas/ticket"
+import { busDatesType } from "../hooks/firebase/useSearchTickets/types"
 
 const dateFormat = "yyyy-MM-DD"
 
@@ -25,6 +25,14 @@ export const getCityValueByName = (city?: string) => {
     if (city === languageData["Kutaisi"].ge || city === languageData["Kutaisi"].en) return languageData["Kutaisi_airport"].ge
 
     return undefined
+}
+
+export const getBysSystemCityValueByName = (city?: string) => {
+    if (city === languageData["Tbilisi"].ge || city === languageData["Tbilisi"].en) return "3"
+    if (city === languageData["Batumi"].ge || city === languageData["Batumi"].en) return "2"
+    if (city === languageData["Kutaisi_airport"].ge || city === languageData["Kutaisi_airport"].en) return "6"
+    if (city === languageData["Kutaisi"].ge || city === languageData["Kutaisi"].en) return "6"
+
 }
 
 export const getCityNameByValue = (value?: string) => {

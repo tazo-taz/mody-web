@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getFunctions, httpsCallable, } from "firebase/functions";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBbwbNlgTpzc8n_k23USagY7-Ig5p5wp3o",
@@ -29,8 +29,16 @@ export const getFileStorageRef = (filename: string) => {
     return ref(storage, filename);
 }
 
-export const functions = (name: string, data: any = {}) => {
-    return httpsCallable(functionsApp, name)(data) as Promise<{ data: any }>
+export const functions = async (name: string, data: any = {}) => {
+    try {
+        const res = await httpsCallable(functionsApp, name)(data);
+        return res as unknown as Promise<{ data: any, result: boolean }>
+    } catch (error) {
+        return Promise.resolve({
+            result: false,
+            data: null,
+        })
+    }
 }
 
 // generate random id

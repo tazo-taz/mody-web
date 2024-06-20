@@ -24,7 +24,7 @@ export default function TicketDate({ date, count, active, onChange }: TicketDate
             <h6 className='text-[11px] whitespace-nowrap'>{formatDateDayMonth(date)}</h6>
             <div className={cn('flex items-center gap-[5px] font-medium justify-between', count > 0 ? "text-primary" : "text-[#9CA3AF]")}>
                 <TicketPrimaryIcon color={noTickets ? "#9CA3AF" : "#7D57FD"} />
-                <h6 className='text-[12px]'>{count}</h6>
+                <h6 className='text-[12px]'>{count === 0 ? 0 : count + "+"}</h6>
             </div>
         </div>
     )
