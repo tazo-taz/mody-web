@@ -1,18 +1,10 @@
 
 import { useWindowSize } from 'usehooks-ts'
 import { busSystemDatesType } from '../../../../hooks/firebase/useSearchTickets/types'
-import { formatTime, timeDifference } from '../../../../lib/date'
-import { busDirectionType } from '../../../../lib/ticket'
+import { extractTimesFromBusSystemRoute } from '../../../../lib/date'
 import TicketCardContainer from "../components/container"
 import { TicketCardDash } from '../components/dash'
-
-export type ticketChooseType = {
-  id: string,
-  date: string | Date,
-  cityFrom: string,
-  cityTo: string,
-  busDirection: busDirectionType,
-}
+import { ticketChooseType } from './type'
 
 type TicketCardProps = busSystemDatesType & {
   onChoose?: (data: ticketChooseType) => void,
@@ -21,15 +13,13 @@ type TicketCardProps = busSystemDatesType & {
 
 
 
-export default function BusSystemTicketCard({ time_from, time_to, date_from, date_to, price_one_way, point_from, point_to, onChoose, active }: TicketCardProps) {
+export default function BusSystemTicketCard({
+  onChoose, active, ...ticketData
+}: TicketCardProps) {
   const { width } = useWindowSize()
+  const { route_id, price_one_way, point_from, point_to } = ticketData;
 
-  const dateFrom = date_from + "T" + time_from
-  const dateTo = date_to + "T" + time_to
-
-  const timeFrom = formatTime(dateFrom)
-  const timeTo = formatTime(dateTo)
-  const [hoursDiff, minsDiff] = timeDifference(dateFrom, dateTo).split(":")
+  const { dateFrom, timeFrom, timeTo, timeDiff } = extractTimesFromBusSystemRoute(ticketData)
 
   const timeClass = "font-medium text-lg whitespace-nowrap"
   const timeWidth = 80
@@ -37,15 +27,19 @@ export default function BusSystemTicketCard({ time_from, time_to, date_from, dat
 
   return (
     <TicketCardContainer
-      // onChoose={() => onChoose?.({
-      //     busDirection,
-      //     cityFrom,
-      //     cityTo,
-      //     id,
-      //     date
-      // })}
-      bottomEnd={<h2 className='text-xl font-semibold'>{price_one_way} ₾</h2>}
+      onChoose={() => onChoose?.({
+        cityFrom: point_from,
+        cityTo: point_to,
+        id: route_id,
+        date: dateFrom,
+        metadata: {
+          ...ticketData,
+          busSystem: true
+        }
+      })}
+      bottomEnd={<h2 className='text-xl font-semibold'>{price_one_way} €</h2>}
       active={active}
+      isActive={active?.id === route_id}
       id={""}
       date={dateFrom}
     >
@@ -55,7 +49,7 @@ export default function BusSystemTicketCard({ time_from, time_to, date_from, dat
         </div>
 
         <TicketCardDash
-          timeDiff={+hoursDiff + +minsDiff / 60}
+          timeDiff={timeDiff}
           width={timeDiffWidth}
         />
 

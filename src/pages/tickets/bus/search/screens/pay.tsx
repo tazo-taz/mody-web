@@ -1,7 +1,6 @@
 import React from 'react'
 import { contactInfoType, passengerType, screenEnum, typePaymentType } from '..'
 import ActiveTicketInfoForTicket from '../../../../../components/ticket/active-ticket-info/ticket'
-import { ticketChooseType } from '../../../../../components/ticket/card/simple'
 import TicketContactInfo from '../../../../../components/ticket/contact-info'
 import PassengerDetails from '../../../../../components/ticket/passenger-details'
 import PaymentMethod from '../../../../../components/ticket/payment-method'
@@ -10,6 +9,7 @@ import Title from '../../../../../components/title'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import useScrollTop from '../../../../../hooks/useScrollTop'
 import useLanguage from '../../../../../stores/useLanguage'
+import { ticketChooseType } from '../../../../../components/ticket/card/simple/type'
 
 type TicketPayScreenType = {
     setScreen: (newScreen: screenEnum) => void,

@@ -14,13 +14,14 @@ type TicketCardContainerProps = {
     amount?: number,
     className?: string
     style?: React.CSSProperties,
-    date?: Date | string
+    date?: Date | string,
+    isActive?: boolean
 }
 
-export default function TicketCardContainer({ id, onChoose, active, bottomEnd, children, amount = 1, className, style, date }: TicketCardContainerProps) {
+export default function TicketCardContainer({ id, onChoose, isActive: _isActive, active, bottomEnd, children, amount = 1, className, style, date }: TicketCardContainerProps) {
     const isActiveId = active?.id === id
     const isActiveDate = active?.date && date && new Date(date).getTime() === new Date(active?.date).getTime()
-    const isActive = isActiveId && isActiveDate
+    const isActive = (isActiveId && isActiveDate) || _isActive
 
     return (
         <div

@@ -1,9 +1,8 @@
-import React from 'react'
-import useLanguage from '../../stores/useLanguage'
-import { calculateTicketsFullPrice, parseTicketQuery } from '../../lib/ticket'
 import useQuery from '../../hooks/useQuery'
-import { ticketChooseType } from './card/simple'
+import { calculateTicketsFullPrice, parseTicketQuery } from '../../lib/ticket'
 import { cn } from '../../lib/utils'
+import useLanguage from '../../stores/useLanguage'
+import { ticketChooseType } from './card/simple/type'
 
 type TicketsFullPriceProps = {
     outboundTicket: ticketChooseType | null
@@ -17,7 +16,22 @@ export default function TicketsFullPrice({ outboundTicket, returnTicket, classNa
 
     const passengersCount = child + passenger
 
-    const { serviceFee, ticketsPrice, totalPrice, discountPrice, discount } = calculateTicketsFullPrice(passengersCount, outboundTicket?.busDirection?.price, returnTicket?.busDirection?.price)
+    let price1 = 0;
+    let price2 = 0;
+
+    if (outboundTicket && "busSystem" in outboundTicket?.metadata) {
+        price1 = outboundTicket?.metadata.price_one_way
+    } else if (outboundTicket && "georgianbus" in outboundTicket?.metadata && outboundTicket?.metadata.busDirection) {
+        price1 = outboundTicket?.metadata.busDirection.price || 0
+    }
+
+    if (returnTicket && "busSystem" in returnTicket?.metadata) {
+        price2 = returnTicket?.metadata.price_one_way
+    } else if (returnTicket && "georgianbus" in returnTicket?.metadata && returnTicket?.metadata.busDirection) {
+        price2 = returnTicket?.metadata.busDirection.price || 0
+    }
+
+    const { serviceFee, ticketsPrice, totalPrice, discountPrice, discount } = calculateTicketsFullPrice(passengersCount, price1, price2)
 
     const items = [
         {

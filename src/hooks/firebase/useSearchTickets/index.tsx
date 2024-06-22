@@ -23,9 +23,18 @@ export default function useSearchTickets(from?: string, to?: string, fullDate?: 
 
                 const dates = res.data?.data?.flights
 
+                const validDates = Object.entries(dates).reduce((obj: any, [key, arr]) => {
+                    const validDates = (arr as string[]).filter((date: string) => {
+                        const dateObj = new Date(date)
+                        return dateObj > new Date()
+                    })
+                    obj[key] = validDates;
+                    return obj;
+                }, {})
+
                 if (dates) {
                     setBusDirection(busDirection)
-                    setBusDates(dates)
+                    setBusDates(validDates)
                 }
             }
             setIsBusDatesLoading(false)

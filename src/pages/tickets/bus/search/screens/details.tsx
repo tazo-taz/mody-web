@@ -1,7 +1,7 @@
 import { passengerType, screenEnum } from '..'
 import WarningMessage from '../../../../../components/Messages/Warning'
 import ActiveTicketInfoForTicket from '../../../../../components/ticket/active-ticket-info/ticket'
-import { ticketChooseType } from '../../../../../components/ticket/card/simple'
+import { ticketChooseType } from '../../../../../components/ticket/card/simple/type'
 import PassengerForm from '../../../../../components/ticket/passenger-form'
 import Title from '../../../../../components/title'
 import useTicketUsers from '../../../../../hooks/firebase/useTicketUsers'

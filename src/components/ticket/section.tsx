@@ -6,9 +6,10 @@ import { busSystemDatesType } from '../../hooks/firebase/useSearchTickets/types'
 import { getTicketsFromBusDates } from '../../lib/ticket'
 import useLanguage from '../../stores/useLanguage'
 import Title from '../title'
-import TicketCard, { ticketChooseType } from './card/simple'
+import TicketCard from './card/simple'
 import BusSystemTicketCard from './card/simple/bus-system'
 import TicketDatesSlider from './dates-slider'
+import { ticketChooseType } from './card/simple/type'
 
 type TicketsSectionType = {
     title: string,
@@ -53,9 +54,6 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
         ),
         date: new Date(ticket.date_from + 'T' + ticket.time_from)
     }))
-
-    // console.log(busSystemDates);
-
 
     const ticketsHTML = [...geoBusTickets, ...busSystemTickets].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).filter((item) => {
         const date = new Date(item.date)

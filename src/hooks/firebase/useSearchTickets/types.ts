@@ -47,7 +47,7 @@ export interface busSystemDatesType {
   date_from: Date;
   time_from: string;
   mktime_from: number;
-  point_from: Point;
+  point_from: string;
   country_from_id: string;
   point_from_id: string;
   station_from_id: string;
@@ -59,7 +59,7 @@ export interface busSystemDatesType {
   date_to: Date;
   time_to: string;
   mktime_to: number;
-  point_to: Point;
+  point_to: string;
   country_to_id: string;
   point_to_id: string;
   station_to_id: string;

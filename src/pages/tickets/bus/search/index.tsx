@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { ticketChooseType } from '../../../../components/ticket/card/simple';
 import toast from 'react-hot-toast';
 import useLanguage from '../../../../stores/useLanguage';
 import TicketDetailsScreen from './screens/details';
@@ -17,9 +16,11 @@ import TicketsSearchScreen from './screens/search';
 import TicketHeader from '../../../../components/ticket/header';
 import { languageData } from '../../../../assets/language';
 import Breadcrumbs from '../../../../components/breadcrumbs';
+import { ticketChooseType } from '../../../../components/ticket/card/simple/type';
 
 export enum screenEnum {
     SEARCH,
+    SEATS,
     DETAILS,
     PAY
 }
@@ -66,7 +67,10 @@ export default function BusTicketsSearchPage() {
     }, [auth.user])
 
     const searchToDetailsScreen = () => {
-        if (activeOutbound)
+        if (activeOutbound) {
+            if ("busSystem" in activeOutbound.metadata) {
+                return setScreen(screenEnum.SEATS)
+            }
             if ((parseTicketQuery(query).returnDate && activeReturn) || !parseTicketQuery(query).returnDate) {
                 const { child, passenger } = parseTicketQuery(query)
                 const adultPassengers: passengerType[] = [...new Array(passenger)].map(() => ({
@@ -87,6 +91,7 @@ export default function BusTicketsSearchPage() {
                 })))
                 return setScreen(screenEnum.DETAILS)
             }
+        }
 
         toast.error(getItem("Choose_tickets"))
     }
@@ -109,55 +114,55 @@ export default function BusTicketsSearchPage() {
                 return toast.error(getItem("Choose_payment_method"))
             }
 
-            const payBusPriceData: any = {
-                item: {
-                    busDirectionId: activeOutbound!.busDirection!.id,
-                    date: activeOutbound!.date,
-                    flightId: activeOutbound!.id
-                },
-                paymentType,
-                adult: `${adultPassengers.length}`,
-                child: `${childPassengers.length}`,
-                requestId: `8d24ade2-3e37-4d45-bba1-8ddf7deb86a1`,
-                driverAppCallbackUrl: `${window.location.origin}/account/my-tickets`
-            }
+            // const payBusPriceData: any = {
+            //     item: {
+            //         busDirectionId: activeOutbound?.metadata?.busDirection!.id,
+            //         date: activeOutbound!.date,
+            //         flightId: activeOutbound!.id
+            //     },
+            //     paymentType,
+            //     adult: `${adultPassengers.length}`,
+            //     child: `${childPassengers.length}`,
+            //     requestId: `8d24ade2-3e37-4d45-bba1-8ddf7deb86a1`,
+            //     driverAppCallbackUrl: `${window.location.origin}/account/my-tickets`
+            // }
 
-            if (adultPassengers[0].save) {
-                payBusPriceData.info = {
-                    firstNameValue: adultPassengers[0].firstName,
-                    lastNameValue: adultPassengers[0].lastName,
-                    userIdValue: adultPassengers[0].userId,
-                }
-            }
+            // if (adultPassengers[0].save) {
+            //     payBusPriceData.info = {
+            //         firstNameValue: adultPassengers[0].firstName,
+            //         lastNameValue: adultPassengers[0].lastName,
+            //         userIdValue: adultPassengers[0].userId,
+            //     }
+            // }
 
-            if (activeReturn) {
-                payBusPriceData.returnItem = {
-                    busDirectionId: activeReturn!.busDirection!.id,
-                    date: activeReturn!.date,
-                    flightId: activeReturn!.id
-                }
-            }
+            // if (activeReturn) {
+            //     payBusPriceData.returnItem = {
+            //         busDirectionId: activeReturn?.metadata?.busDirection!.id,
+            //         date: activeReturn!.date,
+            //         flightId: activeReturn!.id
+            //     }
+            // }
 
-            payBusPriceData.adultPassengers = filterUnfilledPassengers(adultPassengers)
-            payBusPriceData.childPassengers = filterUnfilledPassengers(childPassengers)
+            // payBusPriceData.adultPassengers = filterUnfilledPassengers(adultPassengers)
+            // payBusPriceData.childPassengers = filterUnfilledPassengers(childPassengers)
 
-            const data = await functions('payBusPrice', payBusPriceData);
+            // const data = await functions('payBusPrice', payBusPriceData);
 
-            if (paymentType === "new") {
-                if (data.data.uri) window.location.href = data.data.uri
-                else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
-            } else {
-                console.log(data);
+            // if (paymentType === "new") {
+            //     if (data.data.uri) window.location.href = data.data.uri
+            //     else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
+            // } else {
+            //     console.log(data);
 
-                if (data.data.result) {
-                    const myTickets = await getMyTickets()
-                    if (myTickets) {
-                        modal.onOpen("purchased-ticket", { ticket: myTickets[0] })
-                    }
-                }
-                else
-                    toast.error(getItem(data.data.message?.error) || getItem("Something_went_wrong_please_try_again_or_contact_us"))
-            }
+            //     if (data.data.result) {
+            //         const myTickets = await getMyTickets()
+            //         if (myTickets) {
+            //             modal.onOpen("purchased-ticket", { ticket: myTickets[0] })
+            //         }
+            //     }
+            //     else
+            //         toast.error(getItem(data.data.message?.error) || getItem("Something_went_wrong_please_try_again_or_contact_us"))
+            // }
         } catch (error) {
             console.log(error);
             toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
@@ -216,6 +221,19 @@ export default function BusTicketsSearchPage() {
         onContinueCB = detailsToReviewScreen
         buttonTitle = "Review_Journey_Details"
         goBack = () => setScreen(screenEnum.SEARCH)
+    } else if (screen === screenEnum.SEATS) {
+        currentScreen = (
+            <TicketDetailsScreen
+                setScreen={setScreen}
+                activeOutbound={activeOutbound}
+                activeReturn={activeReturn}
+                detailsToReviewScreen={detailsToReviewScreen}
+                adultPassengers={adultPassengers}
+                childPassengers={childPassengers}
+                setAdultPassengers={setAdultPassengers}
+                setChildPassengers={setChildPassengers}
+            />
+        )
     }
 
     const activeDate = activeOutbound?.date ? new Date(activeOutbound?.date) : ticketQuery.departureDate

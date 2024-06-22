@@ -4,10 +4,10 @@ import { calculateTicketsFullPrice, parseTicketQuery } from '../../../lib/ticket
 import { cn } from '../../../lib/utils'
 import useLanguage from '../../../stores/useLanguage'
 import Button from '../../fields/button'
-import { ticketChooseType } from '../card/simple'
 import TicketMiniCard from '../card/simple/mini'
 import TicketsFullPrice from '../tickets-full-price'
 import { languageData } from '../../../assets/language'
+import { ticketChooseType } from '../card/simple/type'
 
 export type ActiveTicketInfoType = {
     className?: string,
@@ -26,7 +26,23 @@ export default function ActiveTicketInfo({ className, outboundTicket, returnTick
     if (!outboundTicket && !returnTicket) return null
 
     const passengersCount = child + passenger
-    const { totalPrice } = calculateTicketsFullPrice(passengersCount, outboundTicket?.busDirection?.price, returnTicket?.busDirection?.price, fullDetails)
+
+    let price1 = 0;
+    let price2 = 0;
+
+    if (outboundTicket && "busSystem" in outboundTicket?.metadata) {
+        price1 = outboundTicket?.metadata.price_one_way
+    } else if (outboundTicket && "georgianbus" in outboundTicket?.metadata && outboundTicket?.metadata.busDirection) {
+        price1 = outboundTicket?.metadata.busDirection.price || 0
+    }
+
+    if (returnTicket && "busSystem" in returnTicket?.metadata) {
+        price2 = returnTicket?.metadata.price_one_way
+    } else if (returnTicket && "georgianbus" in returnTicket?.metadata && returnTicket?.metadata.busDirection) {
+        price2 = returnTicket?.metadata.busDirection.price || 0
+    }
+
+    const { totalPrice } = calculateTicketsFullPrice(passengersCount, price1, price2, fullDetails)
 
     return (
         <div className={cn(

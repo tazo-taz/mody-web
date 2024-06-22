@@ -64,7 +64,7 @@ export const TicketCardDash = ({ timeDiff, width }: TicketCardDashProps) => {
 }
 
 export const TimeDiff = ({ timeDiff }: { timeDiff: number }) => {
-    const minsDiff = String((timeDiff % 1) * 60).padStart(2, "0")
+    const minsDiff = String(Math.floor((timeDiff % 1) * 60)).padStart(2, "0")
     const hoursDiff = timeDiff - timeDiff % 1
     return (
         <div className='rounded-xl text-xs text-[#9CA3AF] py-[5px] px-2 whitespace-nowrap bg-white border-1 border-[#E5E7EB]'>
