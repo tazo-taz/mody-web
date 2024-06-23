@@ -32,11 +32,12 @@ export const getFileStorageRef = (filename: string) => {
 export const functions = async (name: string, data: any = {}) => {
     try {
         const res = await httpsCallable(functionsApp, name)(data);
-        return res as unknown as Promise<{ data: any, result: boolean }>
+        return res as unknown as Promise<{ data: any }>
     } catch (error) {
         return Promise.resolve({
-            result: false,
-            data: null,
+            data: {
+                result: false
+            }
         })
     }
 }

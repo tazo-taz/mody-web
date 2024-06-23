@@ -17,6 +17,7 @@ import TicketHeader from '../../../../components/ticket/header';
 import { languageData } from '../../../../assets/language';
 import Breadcrumbs from '../../../../components/breadcrumbs';
 import { ticketChooseType } from '../../../../components/ticket/card/simple/type';
+import TicketSeatsScreen from './screens/seats';
 
 export enum screenEnum {
     SEARCH,
@@ -55,9 +56,10 @@ export default function BusTicketsSearchPage() {
         firstName: "",
         phoneNumber: ""
     })
+    const [activeSeats, setActiveSeats] = useState<string[]>([])
 
     const { isOpen: isActiveTicketInfoOpen, toggle: toggleActiveTicketInfo } = useOpen(true)
-
+    const ticketHasSeats = activeOutbound && "busSystem" in activeOutbound.metadata && activeOutbound.metadata.bustype !== "no_plan"
 
     useEffect(() => {
         if (auth.user) {
@@ -68,7 +70,7 @@ export default function BusTicketsSearchPage() {
 
     const searchToDetailsScreen = () => {
         if (activeOutbound) {
-            if ("busSystem" in activeOutbound.metadata) {
+            if (ticketHasSeats) {
                 return setScreen(screenEnum.SEATS)
             }
             if ((parseTicketQuery(query).returnDate && activeReturn) || !parseTicketQuery(query).returnDate) {
@@ -223,7 +225,7 @@ export default function BusTicketsSearchPage() {
         goBack = () => setScreen(screenEnum.SEARCH)
     } else if (screen === screenEnum.SEATS) {
         currentScreen = (
-            <TicketDetailsScreen
+            <TicketSeatsScreen
                 setScreen={setScreen}
                 activeOutbound={activeOutbound}
                 activeReturn={activeReturn}
@@ -232,6 +234,8 @@ export default function BusTicketsSearchPage() {
                 childPassengers={childPassengers}
                 setAdultPassengers={setAdultPassengers}
                 setChildPassengers={setChildPassengers}
+                setActiveSeats={setActiveSeats}
+                activeSeats={activeSeats}
             />
         )
     }
@@ -252,6 +256,7 @@ export default function BusTicketsSearchPage() {
                         className='h-[90px] container mx-auto md:flex hidden'
                         data={[
                             { id: screenEnum.SEARCH, title: getItem("Search") },
+                            ticketHasSeats && { id: screenEnum.SEATS, title: getItem("Seats") },
                             { id: screenEnum.DETAILS, title: getItem("Passenger_details") },
                             { id: screenEnum.PAY, title: getItem("Review_and_pay") },
                         ]}

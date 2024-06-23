@@ -37,7 +37,7 @@ export default function AccountSettingsPage() {
             ]);
 
             if (!fillnamesRes.data.result)
-                toast.error(getItem(fillnamesRes.data?.message?.slug) || getItem("Something_went_wrong_please_try_again_or_contact_us"))
+                toast.error(getItem(fillnamesRes.data.data?.message?.slug) || getItem("Something_went_wrong_please_try_again_or_contact_us"))
 
             await loadUser()
         } catch (error) {

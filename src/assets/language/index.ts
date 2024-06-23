@@ -561,9 +561,21 @@ export const languageData = {
         en: "Click to get the invite code",
         ge: "დააჭირეთ მოწვევის კოდის მისაღებად"
     },
+    Seats: {
+        en: "Seats",
+        ge: "ადგილები"
+    },
     "Not enough money on balance": {
         en: "Not enough money on balance",
         ge: "ბალანსზე საკმარისი თანხა არ არის"
+    },
+    Seat_Reservation: {
+        en: "Seat Reservation",
+        ge: "ადგილების დაჯავშნა"
+    },
+    Available_seats: {
+        en: "Available seats",
+        ge: "ხელმისაწვდომი ადგილები"
     },
 }
 
