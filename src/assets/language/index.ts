@@ -49,6 +49,18 @@ export const languageData = {
         en: "1 Storey",
         ge: "1 სართული"
     },
+    Storey: {
+        en: "Storey",
+        ge: "სართული"
+    },
+    Seat: {
+        en: "Seat",
+        ge: "ადგილი"
+    },
+    Select_seats_for: {
+        en: "Select seats for",
+        ge: "აირჩიეთ ადგილი"
+    },
     Passengers: {
         en: "Passengers",
         ge: "მგზავრები"
@@ -336,6 +348,18 @@ export const languageData = {
     Choose_tickets: {
         en: "Choose tickets",
         ge: "აირჩიეთ ბილეთები"
+    },
+    Choose_seats: {
+        en: "Choose seats",
+        ge: "აირჩიეთ ადგილები"
+    },
+    Choose_outbound_seats: {
+        en: "Choose outbound seats",
+        ge: "აირჩიეთ გამავალი ადგილები"
+    },
+    Choose_return_seats: {
+        en: "Choose return seats",
+        ge: "აირჩიეთ დაბრუნების ადგილები"
     },
     Passenger_details: {
         en: "Passenger details",

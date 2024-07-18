@@ -17,7 +17,8 @@ export default function BusSystemTicketCard({
   onChoose, active, ...ticketData
 }: TicketCardProps) {
   const { width } = useWindowSize()
-  const { route_id, price_one_way, point_from, point_to } = ticketData;
+  // TODO: some ticket has range of price
+  const { route_id, price_one_way, price_one_way_max, point_from, point_to } = ticketData;
 
   const { dateFrom, timeFrom, timeTo, timeDiff } = extractTimesFromBusSystemRoute(ticketData)
 

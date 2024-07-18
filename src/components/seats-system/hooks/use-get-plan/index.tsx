@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { functions } from '../../../../firebase'
 import { VagonFloor } from './types'
 
-export default function useGetPlan(bustypeId: string) {
+function useGetPlan(bustypeId: string) {
   const [floors, setFloors] = useState<VagonFloor[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -22,3 +22,5 @@ export default function useGetPlan(bustypeId: string) {
     loading,
   }
 }
+
+export default useGetPlan

@@ -1,3 +1,5 @@
+import useQuery from '../../hooks/useQuery'
+import { isReserved, parseTicketQuery } from '../../lib/ticket'
 import CardContainer from '../card/container'
 import useTab from '../tab/useTab'
 import { ticketChooseType } from '../ticket/card/simple/type'
@@ -11,60 +13,97 @@ import VagonSeats from './vagon-seat'
 
 type BusSeatsSystemType = {
   activeOutbound: ticketChooseType | null
-  setActiveSeats: React.Dispatch<React.SetStateAction<string[]>>,
-  activeSeats: string[]
+  activeReturn: ticketChooseType | null
+  setActiveOutboundSeats: React.Dispatch<React.SetStateAction<(string | undefined)[]>>,
+  activeOutboundSeats: (string | undefined)[]
+  setActiveReturnSeats: React.Dispatch<React.SetStateAction<(string | undefined)[]>>,
+  activeReturnSeats: (string | undefined)[],
+  seatsIndex: number
 }
 
-export default function BusSeatsSystem({ activeOutbound, activeSeats, setActiveSeats }: BusSeatsSystemType) {
+export default function BusSeatsSystem({ activeOutbound, activeReturn, setActiveReturnSeats, activeReturnSeats, activeOutboundSeats, setActiveOutboundSeats, seatsIndex }: BusSeatsSystemType) {
+
+  const activeTicketType = seatsIndex === 0 ? activeOutbound : activeReturn
+  const activeSeats = seatsIndex === 0 ? activeOutboundSeats : activeReturnSeats
+  const setActiveSeats = seatsIndex === 0 ? setActiveOutboundSeats : setActiveReturnSeats
+
   let bustype_id = ""
-  if (activeOutbound && "busSystem" in activeOutbound.metadata) {
-    bustype_id = activeOutbound.metadata.bustype_id
+  if (activeTicketType && "busSystem" in activeTicketType.metadata) {
+    bustype_id = activeTicketType.metadata.bustype_id
   }
 
   const { floors, loading } = useGetPlan(bustype_id)
-  const { Tab, index } = useTab({
+  const query = useQuery()
+  const { child, passenger } = parseTicketQuery(query)
+
+  const { Tab: floorTab, index: floorIndex } = useTab({
     nav: floors.map((_, inx) => "I".repeat(inx + 1) + " floor")
   })
-  const floor = floors[index]
 
-  if (!activeOutbound || !("busSystem" in activeOutbound.metadata)) return null
-  console.log(activeOutbound);
+  const floor = floors[floorIndex]
+
+  if (!activeTicketType || !("busSystem" in activeTicketType.metadata)) return null
+  const passengerAmount = child + passenger
 
   const handleSeatClick = (seat: SeatType) => {
-    if (!activeOutbound || !("busSystem" in activeOutbound.metadata) || typeof seat !== "string") return
+    if (!activeTicketType || !("busSystem" in activeTicketType.metadata) || typeof seat !== "string" || isReserved(seat, activeTicketType.metadata.free_seats)) return
 
-    setActiveSeats((prev) => {
-      if (prev.includes(seat)) {
-        return prev.filter((item) => item !== seat)
-      }
-      return [...prev, seat]
+    let seatIndex = -1
+    let firstAvaibleSeat = -1
+
+    activeSeats.forEach((_seat, inx) => {
+      if (_seat === seat) seatIndex = inx
+      if (firstAvaibleSeat === -1 && _seat === undefined) firstAvaibleSeat = inx
     })
+
+    if (seatIndex !== -1) {
+      let _activeSeats = [...activeSeats]
+      _activeSeats[seatIndex] = undefined
+      setActiveSeats(_activeSeats)
+    } else if (firstAvaibleSeat !== -1) {
+      let _activeSeats = [...activeSeats]
+      _activeSeats[firstAvaibleSeat] = seat
+      setActiveSeats(_activeSeats)
+    }
+  }
+
+  const handleDeleteSeat = (index: number) => {
+    let _activeSeats = [...activeSeats]
+    _activeSeats[index] = undefined
+    setActiveSeats(_activeSeats)
   }
 
   return (
-    <CardContainer header={(<>
-      <div className='grid grid-cols-2 flex-1'>
-        <div className='max-w-[350px]'>
-          {!loading && Tab()}
-        </div>
-        <div className='flex items-center justify-end gap-5'>
-          <AvailableSeatStatus />
-          <SelectedSeatStatus />
-          <ReservedSeatStatus />
-        </div>
-      </div>
-    </>)}>
-      <div className='grid grid-cols-2 flex-1'>
+    <CardContainer
+      header={(
+        <>
+          <div className='grid grid-cols-1 lg:grid-cols-2 flex-1 gap-4 lg:gap-0'>
+            <div className='max-w-[350px]'>
+              {!loading && floorTab()}
+            </div>
+            <div className='flex items-center justify-center lg:justify-end gap-5'>
+              <AvailableSeatStatus />
+              <SelectedSeatStatus />
+              <ReservedSeatStatus />
+            </div>
+          </div>
+        </>
+      )}
+      contentClassName='pt-0'
+    >
+      <div className='lg:grid lg:grid-cols-2 flex flex-col-reverse flex-1'>
         <VagonSeats
           floor={floor}
           loading={loading}
-          freeSeats={activeOutbound.metadata.free_seats}
-          setActiveSeats={setActiveSeats}
+          freeSeats={activeTicketType.metadata.free_seats}
           activeSeats={activeSeats}
           handleClick={handleSeatClick}
         />
         <SeatPassengers
-          activeOutbound={activeOutbound}
+          activeTicketType={activeTicketType}
+          passengerAmount={passengerAmount}
+          activeSeats={activeSeats}
+          handleDeleteSeat={handleDeleteSeat}
         />
       </div>
     </CardContainer>

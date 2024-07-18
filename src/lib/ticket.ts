@@ -7,7 +7,7 @@ import { doc, getDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import useAuth from "../stores/useAuth"
 import { ticketsListSchema } from "../schemas/ticket"
-import { busDatesType } from "../hooks/firebase/useSearchTickets/types"
+import { busDatesType, busSystemDatesType } from "../hooks/firebase/useSearchTickets/types"
 
 const dateFormat = "yyyy-MM-DD"
 
@@ -190,6 +190,13 @@ export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Da
     })
 }
 
+export const getTicketsCount = (busDates: busDatesType, busSystemDates: busSystemDatesType[], departureDate: Date) => {
+    const busDatesCount = getTicketsFromBusDates(busDates, departureDate).length
+    return busDatesCount + busSystemDates.filter(({ date_from }) => {
+        return formatDate(date_from) === formatDate(departureDate)
+    }).length
+}
+
 export const filterUnfilledPassengers = (passengers: passengerType[]) =>
     passengers.filter(({ firstName, lastName, userId }) => firstName && lastName && userId)
 
@@ -229,4 +236,8 @@ export const getMyTickets = async () => {
         return parsedData.reverse()
     }
     return null
+}
+
+export const isReserved = (seat: string, freeSeats: number[]) => {
+    return freeSeats.includes(parseInt(seat))
 }

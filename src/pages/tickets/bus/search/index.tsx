@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import useLanguage from '../../../../stores/useLanguage';
-import TicketDetailsScreen from './screens/details';
-import useQuery from '../../../../hooks/useQuery';
-import { filterUnfilledPassengers, getMyTickets, parseTicketQuery } from '../../../../lib/ticket';
-import useAuth from '../../../../stores/useAuth';
-import TicketPayScreen from './screens/pay';
-import { userSchemaType } from '../../../../schemas/user';
-import { functions } from '../../../../firebase';
-import { startLoading, stopLoading } from '../../../../references/loading';
-import useModal from '../../../../stores/useModal';
-import useOpen from '../../../../hooks/useOpen';
-import ActiveTicketInfoModalContent from '../../../../components/ticket/active-ticket-info/modal-content';
-import TicketsSearchScreen from './screens/search';
-import TicketHeader from '../../../../components/ticket/header';
 import { languageData } from '../../../../assets/language';
 import Breadcrumbs from '../../../../components/breadcrumbs';
+import ActiveTicketInfoModalContent from '../../../../components/ticket/active-ticket-info/modal-content';
 import { ticketChooseType } from '../../../../components/ticket/card/simple/type';
+import TicketHeader from '../../../../components/ticket/header';
+import useOpen from '../../../../hooks/useOpen';
+import useQuery from '../../../../hooks/useQuery';
+import { filterUnfilledPassengers, parseTicketQuery } from '../../../../lib/ticket';
+import { startLoading, stopLoading } from '../../../../references/loading';
+import { userSchemaType } from '../../../../schemas/user';
+import useAuth from '../../../../stores/useAuth';
+import useLanguage from '../../../../stores/useLanguage';
+import useModal from '../../../../stores/useModal';
+import TicketDetailsScreen from './screens/details';
+import TicketPayScreen from './screens/pay';
+import TicketsSearchScreen from './screens/search';
 import TicketSeatsScreen from './screens/seats';
+
+// TODO: Divide kutaisi into kutaisi and kutaisi airport
 
 export enum screenEnum {
     SEARCH,
@@ -56,10 +57,12 @@ export default function BusTicketsSearchPage() {
         firstName: "",
         phoneNumber: ""
     })
-    const [activeSeats, setActiveSeats] = useState<string[]>([])
+    const [activeOutboundSeats, setActiveOutboundSeats] = useState<(string | undefined)[]>([])
+    const [activeReturnSeats, setActiveReturnSeats] = useState<(string | undefined)[]>([])
 
     const { isOpen: isActiveTicketInfoOpen, toggle: toggleActiveTicketInfo } = useOpen(true)
-    const ticketHasSeats = activeOutbound && "busSystem" in activeOutbound.metadata && activeOutbound.metadata.bustype !== "no_plan"
+    const boundTicketHasSeats = activeOutbound && "busSystem" in activeOutbound.metadata && activeOutbound.metadata.bustype !== "no_plan"
+    const returnTicketHasSeats = activeReturn && "busSystem" in activeReturn.metadata && activeReturn.metadata.bustype !== "no_plan"
 
     useEffect(() => {
         if (auth.user) {
@@ -68,39 +71,94 @@ export default function BusTicketsSearchPage() {
         }
     }, [auth.user])
 
-    const searchToDetailsScreen = () => {
-        if (activeOutbound) {
-            if (ticketHasSeats) {
+
+    const screenValidators = {
+        toDetails() {
+            if (boundTicketHasSeats || returnTicketHasSeats) {
+                const { child, passenger } = parseTicketQuery(query)
+                const passengersAmount = child + passenger
+
+                const outboudSeatsFilled = activeOutboundSeats.filter(a => a !== undefined).length === passengersAmount
+                const returnSeatsFilled = returnTicketHasSeats ? activeReturnSeats.filter(a => a !== undefined).length === passengersAmount : true
+
+                if (!outboudSeatsFilled) {
+                    toast.error(getItem("Choose_outbound_seats"))
+                    return false
+                }
+                if (!returnSeatsFilled) {
+                    toast.error(getItem("Choose_return_seats"))
+                    return false
+                }
+
+                return true
+            }
+        },
+        toPay() {
+            const mainPassenger = adultPassengers[0]
+            if (mainPassenger.firstName && mainPassenger.lastName && mainPassenger.userId) {
+                return true
+            }
+            return false
+        }
+    }
+
+
+    console.log(returnTicketHasSeats, boundTicketHasSeats);
+    const searchToNextScreen = () => {
+        const { child, passenger } = parseTicketQuery(query)
+        const passengersAmount = child + passenger
+
+        if (activeOutbound && shouldContinueToDetailsScreen()) {
+            if (returnTicketHasSeats || boundTicketHasSeats) {
+                setActiveOutboundSeats([...new Array(passengersAmount)])
+                if (returnTicketHasSeats) setActiveReturnSeats([...new Array(passengersAmount)])
                 return setScreen(screenEnum.SEATS)
             }
-            if ((parseTicketQuery(query).returnDate && activeReturn) || !parseTicketQuery(query).returnDate) {
-                const { child, passenger } = parseTicketQuery(query)
-                const adultPassengers: passengerType[] = [...new Array(passenger)].map(() => ({
-                    firstName: "",
-                    lastName: "",
-                    userId: "",
-                    save: true
-                }))
-
-                if (auth.user) adultPassengers[0] = structuredClone({ ...auth.user, save: true })
-
-                setAdultPassengers(adultPassengers)
-                setChildPassengers([...new Array(child)].map(() => ({
-                    firstName: "",
-                    lastName: "",
-                    userId: "",
-                    save: true
-                })))
-                return setScreen(screenEnum.DETAILS)
-            }
+            return toDetailsScreen()
         }
 
         toast.error(getItem("Choose_tickets"))
     }
 
+    const shouldContinueToDetailsScreen = () => {
+        return (parseTicketQuery(query).returnDate && activeReturn) || !parseTicketQuery(query).returnDate
+    }
+
+    const handleToDetailsScreenFromSeats = () => {
+        if (boundTicketHasSeats || returnTicketHasSeats) {
+            const validated = screenValidators.toDetails()
+            if (validated) {
+                return toDetailsScreen()
+            }
+        }
+    }
+
+    const toDetailsScreen = () => {
+        const { child, passenger } = parseTicketQuery(query)
+
+        if (shouldContinueToDetailsScreen()) {
+            const adultPassengers: passengerType[] = [...new Array(passenger)].map(() => ({
+                firstName: "",
+                lastName: "",
+                userId: "",
+                save: true
+            }))
+
+            if (auth.user) adultPassengers[0] = structuredClone({ ...auth.user, save: true })
+
+            setAdultPassengers(adultPassengers)
+            setChildPassengers([...new Array(child)].map(() => ({
+                firstName: "",
+                lastName: "",
+                userId: "",
+                save: true
+            })))
+            return setScreen(screenEnum.DETAILS)
+        }
+    }
+
     const detailsToReviewScreen = () => {
-        const mainPassenger = adultPassengers[0]
-        if (mainPassenger.firstName && mainPassenger.lastName && mainPassenger.userId) {
+        if (screenValidators.toPay()) {
             setScreen(screenEnum.PAY)
             return true
         }
@@ -109,6 +167,10 @@ export default function BusTicketsSearchPage() {
     }
 
     const handlePay = async () => {
+
+        if (!activeOutbound) {
+            return toast.error(getItem("Choose_tickets"))
+        }
         try {
             startLoading()
 
@@ -116,37 +178,54 @@ export default function BusTicketsSearchPage() {
                 return toast.error(getItem("Choose_payment_method"))
             }
 
-            // const payBusPriceData: any = {
-            //     item: {
-            //         busDirectionId: activeOutbound?.metadata?.busDirection!.id,
-            //         date: activeOutbound!.date,
-            //         flightId: activeOutbound!.id
-            //     },
-            //     paymentType,
-            //     adult: `${adultPassengers.length}`,
-            //     child: `${childPassengers.length}`,
-            //     requestId: `8d24ade2-3e37-4d45-bba1-8ddf7deb86a1`,
-            //     driverAppCallbackUrl: `${window.location.origin}/account/my-tickets`
-            // }
+            let item: any
 
-            // if (adultPassengers[0].save) {
-            //     payBusPriceData.info = {
-            //         firstNameValue: adultPassengers[0].firstName,
-            //         lastNameValue: adultPassengers[0].lastName,
-            //         userIdValue: adultPassengers[0].userId,
-            //     }
-            // }
+            if ("busSystem" in activeOutbound?.metadata) {
+                item = activeOutbound.metadata
+            } else {
+                item = {
+                    busDirectionId: activeOutbound?.metadata?.busDirection!.id,
+                    date: activeOutbound!.date,
+                    flightId: activeOutbound!.id
+                }
+            }
 
-            // if (activeReturn) {
-            //     payBusPriceData.returnItem = {
-            //         busDirectionId: activeReturn?.metadata?.busDirection!.id,
-            //         date: activeReturn!.date,
-            //         flightId: activeReturn!.id
-            //     }
-            // }
+            const payBusPriceData: any = {
+                item,
+                paymentType,
+                adult: `${adultPassengers.length}`,
+                child: `${childPassengers.length}`,
+                driverAppCallbackUrl: `${window.location.origin}/account/my-tickets`
+            }
 
-            // payBusPriceData.adultPassengers = filterUnfilledPassengers(adultPassengers)
-            // payBusPriceData.childPassengers = filterUnfilledPassengers(childPassengers)
+            if (adultPassengers[0].save) {
+                payBusPriceData.info = {
+                    firstNameValue: adultPassengers[0].firstName,
+                    lastNameValue: adultPassengers[0].lastName,
+                    userIdValue: adultPassengers[0].userId,
+                }
+            }
+
+            if (activeReturn) {
+                let returnItem: any
+
+                if ("busSystem" in activeReturn.metadata) {
+                    returnItem = activeReturn.metadata
+                } else {
+                    returnItem = {
+                        busDirectionId: activeReturn.metadata.busDirection!.id,
+                        date: activeReturn.date,
+                        flightId: activeReturn.id
+                    }
+                }
+
+                payBusPriceData.returnItem = returnItem
+            }
+
+            payBusPriceData.adultPassengers = filterUnfilledPassengers(adultPassengers)
+            payBusPriceData.childPassengers = filterUnfilledPassengers(childPassengers)
+
+            console.log(payBusPriceData);
 
             // const data = await functions('payBusPrice', payBusPriceData);
 
@@ -175,7 +254,6 @@ export default function BusTicketsSearchPage() {
 
     let currentScreen: React.ReactNode = (
         <TicketPayScreen
-            setScreen={setScreen}
             handlePay={handlePay}
             outboundTicket={activeOutbound}
             returnTicket={activeReturn}
@@ -199,11 +277,11 @@ export default function BusTicketsSearchPage() {
                 activeReturn={activeReturn}
                 setActiveOutbound={setActiveOutbound}
                 setActiveReturn={setActiveReturn}
-                onContinue={searchToDetailsScreen}
+                onContinue={searchToNextScreen}
             />
         )
 
-        onContinueCB = searchToDetailsScreen
+        onContinueCB = searchToNextScreen
         buttonTitle = "Continue"
         goBack = undefined
     } else if (screen === screenEnum.DETAILS) {
@@ -229,13 +307,15 @@ export default function BusTicketsSearchPage() {
                 setScreen={setScreen}
                 activeOutbound={activeOutbound}
                 activeReturn={activeReturn}
-                detailsToReviewScreen={detailsToReviewScreen}
+                detailsToReviewScreen={handleToDetailsScreenFromSeats}
                 adultPassengers={adultPassengers}
                 childPassengers={childPassengers}
                 setAdultPassengers={setAdultPassengers}
                 setChildPassengers={setChildPassengers}
-                setActiveSeats={setActiveSeats}
-                activeSeats={activeSeats}
+                setActiveOutboundSeats={setActiveOutboundSeats}
+                activeOutboundSeats={activeOutboundSeats}
+                activeReturnSeats={activeReturnSeats}
+                setActiveReturnSeats={setActiveReturnSeats}
             />
         )
     }
@@ -256,14 +336,28 @@ export default function BusTicketsSearchPage() {
                         className='h-[90px] container mx-auto md:flex hidden'
                         data={[
                             { id: screenEnum.SEARCH, title: getItem("Search") },
-                            ticketHasSeats && { id: screenEnum.SEATS, title: getItem("Seats") },
+                            boundTicketHasSeats && { id: screenEnum.SEATS, title: getItem("Seats") },
                             { id: screenEnum.DETAILS, title: getItem("Passenger_details") },
                             { id: screenEnum.PAY, title: getItem("Review_and_pay") },
                         ]}
                         active={screen}
-                        choose={(screen) => {
-                            if (screen === screenEnum.PAY) { }
-                            else setScreen(screen)
+                        choose={(newScreen) => {
+                            if (newScreen === screenEnum.SEARCH) {
+                                setScreen(newScreen)
+                                return
+                            }
+                            else if (newScreen === screenEnum.SEATS) {
+                                setScreen(newScreen)
+                            }
+                            else if (newScreen === screenEnum.DETAILS) {
+                                if (screenValidators.toDetails()) {
+                                    setScreen(newScreen)
+                                }
+                            } else if (newScreen === screenEnum.PAY) {
+                                if (screenValidators.toDetails() && screenValidators.toPay()) {
+                                    detailsToReviewScreen()
+                                }
+                            }
                         }}
                     />
                 </div>

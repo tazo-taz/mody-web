@@ -12,7 +12,6 @@ import useLanguage from '../../../../../stores/useLanguage'
 import { ticketChooseType } from '../../../../../components/ticket/card/simple/type'
 
 type TicketPayScreenType = {
-    setScreen: (newScreen: screenEnum) => void,
     outboundTicket: ticketChooseType | null
     returnTicket: ticketChooseType | null,
     handlePay: () => void,
@@ -25,7 +24,7 @@ type TicketPayScreenType = {
 }
 
 export default function TicketPayScreen({
-    setScreen, outboundTicket, returnTicket, handlePay, adultPassengers, childPassengers, contactInfo, setContactInfo, paymentType, setPaymentType
+    outboundTicket, returnTicket, handlePay, adultPassengers, childPassengers, contactInfo, setContactInfo, paymentType, setPaymentType
 }: TicketPayScreenType) {
     const { getItem } = useLanguage()
 

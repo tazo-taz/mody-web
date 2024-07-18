@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 // import required modules
 
 import { addDays, dayDiff } from '../../lib/date';
-import { getTicketsFromBusDates } from '../../lib/ticket';
+import { getTicketsCount } from '../../lib/ticket';
 import TicketDate from './ticket-date';
 
 // Import Swiper React components
@@ -22,7 +22,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { IoReload } from "react-icons/io5";
 import { FreeMode, Mousewheel } from 'swiper';
 import { useWindowSize } from 'usehooks-ts';
-import { busDatesType } from '../../hooks/firebase/useSearchTickets/types';
+import { busDatesType, busSystemDatesType } from '../../hooks/firebase/useSearchTickets/types';
 
 type TicketDatesSliderProps = {
     dateFrom: Date,
@@ -30,9 +30,10 @@ type TicketDatesSliderProps = {
     onChange: (newDate: Date) => void,
     tickets: busDatesType,
     width: number
-    height: number
+    height: number,
+    busSystemDates: busSystemDatesType[]
 }
-export default function TicketDatesSlider({ dateFrom, active, onChange, tickets, width, height }: TicketDatesSliderProps) {
+export default function TicketDatesSlider({ dateFrom, active, onChange, tickets, width, height, busSystemDates }: TicketDatesSliderProps) {
     const [isLoading, setIsLoading] = useState(false)
     const { width: windowWidth } = useWindowSize()
     const swiperRef = useRef<any>(null)
@@ -82,7 +83,7 @@ export default function TicketDatesSlider({ dateFrom, active, onChange, tickets,
                         >
                             <TicketDate active={active}
                                 date={date}
-                                count={getTicketsFromBusDates(tickets, date).length}
+                                count={getTicketsCount(tickets, busSystemDates, date)}
                                 onChange={onChange}
                             />
                         </SwiperSlide>
@@ -97,7 +98,7 @@ export default function TicketDatesSlider({ dateFrom, active, onChange, tickets,
                         >
                             <TicketDate active={active}
                                 date={date}
-                                count={getTicketsFromBusDates(tickets, date).length}
+                                count={getTicketsCount(tickets, busSystemDates, date)}
                                 onChange={onChange}
                             />
                         </SwiperSlide>

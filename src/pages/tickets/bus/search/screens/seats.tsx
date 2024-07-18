@@ -1,38 +1,48 @@
 import { passengerType, screenEnum } from '..'
 import BusSeatsSystem from '../../../../../components/seats-system/bus'
+import useTab from '../../../../../components/tab/useTab'
 import ActiveTicketInfoForTicket from '../../../../../components/ticket/active-ticket-info/ticket'
 import { ticketChooseType } from '../../../../../components/ticket/card/simple/type'
 import Title from '../../../../../components/title'
-import useTicketUsers from '../../../../../hooks/firebase/useTicketUsers'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import useScrollTop from '../../../../../hooks/useScrollTop'
-import { objChange } from '../../../../../lib/utils'
 import useLanguage from '../../../../../stores/useLanguage'
 
 type TicketSeatsScreenType = {
     setScreen: (screen: screenEnum) => void
-    detailsToReviewScreen: () => boolean
+    detailsToReviewScreen: () => void
     activeOutbound: ticketChooseType | null
     activeReturn: ticketChooseType | null,
     adultPassengers: passengerType[],
     childPassengers: passengerType[],
     setChildPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
     setAdultPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
-    setActiveSeats: React.Dispatch<React.SetStateAction<string[]>>,
-    activeSeats: string[]
+    setActiveOutboundSeats: React.Dispatch<React.SetStateAction<(string | undefined)[]>>,
+    activeOutboundSeats: (string | undefined)[]
+    activeReturnSeats: (string | undefined)[]
+    setActiveReturnSeats: React.Dispatch<React.SetStateAction<(string | undefined)[]>>,
 }
 
 export default function TicketSeatsScreen({
     activeOutbound,
     activeReturn,
     detailsToReviewScreen,
-    activeSeats,
-    setActiveSeats
+    activeOutboundSeats,
+    setActiveOutboundSeats,
+    activeReturnSeats,
+    setActiveReturnSeats
 }: TicketSeatsScreenType) {
     const { getItem } = useLanguage()
 
     useGrayBg()
     useScrollTop()
+
+    // console.log(activeSeats, activeOutbound);
+
+    const { Tab: seatsTab, index: seatsIndex } = useTab({
+        nav: ["Outbound seats", "Return seats"],
+        itemClassName: "py-2"
+    })
 
     return (
         <>
@@ -49,14 +59,19 @@ export default function TicketSeatsScreen({
                         </div>
                     </Title>
 
-
-                    <div className='flex flex-col gap-[25px]'>
-                        <BusSeatsSystem
-                            activeOutbound={activeOutbound}
-                            activeSeats={activeSeats}
-                            setActiveSeats={setActiveSeats}
-                        />
-                    </div>
+                    {activeReturn && "busSystem" in activeReturn.metadata && (<>
+                        {seatsTab()}
+                        <br />
+                    </>)}
+                    <BusSeatsSystem
+                        activeOutbound={activeOutbound}
+                        activeOutboundSeats={activeOutboundSeats}
+                        setActiveOutboundSeats={setActiveOutboundSeats}
+                        activeReturnSeats={activeReturnSeats}
+                        setActiveReturnSeats={setActiveReturnSeats}
+                        activeReturn={activeReturn}
+                        seatsIndex={seatsIndex}
+                    />
                 </div>
                 <ActiveTicketInfoForTicket
                     outboundTicket={activeOutbound}

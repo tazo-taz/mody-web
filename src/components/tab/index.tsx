@@ -12,10 +12,11 @@ export type TabType = {
       }
     ))[],
   activeIndex?: number,
-  className?: string
+  className?: string,
+  itemClassName?: string,
 }
 
-export default function Tab({ nav, activeIndex: activeIndexProps, className }: TabType) {
+export default function Tab({ nav, activeIndex: activeIndexProps, className, itemClassName }: TabType) {
   const location = useLocation()
   const _activeIndex = nav.findIndex((item) => {
     if ("href" in item) return item.href === location.pathname || item.href + "/" === location.pathname
@@ -23,7 +24,7 @@ export default function Tab({ nav, activeIndex: activeIndexProps, className }: T
   })
   const activeIndex = activeIndexProps ?? (_activeIndex === -1 ? 0 : _activeIndex)
 
-  const navItemClassname = "py-1 text-center text-[#6B7280] rounded-md relative z-[1] whitespace-nowrap text-sm"
+  const navItemClassname = "py-1 text-center text-[#6B7280] rounded-md relative z-[1] whitespace-nowrap text-sm" + (itemClassName ? " " + itemClassName : "")
   const activeNavItemClassname = "text-secondary font-semibold"
 
   return (
