@@ -181,7 +181,11 @@ export default function BusTicketsSearchPage() {
             let item: any
 
             if ("busSystem" in activeOutbound?.metadata) {
-                item = activeOutbound.metadata
+                item = {
+                    date: activeOutbound.metadata.date_from,
+                    interval_id: activeOutbound.metadata.interval_id,
+                    seat: activeOutboundSeats
+                }
             } else {
                 item = {
                     busDirectionId: activeOutbound?.metadata?.busDirection!.id,
@@ -210,7 +214,11 @@ export default function BusTicketsSearchPage() {
                 let returnItem: any
 
                 if ("busSystem" in activeReturn.metadata) {
-                    returnItem = activeReturn.metadata
+                    returnItem = {
+                        date: activeReturn.metadata.date_from,
+                        interval_id: activeReturn.metadata.interval_id,
+                        seat: activeReturnSeats
+                    }
                 } else {
                     returnItem = {
                         busDirectionId: activeReturn.metadata.busDirection!.id,
@@ -225,7 +233,7 @@ export default function BusTicketsSearchPage() {
             payBusPriceData.adultPassengers = filterUnfilledPassengers(adultPassengers)
             payBusPriceData.childPassengers = filterUnfilledPassengers(childPassengers)
 
-            console.log(payBusPriceData);
+            console.log(JSON.stringify(payBusPriceData));
 
             // const data = await functions('payBusPrice', payBusPriceData);
 

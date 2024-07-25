@@ -202,7 +202,9 @@ export const filterUnfilledPassengers = (passengers: passengerType[]) =>
 
 export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, fullPrice: boolean = false) => {
     let ticketsPrice = passengersCount * price1
-    if (price2) ticketsPrice *= 2
+    if (price2) {
+        ticketsPrice += passengersCount * price2
+    }
     const discount = 0;
     const serviceFee = 0
     const priceWODiscount = ticketsPrice + serviceFee

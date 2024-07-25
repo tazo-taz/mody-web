@@ -22,13 +22,13 @@ export default function SeatPassenger({
   const isSeatChoosing = firstAvaibleSeatIndex === index
   if (seat === undefined) return (
     <div className='flex gap-4 items-center h-10'>
-      <span className={cn('w-[38px] transition h-[38px] rounded-full border-1 bg-[#F3F4F6] flex items-center justify-center',
+      <span className={cn('min-w-[38px] transition min-h-[38px] w-[38px] h-[38px] rounded-full border-1 bg-[#F3F4F6] flex items-center justify-center',
         isSeatChoosing ? "border-[#0E9F6E]" : "border-[#E5E7EB]"
       )}>
         <FiUser size={20} color={isSeatChoosing ? "#0E9F6E" : '#6B7280'} />
       </span>
       <div className='flex flex-col justify-center'>
-        <span className={cn('text-sm font-medium', isSeatChoosing ? "text-[#0E9F6E]" : "text-[#6B7280]")}>
+        <span className={cn('text-sm font-medium whitespace-nowrap', isSeatChoosing ? "text-[#0E9F6E]" : "text-[#6B7280]")}>
           {getItem("Select_seats_for")} {" "}
           {getItem("Passenger").toLowerCase()} {index + 1} {language === "ge" && " სთვის"}
         </span>
