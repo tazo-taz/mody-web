@@ -60,7 +60,8 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
         return date >= new Date()
     }).map((item) => item.element)
 
-    const tickets = currentTickets.length === 0 && busSystemTickets.length === 0 && !isLoading ? (
+
+    const tickets = ticketsHTML.length === 0 && !isLoading ? (
         <div className='flex items-center pt-28 justify-center'>{getItem("Tickets_not_found")}</div>
     ) : (
         <div className='flex flex-col gap-5 mt-7 max-h-[60vh] overflow-y-auto'>
