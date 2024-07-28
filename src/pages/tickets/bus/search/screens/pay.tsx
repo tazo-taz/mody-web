@@ -15,8 +15,7 @@ type TicketPayScreenType = {
     outboundTicket: ticketChooseType | null
     returnTicket: ticketChooseType | null,
     handlePay: () => void,
-    adultPassengers: passengerType[]
-    childPassengers: passengerType[],
+    passengers: passengerType[]
     contactInfo: contactInfoType,
     setContactInfo: React.Dispatch<React.SetStateAction<contactInfoType>>,
     paymentType: typePaymentType,
@@ -24,12 +23,15 @@ type TicketPayScreenType = {
 }
 
 export default function TicketPayScreen({
-    outboundTicket, returnTicket, handlePay, adultPassengers, childPassengers, contactInfo, setContactInfo, paymentType, setPaymentType
+    outboundTicket, returnTicket, handlePay, passengers, contactInfo, setContactInfo, paymentType, setPaymentType
 }: TicketPayScreenType) {
     const { getItem } = useLanguage()
 
     useGrayBg()
     useScrollTop()
+
+    console.log(passengers);
+
 
     return (
         <>
@@ -41,8 +43,7 @@ export default function TicketPayScreen({
 
                     <div className='flex flex-col gap-5'>
                         <PassengerDetails
-                            adultPassengers={adultPassengers}
-                            childPassengers={childPassengers}
+                            passengers={passengers}
                         />
 
                         <TicketContactInfo

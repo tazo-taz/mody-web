@@ -7,31 +7,34 @@ import { cn } from '../../../lib/utils';
 type SelectProps = {
     placeholder: string,
     icon?: React.ReactNode,
-    items: { value: string, title: string }[],
-    onChange: (item?: string) => void,
-    value?: string,
-    sort?: number
+    items: { value: string, title: string, icon?: React.ReactNode }[],
+    onChange?: (item?: string) => void,
+    value?: string | null,
+    sort?: number,
+    className?: string
 }
 
-export default function Select({ placeholder, icon, items, onChange, value, sort = 1 }: SelectProps) {
+export default function Select({ placeholder, icon, items, onChange, value, sort = 1, className }: SelectProps) {
     const { isOpen, open, close } = useOpen(false)
     const [scope, animate] = useAnimate()
 
-    const ownIcon = (
+    const renderIcon = (icon: React.ReactNode) => (
         <div className='w-[30px]'>
             {icon}
         </div>
     )
 
+    const ownIcon = renderIcon(icon)
+
     const ownOnChange = (item: string) => {
-        onChange(item)
+        onChange?.(item)
         animate("h2", { y: -10, x: -3.5, scale: 0.8 })
         close()
     }
 
     const cancel = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation()
-        onChange()
+        onChange?.()
         animate("h2", { y: 0, x: 0, scale: 1 })
     }
 
@@ -48,7 +51,7 @@ export default function Select({ placeholder, icon, items, onChange, value, sort
 
     return (
         <div className='relative'>
-            <div className='flex border-1 bg-gray-50 md:bg-gray-100 p-[14px] rounded-primary items-center' onClick={open}>
+            <div className={cn('flex border-1 bg-gray-50 md:bg-gray-100 p-[14px] rounded-primary items-center', className)} onClick={open}>
                 {ownIcon}
 
                 <div ref={scope} className='flex flex-col relative'>
@@ -73,7 +76,7 @@ export default function Select({ placeholder, icon, items, onChange, value, sort
                                 key={item.value}
                                 className={cn('flex items-center p-[14px] hover:bg-gray-100 transition cursor-pointer', inx + 1 !== items.length && "border-b-1")}
                                 onClick={() => ownOnChange(item.value)}
-                            >{ownIcon} {item.title}</div>
+                            >{renderIcon(item.icon || icon)} {item.title}</div>
                         ))}
                     </div>
                 </>

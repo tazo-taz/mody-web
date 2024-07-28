@@ -13,10 +13,6 @@ type TicketSeatsScreenType = {
     detailsToReviewScreen: () => void
     activeOutbound: ticketChooseType | null
     activeReturn: ticketChooseType | null,
-    adultPassengers: passengerType[],
-    childPassengers: passengerType[],
-    setChildPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
-    setAdultPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
     setActiveOutboundSeats: React.Dispatch<React.SetStateAction<(string | undefined)[]>>,
     activeOutboundSeats: (string | undefined)[]
     activeReturnSeats: (string | undefined)[]

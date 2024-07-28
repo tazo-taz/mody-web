@@ -5,11 +5,10 @@ import useLanguage from '../../stores/useLanguage'
 import { cn } from '../../lib/utils'
 
 type PassengerType = {
-    isAdult?: boolean
     bottomBorder?: boolean
 } & passengerType
 
-export default function Passenger({ firstName, lastName, userId, isAdult, bottomBorder }: PassengerType) {
+export default function Passenger({ firstName, lastName, gender, userId, isChild, bottomBorder, seat }: PassengerType) {
     const { getItem } = useLanguage()
     return (
         <div className={cn('flex gap-3 items-center', bottomBorder && "border-b-1 pb-4")}>
@@ -18,11 +17,11 @@ export default function Passenger({ firstName, lastName, userId, isAdult, bottom
             </div>
 
             <div className='flex flex-col'>
-                <h2 className='font-medium'>{firstName} {lastName} ({userId})</h2>
+                <h2 className='font-medium'>{firstName || "Unknown"} {lastName} {userId && <>({userId})</>}</h2>
                 <p className='text-xs text-[#6B7280]'>{getItem("Bus_ticket")}</p>
             </div>
 
-            <h4 className='ml-auto text-[#6B7280] text-xs'>{getItem(isAdult ? "Adult" : "Child")}</h4>
+            <h4 className='ml-auto text-[#6B7280] text-xs'>{getItem(!isChild ? "Adult" : "Child")}</h4>
         </div>
     )
 }

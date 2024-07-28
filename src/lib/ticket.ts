@@ -8,6 +8,7 @@ import { db } from "../firebase"
 import useAuth from "../stores/useAuth"
 import { ticketsListSchema } from "../schemas/ticket"
 import { busDatesType, busSystemDatesType } from "../hooks/firebase/useSearchTickets/types"
+import { ticketChooseType } from "../components/ticket/card/simple/type"
 
 const dateFormat = "yyyy-MM-DD"
 
@@ -198,7 +199,7 @@ export const getTicketsCount = (busDates: busDatesType, busSystemDates: busSyste
 }
 
 export const filterUnfilledPassengers = (passengers: passengerType[]) =>
-    passengers.filter(({ firstName, lastName, userId }) => firstName && lastName && userId)
+    passengers.filter(({ firstName, lastName }) => firstName && lastName)
 
 export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, fullPrice: boolean = false) => {
     let ticketsPrice = passengersCount * price1
@@ -242,4 +243,27 @@ export const getMyTickets = async () => {
 
 export const isReserved = (seat: string, freeSeats: number[]) => {
     return freeSeats.includes(parseInt(seat))
+}
+
+export const isBusSystemApi = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+    return "busSystem" in (activeOutbound?.metadata || activeReturn?.metadata)!
+}
+
+export enum TicketApiEnum {
+    BUS_SYSTEM = "busSystem",
+    GEORGIAN_BUS = "georgianBus"
+}
+
+export const validateTicketPassenger = (api: TicketApiEnum, passengers: passengerType[]) => {
+    if (api === TicketApiEnum.BUS_SYSTEM) {
+        return passengers.every(({ firstName, lastName, gender }) => firstName && lastName && gender)
+    }
+    return passengers.slice(0, 1).every(({ firstName, lastName, userId }) => firstName && lastName && userId)
+}
+
+
+export const getActiveTicketsApiType = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null): TicketApiEnum => {
+    if (activeOutbound?.metadata && "busSystem" in activeOutbound.metadata) return TicketApiEnum.BUS_SYSTEM
+    if (activeReturn?.metadata && "busSystem" in activeReturn.metadata) return TicketApiEnum.BUS_SYSTEM
+    return TicketApiEnum.GEORGIAN_BUS
 }

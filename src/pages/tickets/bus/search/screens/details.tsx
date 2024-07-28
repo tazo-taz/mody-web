@@ -7,29 +7,24 @@ import Title from '../../../../../components/title'
 import useTicketUsers from '../../../../../hooks/firebase/useTicketUsers'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import useScrollTop from '../../../../../hooks/useScrollTop'
+import { getActiveTicketsApiType, isBusSystemApi, TicketApiEnum } from '../../../../../lib/ticket'
 import { objChange } from '../../../../../lib/utils'
 import useLanguage from '../../../../../stores/useLanguage'
 
 type TicketDetailsScreenType = {
-    setScreen: (screen: screenEnum) => void
     detailsToReviewScreen: () => boolean
     activeOutbound: ticketChooseType | null
     activeReturn: ticketChooseType | null,
-    adultPassengers: passengerType[],
-    childPassengers: passengerType[],
-    setChildPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
-    setAdultPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
+    passengers: passengerType[],
+    setPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
 }
 
 export default function TicketDetailsScreen({
-    setScreen,
     activeOutbound,
     activeReturn,
     detailsToReviewScreen,
-    adultPassengers,
-    childPassengers,
-    setAdultPassengers,
-    setChildPassengers
+    passengers,
+    setPassengers,
 }: TicketDetailsScreenType) {
     const { getItem } = useLanguage()
     const { users } = useTicketUsers()
@@ -37,9 +32,10 @@ export default function TicketDetailsScreen({
     useGrayBg()
     useScrollTop()
 
-    const onChange = (index: number, type: "child" | "adult") => {
+    const ticketApiType = getActiveTicketsApiType(activeOutbound, activeReturn)
+
+    const onChange = (index: number) => {
         return (key: keyof passengerType, value: any) => {
-            const setPassengers = type === "adult" ? setAdultPassengers : setChildPassengers
             setPassengers(passengers => {
                 const newArr = structuredClone(passengers)
                 newArr[index] = objChange(newArr[index], key, value)
@@ -62,29 +58,30 @@ export default function TicketDetailsScreen({
                             users={users}
                             title={getItem("Main_Passanger")}
                             required
-                            isAdult
-                            {...adultPassengers[0]}
-                            onChange={onChange(0, "adult")}
+                            {...passengers[0]}
+                            onChange={onChange(0)}
+                            type={ticketApiType}
                         />
-                        {adultPassengers.slice(1).map((item, inx) => (
+                        {passengers.slice(1).map((item, inx) => (
                             <PassengerForm
                                 users={users}
                                 title={getItem("Passenger") + " " + (inx + 1)}
-                                isAdult
                                 {...item}
-                                onChange={onChange(inx + 1, "adult")}
+                                onChange={onChange(inx + 1)}
+                                required={ticketApiType === TicketApiEnum.BUS_SYSTEM}
                                 key={inx}
+                                type={ticketApiType}
                             />
                         ))}
-                        {childPassengers.map((item, inx) => (
+                        {/* {childPassengers.map((item, inx) => (
                             <PassengerForm
                                 users={users}
-                                title={getItem("Passenger") + " " + (adultPassengers.length + inx)}
+                                title={getItem("Passenger") + " " + (passengers.length + inx)}
                                 {...item}
                                 onChange={onChange(inx, "child")}
                                 key={inx}
                             />
-                        ))}
+                        ))} */}
                     </div>
                 </div>
                 <ActiveTicketInfoForTicket

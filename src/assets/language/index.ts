@@ -601,6 +601,10 @@ export const languageData = {
         en: "Available seats",
         ge: "ხელმისაწვდომი ადგილები"
     },
+    Fill_passengers_information: {
+        en: "Fill passengers information",
+        ge: "შეავსეთ მგზავრების ინფორმაცია"
+    },
 }
 
 export const getLanguageItem = (item: keyof typeof languageData) => {
