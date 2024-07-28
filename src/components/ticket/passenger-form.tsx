@@ -12,6 +12,8 @@ import Badge from '../badge'
 import Select from '../fields/select'
 import { IoMaleFemale, IoFemale, IoMale } from 'react-icons/io5'
 import { TicketApiEnum } from '../../lib/ticket'
+import { Discount } from '../../hooks/firebase/useSearchTickets/types'
+import { MdDiscount } from 'react-icons/md'
 
 type PassengerFormType = {
     title: string,
@@ -19,11 +21,12 @@ type PassengerFormType = {
     isChild?: boolean,
     onChange: (key: keyof passengerType, value: any) => void,
     users?: ticketUsersSchemaType,
-    type: TicketApiEnum
+    type: TicketApiEnum,
+    discounts: Discount[] | null,
 } & passengerType
 
 export default function PassengerForm({
-    title, isChild, save, required = false, gender, firstName, lastName, onChange, users = [], type, userId
+    title, isChild, save, required = false, gender, firstName, lastName, onChange, users = [], type, userId, discounts, discount
 }: PassengerFormType) {
     console.log(users);
 
@@ -80,7 +83,7 @@ export default function PassengerForm({
                         onChange("lastName", value)
                     }}
                 />
-                {type === TicketApiEnum.BUS_SYSTEM && (
+                {type === TicketApiEnum.BUS_SYSTEM && (<div className='grid grid-cols-2 gap-[15px]'>
                     <Select
                         placeholder='Gender'
                         items={[
@@ -94,7 +97,24 @@ export default function PassengerForm({
                             onChange("gender", value)
                         }}
                     />
+                    {discounts?.length && (
+                        <Select
+                            placeholder='Discounts'
+                            items={discounts.map((discount) => ({
+                                title: discount.discount_name,
+                                value: discount.discount_id,
+                            }))}
+                            icon={<MdDiscount />}
+                            className='bg-white md:bg-white'
+                            value={discount}
+                            onChange={value => {
+                                onChange("discount", value)
+                            }}
+                        />
+                    )}
+                </div>
                 )}
+
                 {type === TicketApiEnum.GEORGIAN_BUS && (
                     <Input
                         value={userId || ""}

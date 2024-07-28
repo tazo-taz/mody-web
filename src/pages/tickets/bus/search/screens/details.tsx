@@ -1,4 +1,4 @@
-import { passengerType, screenEnum } from '..'
+import { passengerType } from '..'
 import WarningMessage from '../../../../../components/Messages/Warning'
 import ActiveTicketInfoForTicket from '../../../../../components/ticket/active-ticket-info/ticket'
 import { ticketChooseType } from '../../../../../components/ticket/card/simple/type'
@@ -7,7 +7,7 @@ import Title from '../../../../../components/title'
 import useTicketUsers from '../../../../../hooks/firebase/useTicketUsers'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import useScrollTop from '../../../../../hooks/useScrollTop'
-import { getActiveTicketsApiType, isBusSystemApi, TicketApiEnum } from '../../../../../lib/ticket'
+import { getActiveTicketsApiType, getBusSystemTicketFromActive, TicketApiEnum } from '../../../../../lib/ticket'
 import { objChange } from '../../../../../lib/utils'
 import useLanguage from '../../../../../stores/useLanguage'
 
@@ -33,6 +33,7 @@ export default function TicketDetailsScreen({
     useScrollTop()
 
     const ticketApiType = getActiveTicketsApiType(activeOutbound, activeReturn)
+    const discounts = getBusSystemTicketFromActive(activeOutbound, activeReturn)
 
     const onChange = (index: number) => {
         return (key: keyof passengerType, value: any) => {
@@ -61,6 +62,7 @@ export default function TicketDetailsScreen({
                             {...passengers[0]}
                             onChange={onChange(0)}
                             type={ticketApiType}
+                            discounts={discounts}
                         />
                         {passengers.slice(1).map((item, inx) => (
                             <PassengerForm
@@ -71,6 +73,7 @@ export default function TicketDetailsScreen({
                                 required={ticketApiType === TicketApiEnum.BUS_SYSTEM}
                                 key={inx}
                                 type={ticketApiType}
+                                discounts={discounts}
                             />
                         ))}
                         {/* {childPassengers.map((item, inx) => (

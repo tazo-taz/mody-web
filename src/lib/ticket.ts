@@ -267,3 +267,9 @@ export const getActiveTicketsApiType = (activeOutbound: ticketChooseType | null,
     if (activeReturn?.metadata && "busSystem" in activeReturn.metadata) return TicketApiEnum.BUS_SYSTEM
     return TicketApiEnum.GEORGIAN_BUS
 }
+
+export const getBusSystemTicketFromActive = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+    if (activeOutbound?.metadata && "busSystem" in activeOutbound.metadata) return activeOutbound.metadata.discounts
+    if (activeReturn?.metadata && "busSystem" in activeReturn.metadata) return activeReturn.metadata.discounts
+    return null
+}

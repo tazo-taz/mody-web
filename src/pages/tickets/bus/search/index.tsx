@@ -34,7 +34,8 @@ export type passengerType = {
     userId: string | null,
     save: boolean,
     isChild?: boolean,
-    seat: (string | undefined)[]
+    seat: (string | undefined)[],
+    discount?: string
 }
 
 export type typePaymentType = "new" | "cash" | number | null
@@ -220,8 +221,6 @@ export default function BusTicketsSearchPage() {
             const payBusPriceData: any = {
                 item,
                 paymentType,
-                adult: `${ticketQuery.passenger}`,
-                child: `${ticketQuery.child}`,
                 driverAppCallbackUrl: `${window.location.origin}/account/my-tickets`
             }
 

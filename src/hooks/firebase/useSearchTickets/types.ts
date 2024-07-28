@@ -129,7 +129,7 @@ interface TransferTime {
   m: number;
 }
 
-interface Discount {
+export interface Discount {
   discount_id: string;
   discount_name: string;
   discount_price: number;

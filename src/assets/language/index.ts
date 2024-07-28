@@ -295,7 +295,7 @@ export const languageData = {
     },
     Adult: {
         en: "Adult",
-        ge: "სწულწლოვანი"
+        ge: "სრულწლოვანი"
     },
     Search_buses_Tickets: {
         en: "Search buses Tickets",
