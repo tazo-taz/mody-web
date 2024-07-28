@@ -1,5 +1,6 @@
 import useQuery from '../../hooks/useQuery'
 import { isReserved, parseTicketQuery } from '../../lib/ticket'
+import { passengerType } from '../../pages/tickets/bus/search'
 import CardContainer from '../card/container'
 import useTab from '../tab/useTab'
 import { ticketChooseType } from '../ticket/card/simple/type'
@@ -14,18 +15,22 @@ import VagonSeats from './vagon-seat'
 type BusSeatsSystemType = {
   activeOutbound: ticketChooseType | null
   activeReturn: ticketChooseType | null
-  setActiveOutboundSeats: React.Dispatch<React.SetStateAction<(string | undefined)[]>>,
-  activeOutboundSeats: (string | undefined)[]
-  setActiveReturnSeats: React.Dispatch<React.SetStateAction<(string | undefined)[]>>,
-  activeReturnSeats: (string | undefined)[],
-  seatsIndex: number
+  seatsIndex: number,
+  passengers: passengerType[]
+  setPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
 }
 
-export default function BusSeatsSystem({ activeOutbound, activeReturn, setActiveReturnSeats, activeReturnSeats, activeOutboundSeats, setActiveOutboundSeats, seatsIndex }: BusSeatsSystemType) {
+export default function BusSeatsSystem({ activeOutbound, activeReturn, passengers, setPassengers, seatsIndex }: BusSeatsSystemType) {
 
   const activeTicketType = seatsIndex === 0 ? activeOutbound : activeReturn
-  const activeSeats = seatsIndex === 0 ? activeOutboundSeats : activeReturnSeats
-  const setActiveSeats = seatsIndex === 0 ? setActiveOutboundSeats : setActiveReturnSeats
+  const activeSeats = passengers.map(passenger => passenger.seat[seatsIndex])
+  const setActiveSeats = (seats: (string | undefined)[]) => {
+    const newPassengers = [...passengers]
+    newPassengers.forEach((passenger, inx) => {
+      passenger.seat[seatsIndex] = seats[inx]
+    })
+    setPassengers(newPassengers)
+  }
 
   let bustype_id = ""
   if (activeTicketType && "busSystem" in activeTicketType.metadata) {

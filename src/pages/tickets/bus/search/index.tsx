@@ -7,7 +7,7 @@ import { ticketChooseType } from '../../../../components/ticket/card/simple/type
 import TicketHeader from '../../../../components/ticket/header';
 import useOpen from '../../../../hooks/useOpen';
 import useQuery from '../../../../hooks/useQuery';
-import { getActiveTicketsApiType, isBusSystemApi, parseTicketQuery, TicketApiEnum, validateTicketPassenger } from '../../../../lib/ticket';
+import { getActiveTicketsApiType, parseTicketQuery, TicketApiEnum, validateTicketPassenger } from '../../../../lib/ticket';
 import { startLoading, stopLoading } from '../../../../references/loading';
 import { userSchemaType } from '../../../../schemas/user';
 import useAuth from '../../../../stores/useAuth';
@@ -34,7 +34,7 @@ export type passengerType = {
     userId: string | null,
     save: boolean,
     isChild?: boolean,
-    seat?: string
+    seat: (string | undefined)[]
 }
 
 export type typePaymentType = "new" | "cash" | number | null
@@ -109,13 +109,11 @@ export default function BusTicketsSearchPage() {
     }
 
     const searchToNextScreen = () => {
-        const { child, passenger } = parseTicketQuery(query)
-        const passengersAmount = child + passenger
-
         if (activeOutbound && shouldContinueToDetailsScreen()) {
+            updatePassengersInfo()
             if (returnTicketHasSeats || boundTicketHasSeats) {
-                setActiveOutboundSeats([...new Array(passengersAmount)])
-                if (returnTicketHasSeats) setActiveReturnSeats([...new Array(passengersAmount)])
+                // setActiveOutboundSeats([...new Array(passengersAmount)])
+                // if (returnTicketHasSeats) setActiveReturnSeats([...new Array(passengersAmount)])
                 return setScreen(screenEnum.SEATS)
             }
             return toDetailsScreen()
@@ -137,41 +135,51 @@ export default function BusTicketsSearchPage() {
         }
     }
 
-    const toDetailsScreen = () => {
+    const updatePassengersInfo = () => {
         const { child, passenger } = parseTicketQuery(query)
 
+        const adultPassengers: passengerType[] = [...new Array(passenger)]
+            .map(() => ({
+                firstName: "",
+                lastName: "",
+                userId: "",
+                gender: null,
+                save: true,
+                seat: []
+            }))
+
+        const childPassengers: passengerType[] = [...new Array(child)]
+            .map(() => ({
+                firstName: "",
+                lastName: "",
+                userId: "",
+                gender: null,
+                save: false,
+                isChild: true,
+                seat: []
+            }))
+
+        const passengers = [...adultPassengers, ...childPassengers]
+
+        if (auth.user) {
+            passengers[0].firstName = auth.user.firstName
+            passengers[0].lastName = auth.user.lastName
+            passengers[0].save = true
+        }
+
+        setPassengers(passengers)
+    }
+
+    const toDetailsScreen = () => {
+
         if (shouldContinueToDetailsScreen()) {
-            const adultPassengers: passengerType[] = [...new Array(passenger)]
-                .map(() => ({
-                    firstName: "",
-                    lastName: "",
-                    userId: "",
-                    gender: null,
-                    save: true,
-                }))
 
-            const childPassengers: passengerType[] = [...new Array(child)]
-                .map(() => ({
-                    firstName: "",
-                    lastName: "",
-                    userId: "",
-                    gender: null,
-                    save: false,
-                    isChild: true,
-                }))
-
-            const passengers = [...adultPassengers, ...childPassengers]
-
-            if (auth.user) {
-                passengers[0].firstName = auth.user.firstName
-                passengers[0].lastName = auth.user.lastName
-                passengers[0].save = true
-            }
-
-            setPassengers(passengers)
             return setScreen(screenEnum.DETAILS)
         }
     }
+
+    console.log(passengers);
+
 
     const detailsToReviewScreen = () => {
         if (screenValidators.toPay()) {
@@ -199,7 +207,7 @@ export default function BusTicketsSearchPage() {
                 item = {
                     date: activeOutbound.metadata.date_from,
                     interval_id: activeOutbound.metadata.interval_id,
-                    seat: activeOutboundSeats
+                    // seat: activeOutboundSeats
                 }
             } else {
                 item = {
@@ -232,7 +240,7 @@ export default function BusTicketsSearchPage() {
                     returnItem = {
                         date: activeReturn.metadata.date_from,
                         interval_id: activeReturn.metadata.interval_id,
-                        seat: activeReturnSeats
+                        // seat: activeReturnSeats
                     }
                 } else {
                     returnItem = {
@@ -323,14 +331,11 @@ export default function BusTicketsSearchPage() {
     } else if (screen === screenEnum.SEATS) {
         currentScreen = (
             <TicketSeatsScreen
-                setScreen={setScreen}
                 activeOutbound={activeOutbound}
                 activeReturn={activeReturn}
                 detailsToReviewScreen={handleToDetailsScreenFromSeats}
-                setActiveOutboundSeats={setActiveOutboundSeats}
-                activeOutboundSeats={activeOutboundSeats}
-                activeReturnSeats={activeReturnSeats}
-                setActiveReturnSeats={setActiveReturnSeats}
+                passengers={passengers}
+                setPassengers={setPassengers}
             />
         )
     }

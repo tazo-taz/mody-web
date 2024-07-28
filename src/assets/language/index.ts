@@ -46,8 +46,8 @@ export const languageData = {
         ge: "განყოფილება"
     },
     Storey_1: {
-        en: "1 Storey",
-        ge: "1 სართული"
+        en: "Storey 1",
+        ge: "სართული 1"
     },
     Storey: {
         en: "Storey",

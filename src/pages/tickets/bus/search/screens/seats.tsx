@@ -1,4 +1,4 @@
-import { passengerType, screenEnum } from '..'
+import { passengerType } from '..'
 import BusSeatsSystem from '../../../../../components/seats-system/bus'
 import useTab from '../../../../../components/tab/useTab'
 import ActiveTicketInfoForTicket from '../../../../../components/ticket/active-ticket-info/ticket'
@@ -9,24 +9,19 @@ import useScrollTop from '../../../../../hooks/useScrollTop'
 import useLanguage from '../../../../../stores/useLanguage'
 
 type TicketSeatsScreenType = {
-    setScreen: (screen: screenEnum) => void
     detailsToReviewScreen: () => void
     activeOutbound: ticketChooseType | null
     activeReturn: ticketChooseType | null,
-    setActiveOutboundSeats: React.Dispatch<React.SetStateAction<(string | undefined)[]>>,
-    activeOutboundSeats: (string | undefined)[]
-    activeReturnSeats: (string | undefined)[]
-    setActiveReturnSeats: React.Dispatch<React.SetStateAction<(string | undefined)[]>>,
+    passengers: passengerType[]
+    setPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
 }
 
 export default function TicketSeatsScreen({
     activeOutbound,
     activeReturn,
     detailsToReviewScreen,
-    activeOutboundSeats,
-    setActiveOutboundSeats,
-    activeReturnSeats,
-    setActiveReturnSeats
+    passengers,
+    setPassengers
 }: TicketSeatsScreenType) {
     const { getItem } = useLanguage()
 
@@ -61,12 +56,10 @@ export default function TicketSeatsScreen({
                     </>)}
                     <BusSeatsSystem
                         activeOutbound={activeOutbound}
-                        activeOutboundSeats={activeOutboundSeats}
-                        setActiveOutboundSeats={setActiveOutboundSeats}
-                        activeReturnSeats={activeReturnSeats}
-                        setActiveReturnSeats={setActiveReturnSeats}
                         activeReturn={activeReturn}
                         seatsIndex={seatsIndex}
+                        passengers={passengers}
+                        setPassengers={setPassengers}
                     />
                 </div>
                 <ActiveTicketInfoForTicket
