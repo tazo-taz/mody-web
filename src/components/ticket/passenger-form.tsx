@@ -90,6 +90,7 @@ export default function PassengerForm({
                         ]}
                         icon={<IoMaleFemale />}
                         className='bg-white md:bg-white'
+                        containerClassName={cn(!discounts?.length && 'col-span-2')}
                         value={gender}
                         onChange={value => {
                             onChange("gender", value)

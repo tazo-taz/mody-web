@@ -12,10 +12,11 @@ type SelectProps = {
     value?: string | null,
     sort?: number,
     className?: string,
+    containerClassName?: string,
     xIcon?: boolean
 }
 
-export default function Select({ placeholder, icon, items, onChange, value, sort = 1, className, xIcon = true }: SelectProps) {
+export default function Select({ placeholder, icon, items, onChange, value, sort = 1, className, xIcon = true, containerClassName }: SelectProps) {
     const { isOpen, open, close } = useOpen(false)
     const [scope, animate] = useAnimate()
 
@@ -51,7 +52,7 @@ export default function Select({ placeholder, icon, items, onChange, value, sort
     }, [animate, scope, sort, value])
 
     return (
-        <div className='relative'>
+        <div className={cn('relative', containerClassName)}>
             <div className={cn('flex border-1 bg-gray-50 md:bg-gray-100 p-[14px] rounded-primary items-center', className)} onClick={open}>
                 {ownIcon}
 

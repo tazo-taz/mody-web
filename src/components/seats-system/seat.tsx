@@ -88,7 +88,7 @@ export default function VagonSeat({
       }} />
       <div className='absolute bottom-0 w-full h-[32%] rounded-[13px_13px_0_0] bg-white' />
       <div className='absolute bottom-0 w-full h-1/4 rounded-[70px_70px_30px_30px] bg-[#F3F4F6]' />
-      <div className='absolute top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-white'>
+      <div className='absolute xs:text-lg sm:text-3xl md:text-[16px] lg:text-sm xl:text-[16px] 2xl:text-2xl 2xl:top-[44%] top-[47%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-white'>
         {isActive && seat}
       </div>
     </div>
