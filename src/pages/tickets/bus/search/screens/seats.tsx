@@ -55,7 +55,7 @@ export default function TicketSeatsScreen({
 
     return (
         <>
-            <div className='container mx-auto flex gap-7 lg:gap-[60px] xl:gap-[120px]'>
+            <div className='container mx-auto flex gap-7 lg:gap-[60px] 2xl:gap-[120px]'>
                 <div className='flex-1'>
                     <Title>
                         <div className='flex justify-between items-center'>
