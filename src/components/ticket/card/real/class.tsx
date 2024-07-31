@@ -12,9 +12,6 @@ export default function RealTicketsSection2({ className, ticket: ticketItem, han
   handlePrint: () => void
 }) {
   const { getItem } = useLanguage()
-  // const array = [...new Array(ticket.child + ticket.adult)]
-
-  // const passengers = [...ticket.filteredAdultPassengers, ...ticket.filteredChildPassengers]
   const isTicketPast = (new Date().getTime() - new Date(ticketItem.created_at).getTime()) / 1000 > 60 * 10
   return (
     <div className={cn("flex flex-col gap-10", className)}>
@@ -29,7 +26,7 @@ export default function RealTicketsSection2({ className, ticket: ticketItem, han
             passenger={passenger}
             item={ticketItem}
             isOutbound
-            returnable={!isTicketPast && ticketItem.status === "succeed"}
+            // returnable={!isTicketPast && ticketItem.status === "succeed"}
             key={inx}
             handlePrint={handlePrint}
           />
@@ -48,7 +45,7 @@ export default function RealTicketsSection2({ className, ticket: ticketItem, han
               passenger={passenger}
               item={ticketItem}
               isOutbound={false}
-              returnable={!isTicketPast && ticketItem.status === "succeed"}
+              // returnable={!isTicketPast && ticketItem.status === "succeed"}
               key={inx}
               handlePrint={handlePrint}
             />

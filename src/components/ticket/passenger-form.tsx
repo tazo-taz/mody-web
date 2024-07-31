@@ -120,7 +120,7 @@ export default function PassengerForm({
                 </div>
                 )}
 
-                {type === TicketApiEnum.GEORGIAN_BUS && (
+                {/* {type === TicketApiEnum.GEORGIAN_BUS && (
                     <Input
                         value={userId || ""}
                         icon={<IdNumberIcon />}
@@ -129,7 +129,7 @@ export default function PassengerForm({
                             onChange("userId", value)
                         }}
                     />
-                )}
+                )} */}
                 <LabeledCheckbox
                     title={getItem("Save_these_details_to_your_profile")}
                     isChecked={save}

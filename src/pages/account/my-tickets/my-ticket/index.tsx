@@ -65,7 +65,6 @@ export default function MyTicketPage() {
             <div className='mt-6 flex justify-between border-b-1 pb-3'>
                 <div>
                     <h2 className='font-bold text-xl'>{cityFromStation} - {cityToStation}</h2>
-                    {/* TODO: change */}
                     <MinifyDate className='text-[#6B7280] text-[13px] mt-2' date={ticket.tickets[0].dateTimeFrom} timeFrom={ticket.tickets[0].dateTimeFrom} timeTo={ticket.tickets[0].dateTimeTo} />
                 </div>
 

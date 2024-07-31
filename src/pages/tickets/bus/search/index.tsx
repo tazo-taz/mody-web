@@ -7,7 +7,7 @@ import { ticketChooseType } from '../../../../components/ticket/card/simple/type
 import TicketHeader from '../../../../components/ticket/header';
 import useOpen from '../../../../hooks/useOpen';
 import useQuery from '../../../../hooks/useQuery';
-import { doesTicketsHasSeatsPlan, getActiveTicketsApiType, parseTicketQuery, validateTicketPassenger } from '../../../../lib/ticket';
+import { doesTicketsHasSeatsPlan, getActiveTicketsApiType, getMyTickets, parseTicketQuery, validateTicketPassenger } from '../../../../lib/ticket';
 import { startLoading, stopLoading } from '../../../../references/loading';
 import { userSchemaType } from '../../../../schemas/user';
 import useAuth from '../../../../stores/useAuth';
@@ -112,8 +112,6 @@ export default function BusTicketsSearchPage() {
         if (activeOutbound && shouldContinueToDetailsScreen()) {
             updatePassengersInfo()
             if (ticketsHasSeats) {
-                // setActiveOutboundSeats([...new Array(passengersAmount)])
-                // if (returnTicketHasSeats) setActiveReturnSeats([...new Array(passengersAmount)])
                 return setScreen(screenEnum.SEATS)
             }
             return toDetailsScreen()
@@ -220,7 +218,8 @@ export default function BusTicketsSearchPage() {
             const payBusPriceData: any = {
                 item,
                 paymentType,
-                driverAppCallbackUrl: `${window.location.origin}/account/my-tickets`
+                driverAppCallbackUrl: `${window.location.origin}/account/my-tickets`,
+                passengers,
             }
 
             if (passengers[0].save) {
@@ -252,29 +251,18 @@ export default function BusTicketsSearchPage() {
                 payBusPriceData.returnItem = returnItem
             }
 
-            payBusPriceData.passengers = passengers
-            // payBusPriceData.childPassengers = filterUnfilledPassengers(childPassengers)
+            const result = await functions('payBusPrice', payBusPriceData);
+            console.log(result);
 
-            console.log(JSON.stringify(payBusPriceData));
-
-            const data = await functions('payBusPrice', payBusPriceData);
-            console.log(data);
-
-            // if (paymentType === "new") {
-            //     if (data.data.uri) window.location.href = data.data.uri
-            //     else toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
-            // } else {
-            //     console.log(data);
-
-            //     if (data.data.result) {
-            //         const myTickets = await getMyTickets()
-            //         if (myTickets) {
-            //             modal.onOpen("purchased-ticket", { ticket: myTickets[0] })
-            //         }
-            //     }
-            //     else
-            //         toast.error(getItem(data.data.message?.error) || getItem("Something_went_wrong_please_try_again_or_contact_us"))
-            // }
+            if (result.data.result) {
+                if (paymentType === "new") {
+                    if (result.data?.data?.uri) window.location.href = result.data.data.uri
+                    else return toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))
+                } else if (result.data?.data?.ticket) {
+                    return modal.onOpen("purchased-ticket", { ticket: result.data.data.ticket })
+                }
+            }
+            toast.error(getItem(result.data.message?.error) || getItem("Something_went_wrong_please_try_again_or_contact_us"))
         } catch (error) {
             console.log(error);
             toast.error(getItem("Something_went_wrong_please_try_again_or_contact_us"))

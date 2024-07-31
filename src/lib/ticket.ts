@@ -160,7 +160,7 @@ export const getStationByCity = (city: string) => {
     if ([languageData["Tbilisi"].en, languageData["Tbilisi"].ge].includes(city)) return getItem("Tbilisi_Station_square_1")
     if ([languageData["Batumi"].en, languageData["Batumi"].ge].includes(city)) return getItem("Batumi_Station_2")
 
-    return null
+    return city
 }
 
 export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Date) => {
@@ -239,7 +239,7 @@ export const calculateTicketsFullPrice = (passengersCount: number, price1: numbe
 
 export const getCitiesByTicketTitle = (name: string) => {
     const [from, to] = name.split(" - ")
-    return [getCityNameByValue(from), getCityNameByValue(to)]
+    return [getCityNameByValue(from) || from, getCityNameByValue(to) || to]
 }
 
 export const getMyTickets = async () => {
@@ -280,7 +280,7 @@ export const validateTicketPassenger = (api: TicketApiEnum, passengers: passenge
     if (api === TicketApiEnum.BUS_SYSTEM) {
         return passengers.every(({ firstName, lastName, gender }) => firstName && lastName && gender)
     }
-    return passengers.slice(0, 1).every(({ firstName, lastName, userId }) => firstName && lastName && userId)
+    return passengers.slice(0, 1).every(({ firstName, lastName }) => firstName && lastName)
 }
 
 export const getTicketApiType = (ticket: ticketChooseType | null) => {
