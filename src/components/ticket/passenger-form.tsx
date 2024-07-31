@@ -7,18 +7,27 @@ import { cn } from '../../lib/utils'
 import LabeledCheckbox from '../fields/checkbox/labeled'
 import { passengerType } from '../../pages/tickets/bus/search'
 import Card from '../card'
-import { ticketUsersSchemaType } from '../../schemas/ticket/user'
 import Badge from '../badge'
+import Select from '../fields/select'
+import { IoMaleFemale, IoFemale, IoMale } from 'react-icons/io5'
+import { Discount } from '../../hooks/firebase/useSearchTickets/types'
+import { MdDiscount } from 'react-icons/md'
+import { MyTickerUserType } from '../../schemas/my-ticket-user'
+import { TicketApiEnum } from '../../types/ticket'
 
 type PassengerFormType = {
     title: string,
     required?: boolean
-    isAdult?: boolean,
+    isChild?: boolean,
     onChange: (key: keyof passengerType, value: any) => void,
-    users?: ticketUsersSchemaType
+    users?: MyTickerUserType[],
+    type: TicketApiEnum,
+    discounts: Discount[] | null,
 } & passengerType
 
-export default function PassengerForm({ title, isAdult, save, required = false, firstName, lastName, userId, onChange, users = [] }: PassengerFormType) {
+export default function PassengerForm({
+    title, isChild, save, required = false, gender, firstName, lastName, onChange, users = [], type, userId, discounts, discount
+}: PassengerFormType) {
     const { getItem } = useLanguage()
     return (
         <Card
@@ -32,28 +41,30 @@ export default function PassengerForm({ title, isAdult, save, required = false, 
                     </div>
                 </>)
             }
-            endTitle={getItem(isAdult ? "Adult" : "Child")}
+            endTitle={getItem(!isChild ? "Adult" : "Child")}
         >
             <div className='flex flex-col gap-[15px]'>
-                <div className='flex flex-wrap gap-4 items-center'>
-                    <span className='text-xs text-[#6B7280]'>
-                        {getItem("Saved_Passengers")}:
-                    </span>
+                {users.length > 0 && (
+                    <div className='flex flex-wrap gap-4 items-center'>
+                        <span className='text-xs text-[#6B7280]'>
+                            {getItem("Saved_Passengers")}:
+                        </span>
 
-                    {users.filter((user) => isAdult ? !user.isChild : user.isChild).map((user) => (
-                        <Badge
-                            key={user.userId}
-                            size='sm'
-                            variant='secondary'
-                            className='font-bold'
-                            onClick={() => {
-                                onChange("firstName", user.firstName)
-                                onChange("lastName", user.lastName)
-                                onChange("userId", user.userId)
-                            }}
-                        >{user.firstName}</Badge>
-                    ))}
-                </div>
+                        {users.map((user, inx) => (
+                            <Badge
+                                key={inx}
+                                size='sm'
+                                variant='secondary'
+                                className='font-bold'
+                                onClick={() => {
+                                    onChange("firstName", user.firstName)
+                                    onChange("lastName", user.lastName)
+                                    if (user.gender) onChange("gender", user.gender)
+                                }}
+                            >{user.firstName}</Badge>
+                        ))}
+                    </div>
+                )}
                 <Input
                     value={firstName}
                     icon={<UserIcon />}
@@ -70,14 +81,55 @@ export default function PassengerForm({ title, isAdult, save, required = false, 
                         onChange("lastName", value)
                     }}
                 />
-                <Input
-                    value={userId || ""}
-                    icon={<IdNumberIcon />}
-                    placeholder={getItem("ID_Number")}
-                    onValueChange={value => {
-                        onChange("userId", value)
-                    }}
-                />
+                {type === TicketApiEnum.BUS_SYSTEM && (<div className='grid grid-cols-2 gap-[15px]'>
+                    <Select
+                        placeholder={getItem('Gender')}
+                        items={[
+                            { title: getItem("Male"), value: "M", icon: <IoMale /> },
+                            { title: getItem("Female"), value: "F", icon: <IoFemale /> },
+                        ]}
+                        icon={<IoMaleFemale />}
+                        className='bg-white md:bg-white'
+                        value={gender}
+                        onChange={value => {
+                            onChange("gender", value)
+                        }}
+                    />
+                    {discounts?.length && (
+                        <Select
+                            xIcon={false}
+                            placeholder={getItem('Discounts')}
+                            items={[
+                                {
+                                    value: "full-ticket",
+                                    title: getItem("Full_ticket"),
+                                },
+                                ...discounts.map((discount) => ({
+                                    title: discount.discount_name,
+                                    value: discount.discount_id,
+                                }))]}
+                            icon={<MdDiscount />}
+                            className='bg-white md:bg-white'
+                            value={discount}
+                            onChange={value => {
+                                onChange("discount", value)
+                            }}
+
+                        />
+                    )}
+                </div>
+                )}
+
+                {/* {type === TicketApiEnum.GEORGIAN_BUS && (
+                    <Input
+                        value={userId || ""}
+                        icon={<IdNumberIcon />}
+                        placeholder={getItem("ID_Number")}
+                        onValueChange={value => {
+                            onChange("userId", value)
+                        }}
+                    />
+                )} */}
                 <LabeledCheckbox
                     title={getItem("Save_these_details_to_your_profile")}
                     isChecked={save}

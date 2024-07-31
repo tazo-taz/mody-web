@@ -1,6 +1,6 @@
 import { MdArrowRightAlt } from "react-icons/md";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { batumiScr, kutaisiScr, tbilisiScr } from '../../assets/images';
+import { batumiSrc, kutaisiScr, tbilisiScr } from '../../assets/images';
 import useLanguage from '../../stores/useLanguage';
 
 // Import Swiper styles
@@ -33,7 +33,7 @@ export default function PopularDestinations() {
       cityFrom: getItem("Kutaisi_airport"),
       cityToTitle: getItem("Batumi"),
       cityTo: getItem("Batumi"),
-      src: batumiScr,
+      src: batumiSrc,
     },
     {
       cityFromTitle: getItem("Batumi"),

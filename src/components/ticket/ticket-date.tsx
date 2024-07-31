@@ -15,16 +15,15 @@ export default function TicketDate({ date, count, active, onChange }: TicketDate
     return (
         <div
             className={cn(
-                'py-2 px-5 flex items-center justify-center flex-col gap-[2px] border-1 rounded-primary hover:bg-gray-100 transition',
+                'py-2 px-4 flex items-center justify-center flex-col gap-[2px] border-1 rounded-primary hover:bg-gray-100 transition cursor-pointer',
                 isSameDate(active, date) && "border-primary",
-                noTickets ? " cursor-not-allowed" : "cursor-pointer"
             )}
-            onClick={() => !noTickets && onChange(date)}
+            onClick={() => onChange(date)}
         >
-            <h6 className='text-[11px] whitespace-nowrap'>{formatDateDayMonth(date)}</h6>
+            <h6 className='text-[11px] whitespace-nowrap px-1'>{formatDateDayMonth(date)}</h6>
             <div className={cn('flex items-center gap-[5px] font-medium justify-between', count > 0 ? "text-primary" : "text-[#9CA3AF]")}>
                 <TicketPrimaryIcon color={noTickets ? "#9CA3AF" : "#7D57FD"} />
-                <h6 className='text-[12px]'>{count}</h6>
+                <h6 className='text-[12px]'>{count === 0 ? 0 : count + "+"}</h6>
             </div>
         </div>
     )

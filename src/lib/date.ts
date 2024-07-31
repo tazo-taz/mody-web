@@ -1,4 +1,5 @@
 import moment from "moment";
+import { busSystemDatesType } from "../hooks/firebase/useSearchTickets/types";
 
 export function addDays(date: Date, days: number) {
     var result = new Date(date);
@@ -62,3 +63,23 @@ export function isSameDate(date1?: Date, date2?: Date) {
             date1.getMonth() === date2.getMonth() &&
             date1.getDate() === date2.getDate()
 }
+
+export function extractTimesFromBusSystemRoute(route: busSystemDatesType) {
+    const { time_from, time_to, date_from, date_to } = route;
+
+    const dateFrom = date_from + "T" + time_from
+    const dateTo = date_to + "T" + time_to
+
+    const timeFrom = formatTime(dateFrom)
+    const timeTo = formatTime(dateTo)
+    const [hoursDiff, minsDiff] = timeDifference(dateFrom, dateTo).split(":")
+    const timeDiff = +((+hoursDiff + +minsDiff / 60).toFixed(2))
+
+    return {
+        timeFrom,
+        timeTo,
+        dateFrom,
+        dateTo,
+        timeDiff
+    }
+};

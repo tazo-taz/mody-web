@@ -1,7 +1,5 @@
-import { getFullDayAndMonth, timeFromTo, timeToFrom } from '../../../../lib/date';
-import { getBusDirection, getCitiesByName, getStationByCity } from '../../../../lib/ticket';
-import { ticketItemSchemaType } from '../../../../schemas/ticket';
-import { ticketUserSchemaType } from '../../../../schemas/ticket/user';
+import { formatTime, getFullDayAndMonth, timeFromTo, timeToFrom } from '../../../../lib/date';
+import { getBusDirection, getCitiesByTicketTitle, getStationByCity } from '../../../../lib/ticket';
 import useLanguage from '../../../../stores/useLanguage';
 import Button from '../../../fields/button';
 import { TicketCardDash } from '../components/dash';
@@ -11,18 +9,19 @@ import { PiArrowUUpLeftFill } from "react-icons/pi";
 import { useWindowSize } from 'usehooks-ts';
 import { useReactToPrint } from 'react-to-print';
 import { useRef } from 'react';
+import { MyTicketSchemaType } from '../../../../schemas/my-ticket';
+import { MyTickerUserType } from '../../../../schemas/my-ticket-user';
 
 type RealTicketCardProps = {
-    item: ticketItemSchemaType,
-    outbound?: boolean,
-    passenger?: ticketUserSchemaType,
+    item: MyTicketSchemaType,
+    isOutbound?: boolean,
+    passenger?: MyTickerUserType,
     returnable?: boolean,
     handlePrint: () => void
 }
 
-export default function RealTicketCard({ item, outbound, passenger, returnable }: RealTicketCardProps) {
+export default function RealTicketCard({ item, isOutbound, passenger, returnable }: RealTicketCardProps) {
     const { getItem } = useLanguage()
-    const busDirection = getBusDirection(item.busDirectionId)
     const { width } = useWindowSize()
 
     const print = useReactToPrint({
@@ -37,27 +36,15 @@ export default function RealTicketCard({ item, outbound, passenger, returnable }
         print(null, () => contentToPrint.current)
     }
 
-    if (!busDirection) return null
-    let timeFrom = "", timeTo = ""
 
-    if (outbound) {
-        const x = timeFromTo(item.date, busDirection.timeDiff, false)
-        timeFrom = x.timeFrom
-        timeTo = x.timeTo
+    const ticketIndex = isOutbound ? 0 : 1
 
-    } else {
-        const x = timeToFrom(item.date, busDirection.timeDiff, false)
-        timeFrom = x.timeFrom
-        timeTo = x.timeTo
-    }
+    const timeFrom = formatTime(item.tickets[ticketIndex].dateTimeFrom)
+    const timeTo = formatTime(item.tickets[ticketIndex].dateTimeTo)
 
+    const [cityFrom, cityTo] = getCitiesByTicketTitle(item.tickets[ticketIndex].title)
 
-
-
-
-    const { cityFrom, cityTo } = getCitiesByName(item.orderItem.name)
-
-    const gullDayAndMonth = getFullDayAndMonth(item.date)
+    const fullDayAndMonth = getFullDayAndMonth(item.tickets[ticketIndex].dateTimeFrom)
 
     if (width < 700) {
         return (
@@ -65,10 +52,10 @@ export default function RealTicketCard({ item, outbound, passenger, returnable }
                 <div className='flex bg-white relative group-hover:bg-slate-50 flex-col justify-between gap-8 rounded-t-primary flex-1 p-[25px] border-1 border-b-0'>
                     <div className='flex justify-between'>
                         <div>
-                            <h3 className='font-medium'>{gullDayAndMonth}</h3>
+                            <h3 className='font-medium'>{fullDayAndMonth}</h3>
                             <span className='text-[13px] text-[#6B7280]'>{getStationByCity(cityFrom)}</span>
                         </div>
-                        <div className='font-semibold'>#{item.flightId}</div>
+                        <div className='font-semibold'>#{item.uid}</div>
                     </div>
 
 
@@ -78,17 +65,17 @@ export default function RealTicketCard({ item, outbound, passenger, returnable }
 
                 <div className='horizontal-dash' />
 
-                <div className='flex bg-white group-hover:bg-slate-50 flex-col justify-between gap-8 rounded-b-primary flex-1 p-[25px] border-1 border-t-0'>
+                <div className='flex bg-white group-hover:bg-slate-50 flex-col justify-between gap-8 flex-1 p-[25px] border-1 border-t-0'>
                     <div className='flex gap-4 justify-between'>
                         <div className='flex flex-col'>
-                            <h2 className='text-[22px] font-semibold'>{timeFrom}</h2>
+                            <h2 className='text-[22px] whitespace-nowrap font-semibold'>{timeFrom}</h2>
                             <h3 className='text-[#6B7280]'>{cityFrom}</h3>
                         </div>
                         <div className='pt-4 flex-1'>
                             <TicketCardDash />
                         </div>
                         <div className='flex flex-col'>
-                            <h2 className='text-[22px] font-semibold'>{timeTo}</h2>
+                            <h2 className='text-[22px] whitespace-nowrap font-semibold'>{timeTo}</h2>
                             <h3 className='text-[#6B7280]'>{cityTo}</h3>
                         </div>
                     </div>
@@ -130,20 +117,20 @@ export default function RealTicketCard({ item, outbound, passenger, returnable }
                 <div className='flex justify-between'>
                     <div className='flex gap-4'>
                         <div className='flex flex-col'>
-                            <h2 className='text-[22px] font-semibold'>{timeFrom}</h2>
+                            <h2 className='text-[22px] whitespace-nowrap font-semibold'>{timeFrom}</h2>
                             <h3 className='text-[#6B7280]'>{cityFrom}</h3>
                         </div>
                         <div className='pt-4'>
                             <TicketCardDash width={width > 800 ? 120 : 80} />
                         </div>
                         <div className='flex flex-col'>
-                            <h2 className='text-[22px] font-semibold'>{timeTo}</h2>
+                            <h2 className='text-[22px] whitespace-nowrap font-semibold'>{timeTo}</h2>
                             <h3 className='text-[#6B7280]'>{cityTo}</h3>
                         </div>
                     </div>
 
                     <div>
-                        <h3 className='font-medium'>{gullDayAndMonth}</h3>
+                        <h3 className='font-medium'>{fullDayAndMonth}</h3>
                         <span className='text-[13px] text-[#6B7280]'>{getStationByCity(cityFrom)}</span>
                     </div>
                 </div>
@@ -151,7 +138,7 @@ export default function RealTicketCard({ item, outbound, passenger, returnable }
                 <div className='flex gap-[52px]'>
                     <div className='flex flex-col'>
                         <div className='text-[13px] text-[#6B7280]'>{getItem("Bus")}</div>
-                        <div className='font-semibold'>#{item.flightId}</div>
+                        <div className='font-semibold'>#{item.uid}</div>
                     </div>
 
                     {passenger && (
@@ -177,7 +164,7 @@ export default function RealTicketCard({ item, outbound, passenger, returnable }
                 <div className='w-[30px] aspect-square rounded-full border-1 absolute -top-[15px] -left-[15px] bg-[#f9fafb] z-[2]' />
                 <div className='w-[30px] aspect-square rounded-full border-1 absolute -bottom-[15px] -left-[15px] bg-[#f9fafb] z-[2]' />
 
-                <div className='flex flex-col gap-3 justify-evenly px-10 py-[25px] rounded-r-primary vertical-dash border-1 border-l-0 relative'>
+                <div className='flex h-full flex-col gap-3 justify-evenly px-10 py-[25px] rounded-r-primary vertical-dash border-1 border-l-0 relative'>
                     <Button onClick={handlePrint} className='font-semibold px-3 py-2' variant='secondary' size='sm' icon={<BiPrinter size={16} />}>{getItem("Print")}</Button>
                     <Button className='font-semibold px-3 py-2' variant='secondary' size='sm' icon={<RiShareBoxFill size={16} />}>{getItem("Share")}</Button>
                     <Button disabled={!returnable} className='font-semibold px-3 py-2' variant='secondary' size='sm' icon={<PiArrowUUpLeftFill size={16} />}>{getItem("Return")}</Button>

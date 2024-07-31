@@ -1,5 +1,5 @@
 import ActiveTicketInfoForTicket from "../../../../../components/ticket/active-ticket-info/ticket";
-import { ticketChooseType } from '../../../../../components/ticket/card/simple';
+import { ticketChooseType } from "../../../../../components/ticket/card/simple/type";
 import TicketsSection from '../../../../../components/ticket/section';
 import TicketSearchHorizontal from '../../../../../components/ticket/ticket-search-horizontal';
 import useGrayBg from "../../../../../hooks/useGrayBg";
@@ -60,6 +60,7 @@ export default function TicketsSearchScreen({ activeOutbound, activeReturn, setA
                     onContinue={onContinue}
                     returnTicket={activeReturn}
                     outboundTicket={activeOutbound}
+                    passengers={[]}
                 />
             </div>
         </>

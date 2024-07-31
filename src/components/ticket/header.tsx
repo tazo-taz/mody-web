@@ -1,37 +1,18 @@
-import ChevronRight from '../../assets/images/svgs/icons/chevron/chevron-right'
-import { minifyDate } from '../../lib/date'
-import { getCityNameByValue } from '../../lib/ticket'
-import useLanguage from '../../stores/useLanguage'
 import { HeaderContainer } from '../header/mobile-menu/mobile-menu'
+import TicketHeaderTitle from './ticket-header-title'
 
 type TicketHeaderProps = {
     cityFrom?: string
     cityTo?: string,
     departureDate?: Date,
-    passenger: number,
-    child: number,
     onClick?: () => void
 }
 
-export default function TicketHeader({ cityFrom, cityTo, departureDate, child, passenger, onClick }: TicketHeaderProps) {
-    const { getItem } = useLanguage()
-    const cityFromName = getCityNameByValue(cityFrom)
-    const cityToName = getCityNameByValue(cityTo)
-    const passengerAmount = child + passenger
-
+export default function TicketHeader({ cityFrom, cityTo, onClick, departureDate }: TicketHeaderProps) {
     const isValidTrip = cityFrom && cityTo
 
     const content = isValidTrip ? (
-        <>
-            <div className='font-semibold flex items-center justify-center gap-1 whitespace-nowrap'>
-                <div>{cityFromName}</div>
-                <div>
-                    <ChevronRight />
-                </div>
-                <div>{cityToName}</div>
-            </div>
-            <span className='text-xs text-[#6B7280]'>{minifyDate(departureDate)}, {passengerAmount} {getItem(passengerAmount > 1 ? "Passengers" : "Passenger")}</span>
-        </>
+        <TicketHeaderTitle departureDate={departureDate} />
     ) : (
         <h2 className='font-semibold flex items-center justify-center gap-1'>Trip not found</h2>
     )

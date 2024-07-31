@@ -1,7 +1,6 @@
 import React from 'react'
 import { contactInfoType, passengerType, screenEnum, typePaymentType } from '..'
 import ActiveTicketInfoForTicket from '../../../../../components/ticket/active-ticket-info/ticket'
-import { ticketChooseType } from '../../../../../components/ticket/card/simple'
 import TicketContactInfo from '../../../../../components/ticket/contact-info'
 import PassengerDetails from '../../../../../components/ticket/passenger-details'
 import PaymentMethod from '../../../../../components/ticket/payment-method'
@@ -10,14 +9,13 @@ import Title from '../../../../../components/title'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import useScrollTop from '../../../../../hooks/useScrollTop'
 import useLanguage from '../../../../../stores/useLanguage'
+import { ticketChooseType } from '../../../../../components/ticket/card/simple/type'
 
 type TicketPayScreenType = {
-    setScreen: (newScreen: screenEnum) => void,
     outboundTicket: ticketChooseType | null
     returnTicket: ticketChooseType | null,
     handlePay: () => void,
-    adultPassengers: passengerType[]
-    childPassengers: passengerType[],
+    passengers: passengerType[]
     contactInfo: contactInfoType,
     setContactInfo: React.Dispatch<React.SetStateAction<contactInfoType>>,
     paymentType: typePaymentType,
@@ -25,7 +23,7 @@ type TicketPayScreenType = {
 }
 
 export default function TicketPayScreen({
-    setScreen, outboundTicket, returnTicket, handlePay, adultPassengers, childPassengers, contactInfo, setContactInfo, paymentType, setPaymentType
+    outboundTicket, returnTicket, handlePay, passengers, contactInfo, setContactInfo, paymentType, setPaymentType
 }: TicketPayScreenType) {
     const { getItem } = useLanguage()
 
@@ -42,8 +40,7 @@ export default function TicketPayScreen({
 
                     <div className='flex flex-col gap-5'>
                         <PassengerDetails
-                            adultPassengers={adultPassengers}
-                            childPassengers={childPassengers}
+                            passengers={passengers}
                         />
 
                         <TicketContactInfo
@@ -66,6 +63,7 @@ export default function TicketPayScreen({
                     outboundTicket={outboundTicket}
                     fullDetails
                     buttonTitle="Pay_now"
+                    passengers={passengers}
                 />
 
             </div>

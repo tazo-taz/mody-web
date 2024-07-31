@@ -1,12 +1,12 @@
 import { z } from "zod"
-import { getLanguageItem } from "../assets/language"
+import { getItem } from "../assets/language"
 
 
 export const unregisteredUserSchema = z.object({
-    firstName: z.string().min(1, { message: (getLanguageItem("First_name")) }),
-    lastName: z.string().min(1, { message: (getLanguageItem("Last_name")) }),
-    phoneNumber: z.string().min(1, { message: (getLanguageItem("Phone_number")) }),
-    userId: z.string().min(1, { message: (getLanguageItem("ID_Number")) }).nullable(),
+    firstName: z.string().min(1, { message: (getItem("First_name")) }),
+    lastName: z.string().min(1, { message: (getItem("Last_name")) }),
+    phoneNumber: z.string().min(1, { message: (getItem("Phone_number")) }),
+    userId: z.string().min(1, { message: (getItem("ID_Number")) }).nullable(),
     email: z.string().optional().nullable(),
 })
 

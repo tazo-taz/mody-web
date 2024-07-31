@@ -1,13 +1,15 @@
+import { doc, getDoc } from "firebase/firestore"
 import { sum } from "lodash"
 import moment from "moment"
 import queryString from "query-string"
-import { getLanguageItem, languageData } from "../assets/language"
-import { busDatesType } from "../hooks/firebase/useSearchTickets"
-import { passengerType } from "../pages/tickets/bus/search"
-import { doc, getDoc } from "firebase/firestore"
+import { getItem, languageData } from "../assets/language"
+import { ticketChooseType } from "../components/ticket/card/simple/type"
 import { db } from "../firebase"
+import { busDatesType, busSystemDatesType, Discount } from "../hooks/firebase/useSearchTickets/types"
+import { passengerType } from "../pages/tickets/bus/search"
+import { myTicketsListSchema } from "../schemas/my-ticket"
 import useAuth from "../stores/useAuth"
-import { ticketsListSchema } from "../schemas/ticket"
+import { TicketApiEnum } from "../types/ticket"
 
 const dateFormat = "yyyy-MM-DD"
 
@@ -27,17 +29,25 @@ export const getCityValueByName = (city?: string) => {
     return undefined
 }
 
+export const getBysSystemCityValueByName = (city?: string) => {
+    if (city === languageData["Tbilisi"].ge || city === languageData["Tbilisi"].en) return "3"
+    if (city === languageData["Batumi"].ge || city === languageData["Batumi"].en) return "2"
+    if (city === languageData["Kutaisi_airport"].ge || city === languageData["Kutaisi_airport"].en) return "6"
+    if (city === languageData["Kutaisi"].ge || city === languageData["Kutaisi"].en) return "6"
+
+}
+
 export const getCityNameByValue = (value?: string) => {
-    if (value === languageData["Kutaisi_airport"].ge) return getLanguageItem("Kutaisi_airport")
-    if (value === languageData["Tbilisi"].ge) return getLanguageItem("Tbilisi")
-    if (value === languageData["Batumi"].ge) return getLanguageItem("Batumi")
+    if (value === languageData["Kutaisi_airport"].ge) return getItem("Kutaisi_airport")
+    if (value === languageData["Tbilisi"].ge) return getItem("Tbilisi")
+    if (value === languageData["Batumi"].ge) return getItem("Batumi")
     return value || ""
 }
 
 export const getCityRoutes = (cityFrom?: string, cityTo?: string) => {
     const cityRoutes = [
-        [{ value: languageData["Tbilisi"].ge, title: getLanguageItem("Tbilisi") }, { value: languageData["Kutaisi_airport"].ge, title: getLanguageItem("Kutaisi_airport") }],
-        [{ value: languageData["Kutaisi_airport"].ge, title: getLanguageItem("Kutaisi_airport") }, { value: languageData["Batumi"].ge, title: getLanguageItem("Batumi") }],
+        [{ value: languageData["Tbilisi"].ge, title: getItem("Tbilisi") }, { value: languageData["Kutaisi_airport"].ge, title: getItem("Kutaisi_airport") }],
+        [{ value: languageData["Kutaisi_airport"].ge, title: getItem("Kutaisi_airport") }, { value: languageData["Batumi"].ge, title: getItem("Batumi") }],
     ]
 
     if (!cityFrom && cityTo) return [...new Set(cityRoutes.filter(cityArr => cityArr.find(city => city.value === cityTo)).flat())].filter((city) => city.value !== cityTo)
@@ -146,11 +156,11 @@ export const getBusDirection = (id: number) => {
 }
 
 export const getStationByCity = (city: string) => {
-    if ([languageData["Kutaisi_airport"].en, languageData["Kutaisi_airport"].ge].includes(city)) return getLanguageItem("Kutaisi_airport")
-    if ([languageData["Tbilisi"].en, languageData["Tbilisi"].ge].includes(city)) return getLanguageItem("Tbilisi_Station_square_1")
-    if ([languageData["Batumi"].en, languageData["Batumi"].ge].includes(city)) return getLanguageItem("Batumi_Station_2")
+    if ([languageData["Kutaisi_airport"].en, languageData["Kutaisi_airport"].ge].includes(city)) return getItem("Kutaisi_airport")
+    if ([languageData["Tbilisi"].en, languageData["Tbilisi"].ge].includes(city)) return getItem("Tbilisi_Station_square_1")
+    if ([languageData["Batumi"].en, languageData["Batumi"].ge].includes(city)) return getItem("Batumi_Station_2")
 
-    return null
+    return city
 }
 
 export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Date) => {
@@ -161,7 +171,7 @@ export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Da
         dates
             .filter((date: string) => date.split(" ")[0] === formatDate(departureDate))
             .forEach((date: string) => {
-                if (!dateItems.find((item) => item.date === date))
+                if (!dateItems.find((item) => item.date === date) && new Date(date).getTime() >= new Date().getTime())
                     dateItems.push({ id, date });
             })
     }
@@ -182,17 +192,41 @@ export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Da
     })
 }
 
-export const filterUnfilledPassengers = (passengers: passengerType[]) =>
-    passengers.filter(({ firstName, lastName, userId }) => firstName && lastName && userId)
+export const getTicketsCount = (busDates: busDatesType, busSystemDates: busSystemDatesType[], departureDate: Date) => {
+    const busDatesCount = getTicketsFromBusDates(busDates, departureDate).length
+    return busDatesCount + busSystemDates.filter(({ date_from }) => {
+        return formatDate(date_from) === formatDate(departureDate)
+    }).length
+}
 
-export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, fullPrice: boolean = false) => {
+export const filterUnfilledPassengers = (passengers: passengerType[]) =>
+    passengers.filter(({ firstName, lastName }) => firstName && lastName)
+
+export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, fullPrice: boolean = false, activeDiscountIds: string[], discounts: Discount[] | null, ticket1Type: TicketApiEnum, ticket2Type: TicketApiEnum) => {
+    const discountsProcents = (activeDiscountIds?.map((discountId) => {
+        const { discount_price } = discounts?.find(({ discount_id }) => discount_id === discountId) || { discount_price: 100 }
+        return 100 - discount_price
+    }) || []).reduce((acc, price) => acc + price, 0)
+
+
+    let discountPriceCalc = 0;
+
+    if (ticket1Type === TicketApiEnum.BUS_SYSTEM) {
+        discountPriceCalc = discountsProcents * price1 / 100
+    }
+    if (ticket2Type === TicketApiEnum.BUS_SYSTEM) {
+        discountPriceCalc += discountsProcents * price2 / 100
+    }
+
     let ticketsPrice = passengersCount * price1
-    if (price2) ticketsPrice *= 2
-    const discount = 0;
+    if (price2) {
+        ticketsPrice += passengersCount * price2
+    }
     const serviceFee = 0
     const priceWODiscount = ticketsPrice + serviceFee
-    const discountPrice = priceWODiscount * discount / 100
+    const discountPrice = discountPriceCalc
     const totalPrice = fullPrice ? priceWODiscount - discountPrice : ticketsPrice
+    const discount = (discountPrice / priceWODiscount * 100).toFixed(0)
 
     return {
         totalPrice: totalPrice.toFixed(2),
@@ -203,12 +237,9 @@ export const calculateTicketsFullPrice = (passengersCount: number, price1: numbe
     }
 }
 
-export const getCitiesByName = (name: string) => {
+export const getCitiesByTicketTitle = (name: string) => {
     const [from, to] = name.split(" - ")
-    return {
-        cityFrom: getCityNameByValue(from),
-        cityTo: getCityNameByValue(to),
-    }
+    return [getCityNameByValue(from) || from, getCityNameByValue(to) || to]
 }
 
 export const getMyTickets = async () => {
@@ -217,8 +248,60 @@ export const getMyTickets = async () => {
     const docRef = doc(db, "client-bus-tickets", user.uid);
     const docSnapshot = await getDoc(docRef);
     if (docSnapshot.exists()) {
-        const parsedData = ticketsListSchema.parse(docSnapshot.data()?.items);
+        const parsedData = myTicketsListSchema.parse(docSnapshot.data()?.items);
         return parsedData.reverse()
     }
     return null
+}
+
+export const isReserved = (seat: string, freeSeats: number[]) => {
+    return freeSeats.includes(parseInt(seat))
+}
+
+export const isBusSystemApi = (ticket: ticketChooseType | null) => {
+    return getTicketApiType(ticket) === TicketApiEnum.BUS_SYSTEM
+}
+
+export const isSomeOfBusSystemApi = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+    return isBusSystemApi(activeOutbound) || isBusSystemApi(activeReturn)
+}
+
+const ticketHasSeatsPlan = (ticket: ticketChooseType | null) => {
+    return isBusSystemApi(ticket) && (ticket!.metadata as busSystemDatesType).has_plan === 1
+}
+
+export const doesTicketsHasSeatsPlan = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+    const validateTicket1 = ticketHasSeatsPlan(activeOutbound)
+    const validateTicket2 = ticketHasSeatsPlan(activeReturn)
+    return [validateTicket1 || validateTicket2, validateTicket1, validateTicket2]
+}
+
+export const validateTicketPassenger = (api: TicketApiEnum, passengers: passengerType[]) => {
+    if (api === TicketApiEnum.BUS_SYSTEM) {
+        return passengers.every(({ firstName, lastName, gender }) => firstName && lastName && gender)
+    }
+    return passengers.slice(0, 1).every(({ firstName, lastName }) => firstName && lastName)
+}
+
+export const getTicketApiType = (ticket: ticketChooseType | null) => {
+    if (ticket?.metadata && "busSystem" in ticket.metadata) return TicketApiEnum.BUS_SYSTEM
+    return TicketApiEnum.GEORGIAN_BUS
+}
+
+export const getActiveTicketsApiType = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null): TicketApiEnum => {
+    if (activeOutbound?.metadata && "busSystem" in activeOutbound.metadata) return TicketApiEnum.BUS_SYSTEM
+    if (activeReturn?.metadata && "busSystem" in activeReturn.metadata) return TicketApiEnum.BUS_SYSTEM
+    return TicketApiEnum.GEORGIAN_BUS
+}
+
+export const getDiscountsFromActive = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+    if (activeOutbound?.metadata && "busSystem" in activeOutbound.metadata) return activeOutbound.metadata.discounts
+    if (activeReturn?.metadata && "busSystem" in activeReturn.metadata) return activeReturn.metadata.discounts
+    return null
+}
+
+export const isBothActiveTicketsBusSystem = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+    const type1 = getActiveTicketsApiType(activeOutbound, null)
+    const type2 = getActiveTicketsApiType(null, activeReturn)
+    return type1 === TicketApiEnum.BUS_SYSTEM && type2 === TicketApiEnum.BUS_SYSTEM
 }

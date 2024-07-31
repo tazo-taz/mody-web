@@ -5,34 +5,23 @@ import Card from '../card'
 import Passenger from './passenger'
 
 type PassengerDetailsType = {
-    adultPassengers: passengerType[]
-    childPassengers: passengerType[]
+    passengers: passengerType[]
 }
 
 export default function PassengerDetails({
-    adultPassengers,
-    childPassengers,
+    passengers,
 }: PassengerDetailsType) {
     const { getItem } = useLanguage()
 
-    const filteredAdultPassengers = filterUnfilledPassengers(adultPassengers)
-    const filteredChildPassengers = filterUnfilledPassengers(childPassengers)
+    // const filteredPassangers = filterUnfilledPassengers(passengers)
 
     return (
         <Card title={getItem("Passenger_details")}>
             <div className='flex flex-col gap-6'>
-                {filteredAdultPassengers.map((passenger, inx) => (
+                {passengers.map((passenger, inx) => (
                     <Passenger
                         {...passenger}
-                        isAdult
-                        bottomBorder={filteredAdultPassengers.length + filteredChildPassengers.length - 1 !== inx}
-                        key={inx}
-                    />
-                ))}
-                {filteredChildPassengers.map((passenger, inx) => (
-                    <Passenger
-                        {...passenger}
-                        bottomBorder={filteredChildPassengers.length - 1 !== inx}
+                        bottomBorder={passengers.length - 1 !== inx}
                         key={inx}
                     />
                 ))}

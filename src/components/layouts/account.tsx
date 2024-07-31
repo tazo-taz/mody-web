@@ -7,7 +7,7 @@ export default function AccountLayout() {
 
     if (location.pathname.includes("/account/my-tickets/") && location.pathname.split("/account/my-tickets/")[1].length > 0)
         return (
-            <div className='max-w-[900px] w-full mt-[50px] mx-auto container'>
+            <div className='max-w-[923px] w-full mt-[50px] mx-auto container'>
                 <Outlet />
             </div>)
 
@@ -17,7 +17,7 @@ export default function AccountLayout() {
         return <Navigate to={'/'} />
     }
     return (
-        <div className='max-w-[900px] w-full mt-[50px] mx-auto container'>
+        <div className='max-w-[923px] w-full mt-[50px] mx-auto container'>
             <AccountNav />
             <Outlet />
         </div>

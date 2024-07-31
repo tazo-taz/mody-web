@@ -46,8 +46,20 @@ export const languageData = {
         ge: "განყოფილება"
     },
     Storey_1: {
-        en: "1 Storey",
-        ge: "1 სართული"
+        en: "Storey 1",
+        ge: "სართული 1"
+    },
+    Storey: {
+        en: "Storey",
+        ge: "სართული"
+    },
+    Seat: {
+        en: "Seat",
+        ge: "ადგილი"
+    },
+    Select_seats_for: {
+        en: "Select seats for",
+        ge: "აირჩიეთ ადგილი"
     },
     Passengers: {
         en: "Passengers",
@@ -283,7 +295,7 @@ export const languageData = {
     },
     Adult: {
         en: "Adult",
-        ge: "სწულწლოვანი"
+        ge: "სრულწლოვანი"
     },
     Search_buses_Tickets: {
         en: "Search buses Tickets",
@@ -336,6 +348,18 @@ export const languageData = {
     Choose_tickets: {
         en: "Choose tickets",
         ge: "აირჩიეთ ბილეთები"
+    },
+    Choose_seats: {
+        en: "Choose seats",
+        ge: "აირჩიეთ ადგილები"
+    },
+    Choose_outbound_seats: {
+        en: "Choose outbound seats",
+        ge: "აირჩიეთ გამავალი ადგილები"
+    },
+    Choose_return_seats: {
+        en: "Choose return seats",
+        ge: "აირჩიეთ დაბრუნების ადგილები"
     },
     Passenger_details: {
         en: "Passenger details",
@@ -391,7 +415,7 @@ export const languageData = {
     },
     Pay_with_cash: {
         en: "Pay with cash",
-        ge: "გადაიხადე ქეშით"
+        ge: "გადაიხადე ნაღდით"
     },
     Use_a_Discount: {
         en: "Use a Discount",
@@ -561,13 +585,65 @@ export const languageData = {
         en: "Click to get the invite code",
         ge: "დააჭირეთ მოწვევის კოდის მისაღებად"
     },
+    Seats: {
+        en: "Seats",
+        ge: "ადგილები"
+    },
     "Not enough money on balance": {
         en: "Not enough money on balance",
         ge: "ბალანსზე საკმარისი თანხა არ არის"
     },
+    Seat_Reservation: {
+        en: "Seat Reservation",
+        ge: "ადგილების დაჯავშნა"
+    },
+    Available_seats: {
+        en: "Available seats",
+        ge: "ხელმისაწვდომი ადგილები"
+    },
+    Fill_passengers_information: {
+        en: "Fill passengers information",
+        ge: "შეავსეთ მგზავრების ინფორმაცია"
+    },
+    Full_ticket: {
+        en: "Full ticket",
+        ge: "სრული ბილეთი"
+    },
+    Reserved: {
+        en: "Reserved",
+        ge: "დაჯავშნილია"
+    },
+    Selected: {
+        en: "Selected",
+        ge: "არჩეულია"
+    },
+    Available: {
+        en: "Available",
+        ge: "ხელმისაწვდომია"
+    },
+    floor: {
+        en: "floor",
+        ge: "სართული"
+    },
+    Gender: {
+        en: "Gender",
+        ge: "სქესი"
+    },
+    Male: {
+        en: "Male",
+        ge: "მამრობითი"
+    },
+    Female: {
+        en: "Female",
+        ge: "მდედრობითი"
+    },
+    Discounts: {
+        en: "Discounts",
+        ge: "ფასდაკლებები"
+    },
 }
 
-export const getLanguageItem = (item: keyof typeof languageData) => {
+export const getItem = (item: keyof typeof languageData) => {
     const language = useLanguage.getState()
     return languageData[item]?.[language.language] || ""
 }

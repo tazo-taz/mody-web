@@ -1,26 +1,18 @@
 
 import { useWindowSize } from 'usehooks-ts'
 import { timeFromTo } from '../../../../lib/date'
-import { busDirectionType } from '../../../../lib/ticket'
 import TicketCardContainer from "../components/container"
 import { TicketCardDash } from '../components/dash'
+import { ticketChooseType } from './type'
+import { busDirectionType } from '../../../../lib/ticket'
 
-export type ticketChooseType = {
-    id: string,
-    date: string | Date,
-    cityFrom: string,
-    cityTo: string,
-    busDirection: busDirectionType,
-}
-
-type TicketCardProps = ticketChooseType & {
+type TicketCardProps = Omit<ticketChooseType, "metadata"> & {
     onChoose?: (data: ticketChooseType) => void,
     active?: ticketChooseType | null
+    busDirection: busDirectionType
 }
 
-
-
-export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, onChoose, active }: TicketCardProps) {
+export default function TicketCard({ id, date, cityFrom, cityTo, onChoose, active, busDirection }: TicketCardProps) {
     const { width } = useWindowSize()
     if (!busDirection) return null
 
@@ -33,7 +25,10 @@ export default function TicketCard({ id, date, cityFrom, cityTo, busDirection, o
     return (
         <TicketCardContainer
             onChoose={() => onChoose?.({
-                busDirection,
+                metadata: {
+                    georgianbus: true,
+                    busDirection
+                },
                 cityFrom,
                 cityTo,
                 id,

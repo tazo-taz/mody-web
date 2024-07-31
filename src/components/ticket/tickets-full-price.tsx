@@ -1,27 +1,42 @@
-import React from 'react'
-import useLanguage from '../../stores/useLanguage'
-import { calculateTicketsFullPrice, parseTicketQuery } from '../../lib/ticket'
 import useQuery from '../../hooks/useQuery'
-import { ticketChooseType } from './card/simple'
+import { calculateTicketsFullPrice, getDiscountsFromActive, getTicketApiType, parseTicketQuery } from '../../lib/ticket'
 import { cn } from '../../lib/utils'
+import useLanguage from '../../stores/useLanguage'
+import { ticketChooseType } from './card/simple/type'
 
 type TicketsFullPriceProps = {
     outboundTicket: ticketChooseType | null
     returnTicket: ticketChooseType | null
-    className?: string
+    className?: string,
+    discountIds: string[]
 }
 
-export default function TicketsFullPrice({ outboundTicket, returnTicket, className }: TicketsFullPriceProps) {
+export default function TicketsFullPrice({ outboundTicket, returnTicket, className, discountIds }: TicketsFullPriceProps) {
     const { getItem } = useLanguage()
     const { child, passenger } = parseTicketQuery(useQuery())
 
     const passengersCount = child + passenger
 
-    const { serviceFee, ticketsPrice, totalPrice, discountPrice, discount } = calculateTicketsFullPrice(passengersCount, outboundTicket?.busDirection?.price, returnTicket?.busDirection?.price)
+    let price1 = 0;
+    let price2 = 0;
+
+    if (outboundTicket && "busSystem" in outboundTicket?.metadata) {
+        price1 = outboundTicket?.metadata.price_one_way
+    } else if (outboundTicket && "georgianbus" in outboundTicket?.metadata && outboundTicket?.metadata.busDirection) {
+        price1 = outboundTicket?.metadata.busDirection.price || 0
+    }
+
+    if (returnTicket && "busSystem" in returnTicket?.metadata) {
+        price2 = returnTicket?.metadata.price_one_way
+    } else if (returnTicket && "georgianbus" in returnTicket?.metadata && returnTicket?.metadata.busDirection) {
+        price2 = returnTicket?.metadata.busDirection.price || 0
+    }
+
+    const { serviceFee, ticketsPrice, totalPrice, discountPrice, discount } = calculateTicketsFullPrice(passengersCount, price1, price2, true, discountIds, getDiscountsFromActive(outboundTicket, returnTicket), getTicketApiType(outboundTicket), getTicketApiType(returnTicket))
 
     const items = [
         {
-            left: getItem("Tickets") + ' ( ' + passengersCount + " " + getItem(passengersCount > 1 ? "Passengers" : "Passenger"),
+            left: getItem("Tickets") + ' (' + passengersCount + " " + getItem(passengersCount > 1 ? "Passengers" : "Passenger") + ")",
             right: "₾ " + ticketsPrice
         },
         {

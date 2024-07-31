@@ -8,6 +8,7 @@ import { typePaymentType } from '../../pages/tickets/bus/search'
 import MasterCardIcon from '../../assets/images/svgs/icons/mastercard'
 import { getCardName } from '../../lib/utils'
 import { BsCash } from "react-icons/bs";
+import useAuth from '../../stores/useAuth'
 
 type PaymentMethodProps = {
     value: typePaymentType,
@@ -15,6 +16,7 @@ type PaymentMethodProps = {
 }
 
 export default function PaymentMethod({ value, onChange }: PaymentMethodProps) {
+    const { user } = useAuth()
     const { getItem } = useLanguage()
     const { cards, isLoading } = useMyCards()
 
@@ -33,7 +35,7 @@ export default function PaymentMethod({ value, onChange }: PaymentMethodProps) {
                 value={value}
                 onChange={onChange}
                 items={[
-                    { value: "cash", icon: <BsCash className='w-6 h-6' />, title: getItem("Pay_with_cash") },
+                    user && { value: "cash", icon: <BsCash className='w-6 h-6' />, title: getItem("Pay_with_cash") },
                     { value: "new", icon: <CiCreditCard2 className='w-6 h-6' />, title: getItem("Pay_with_new_card") },
                     ...cards.map((card, inx) =>
                         ({ value: inx, icon: <MasterCardIcon />, title: getCardName(card.cardMask) })
