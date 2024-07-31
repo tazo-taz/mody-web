@@ -7,7 +7,7 @@ import { ticketChooseType } from '../../../../components/ticket/card/simple/type
 import TicketHeader from '../../../../components/ticket/header';
 import useOpen from '../../../../hooks/useOpen';
 import useQuery from '../../../../hooks/useQuery';
-import { getActiveTicketsApiType, parseTicketQuery, TicketApiEnum, validateTicketPassenger } from '../../../../lib/ticket';
+import { doesTicketsHasSeatsPlan, getActiveTicketsApiType, parseTicketQuery, TicketApiEnum, validateTicketPassenger } from '../../../../lib/ticket';
 import { startLoading, stopLoading } from '../../../../references/loading';
 import { userSchemaType } from '../../../../schemas/user';
 import useAuth from '../../../../stores/useAuth';
@@ -35,7 +35,7 @@ export type passengerType = {
     save: boolean,
     isChild?: boolean,
     seat: (string | undefined)[],
-    discount?: string
+    discount: string
 }
 
 export type typePaymentType = "new" | "cash" | number | null
@@ -64,8 +64,7 @@ export default function BusTicketsSearchPage() {
     // const [activeReturnSeats, setActiveReturnSeats] = useState<(string | undefined)[]>([])
 
     const { isOpen: isActiveTicketInfoOpen, toggle: toggleActiveTicketInfo } = useOpen(true)
-    const boundTicketHasSeats = activeOutbound && "busSystem" in activeOutbound.metadata && activeOutbound.metadata.bustype !== "no_plan"
-    const returnTicketHasSeats = activeReturn && "busSystem" in activeReturn.metadata && activeReturn.metadata.bustype !== "no_plan"
+    const [ticketsHasSeats, ticket1HasSeats, ticket2HasSeats] = doesTicketsHasSeatsPlan(activeOutbound, activeReturn)
     const ticketApiType = getActiveTicketsApiType(activeOutbound, activeReturn)
 
     useEffect(() => {
@@ -78,11 +77,9 @@ export default function BusTicketsSearchPage() {
 
     const screenValidators = {
         toDetails() {
-            if (boundTicketHasSeats || returnTicketHasSeats) {
-                // const outboudSeatsFilled = activeOutboundSeats.filter(a => a !== undefined).length === passengersAmount
-                const outboudSeatsFilled = passengers.every(p => p.seat?.[0] !== undefined)
-                const returnSeatsFilled = returnTicketHasSeats ? passengers.every(p => p.seat?.[1] !== undefined) : true
-                // const returnSeatsFilled = returnTicketHasSeats ? activeReturnSeats.filter(a => a !== undefined).length === passengersAmount : true
+            if (ticketsHasSeats) {
+                const outboudSeatsFilled = ticket1HasSeats ? passengers.every(p => p.seat?.[0] !== undefined) : true
+                const returnSeatsFilled = ticket2HasSeats ? passengers.every(p => p.seat?.[1] !== undefined) : true
 
                 if (!outboudSeatsFilled) {
                     toast.error(getItem("Choose_outbound_seats"))
@@ -109,10 +106,12 @@ export default function BusTicketsSearchPage() {
         }
     }
 
+    console.log({ activeOutbound, activeReturn });
+
     const searchToNextScreen = () => {
         if (activeOutbound && shouldContinueToDetailsScreen()) {
             updatePassengersInfo()
-            if (returnTicketHasSeats || boundTicketHasSeats) {
+            if (ticketsHasSeats) {
                 // setActiveOutboundSeats([...new Array(passengersAmount)])
                 // if (returnTicketHasSeats) setActiveReturnSeats([...new Array(passengersAmount)])
                 return setScreen(screenEnum.SEATS)
@@ -128,7 +127,7 @@ export default function BusTicketsSearchPage() {
     }
 
     const handleToDetailsScreenFromSeats = () => {
-        if (boundTicketHasSeats || returnTicketHasSeats) {
+        if (ticketsHasSeats) {
             const validated = screenValidators.toDetails()
             if (validated) {
                 return toDetailsScreen()
@@ -146,7 +145,8 @@ export default function BusTicketsSearchPage() {
                 userId: "",
                 gender: null,
                 save: true,
-                seat: []
+                seat: [],
+                discount: "full-ticket"
             }))
 
         const childPassengers: passengerType[] = [...new Array(child)]
@@ -157,7 +157,8 @@ export default function BusTicketsSearchPage() {
                 gender: null,
                 save: false,
                 isChild: true,
-                seat: []
+                seat: [],
+                discount: "full-ticket"
             }))
 
         const passengers = [...adultPassengers, ...childPassengers]
@@ -178,9 +179,6 @@ export default function BusTicketsSearchPage() {
             return setScreen(screenEnum.DETAILS)
         }
     }
-
-    console.log(passengers);
-
 
     const detailsToReviewScreen = () => {
         if (screenValidators.toPay()) {
@@ -206,12 +204,13 @@ export default function BusTicketsSearchPage() {
 
             if ("busSystem" in activeOutbound?.metadata) {
                 item = {
+                    type: "BUS_SYSTEM",
                     date: activeOutbound.metadata.date_from,
                     interval_id: activeOutbound.metadata.interval_id,
-                    // seat: activeOutboundSeats
                 }
             } else {
                 item = {
+                    type: "GEORGIAN_BUS",
                     busDirectionId: activeOutbound?.metadata?.busDirection!.id,
                     date: activeOutbound!.date,
                     flightId: activeOutbound!.id
@@ -237,12 +236,13 @@ export default function BusTicketsSearchPage() {
 
                 if ("busSystem" in activeReturn.metadata) {
                     returnItem = {
+                        type: "BUS_SYSTEM",
                         date: activeReturn.metadata.date_from,
                         interval_id: activeReturn.metadata.interval_id,
-                        // seat: activeReturnSeats
                     }
                 } else {
                     returnItem = {
+                        type: "GEORGIAN_BUS",
                         busDirectionId: activeReturn.metadata.busDirection!.id,
                         date: activeReturn.date,
                         flightId: activeReturn.id
@@ -355,7 +355,7 @@ export default function BusTicketsSearchPage() {
                         className='h-[90px] container mx-auto md:flex hidden'
                         data={[
                             { id: screenEnum.SEARCH, title: getItem("Search") },
-                            boundTicketHasSeats && { id: screenEnum.SEATS, title: getItem("Seats") },
+                            (ticketsHasSeats) && { id: screenEnum.SEATS, title: getItem("Seats") },
                             { id: screenEnum.DETAILS, title: getItem("Passenger_details") },
                             { id: screenEnum.PAY, title: getItem("Review_and_pay") },
                         ]}
@@ -392,6 +392,7 @@ export default function BusTicketsSearchPage() {
                 isActiveTicketInfoOpen={isActiveTicketInfoOpen}
                 buttonTitle={buttonTitle}
                 fullDetails={screen === screenEnum.PAY}
+                passengers={passengers}
             />
         </>
     )

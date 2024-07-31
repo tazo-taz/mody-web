@@ -19,7 +19,7 @@ export default function useSearchTickets(from?: string, to?: string, fullDate?: 
             const busDirection = getBusDirectionByCities(fromValue, toValue)
 
             if (busDirection) {
-                const res = await functions("getBusDates", { busDirectionId: busDirection.id })
+                const res = await functions("getGeorgianBusDates", { busDirectionId: busDirection.id })
 
                 const dates = res.data?.data?.flights
 

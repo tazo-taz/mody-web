@@ -6,6 +6,7 @@ import { ticketChooseType } from '../../../../../components/ticket/card/simple/t
 import Title from '../../../../../components/title'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import useScrollTop from '../../../../../hooks/useScrollTop'
+import { doesTicketsHasSeatsPlan, isBothActiveTicketsBusSystem, isBusSystemApi } from '../../../../../lib/ticket'
 import useLanguage from '../../../../../stores/useLanguage'
 
 type TicketSeatsScreenType = {
@@ -28,12 +29,33 @@ export default function TicketSeatsScreen({
     useGrayBg()
     useScrollTop()
 
+
     // console.log(activeSeats, activeOutbound);
 
     const { Tab: seatsTab, index: seatsIndex } = useTab({
         nav: ["Outbound seats", "Return seats"],
         itemClassName: "py-2"
     })
+
+    let busSystemTicket = activeOutbound
+
+
+    console.log(activeOutbound, activeReturn);
+    const [ticketsHasSeats, ticket1HasSeats, ticket2HasSeats] = doesTicketsHasSeatsPlan(activeOutbound, activeReturn)
+
+    if (!ticketsHasSeats) {
+        throw new Error("Something went wrong, please contact us")
+    }
+
+    if (ticket1HasSeats && ticket2HasSeats) {
+        busSystemTicket = seatsIndex === 0 ? activeOutbound : activeReturn
+    } else if (ticket1HasSeats) {
+        busSystemTicket = activeOutbound
+    } else if (ticket2HasSeats) {
+        busSystemTicket = activeReturn
+    }
+
+    console.log(ticket1HasSeats, ticket2HasSeats);
 
     return (
         <>
@@ -50,13 +72,12 @@ export default function TicketSeatsScreen({
                         </div>
                     </Title>
 
-                    {activeReturn && "busSystem" in activeReturn.metadata && (<>
+                    {ticket1HasSeats && ticket2HasSeats && (<>
                         {seatsTab()}
                         <br />
                     </>)}
                     <BusSeatsSystem
-                        activeOutbound={activeOutbound}
-                        activeReturn={activeReturn}
+                        ticket={busSystemTicket}
                         seatsIndex={seatsIndex}
                         passengers={passengers}
                         setPassengers={setPassengers}
@@ -66,6 +87,7 @@ export default function TicketSeatsScreen({
                     outboundTicket={activeOutbound}
                     returnTicket={activeReturn}
                     onContinue={detailsToReviewScreen}
+                    passengers={passengers}
                 />
             </div>
         </>

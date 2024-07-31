@@ -30,9 +30,6 @@ export default function TicketPayScreen({
     useGrayBg()
     useScrollTop()
 
-    console.log(passengers);
-
-
     return (
         <>
             <div className='container mx-auto flex gap-7 lg:gap-[60px] xl:gap-[120px]'>
@@ -66,6 +63,7 @@ export default function TicketPayScreen({
                     outboundTicket={outboundTicket}
                     fullDetails
                     buttonTitle="Pay_now"
+                    passengers={passengers}
                 />
 
             </div>

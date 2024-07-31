@@ -28,9 +28,9 @@ type PassengerFormType = {
 export default function PassengerForm({
     title, isChild, save, required = false, gender, firstName, lastName, onChange, users = [], type, userId, discounts, discount
 }: PassengerFormType) {
-    console.log(users);
-
     const { getItem } = useLanguage()
+    console.log({ discount });
+
     return (
         <Card
             title={(
@@ -99,17 +99,24 @@ export default function PassengerForm({
                     />
                     {discounts?.length && (
                         <Select
+                            xIcon={false}
                             placeholder='Discounts'
-                            items={discounts.map((discount) => ({
-                                title: discount.discount_name,
-                                value: discount.discount_id,
-                            }))}
+                            items={[
+                                {
+                                    value: "full-ticket",
+                                    title: getItem("Full_ticket"),
+                                },
+                                ...discounts.map((discount) => ({
+                                    title: discount.discount_name,
+                                    value: discount.discount_id,
+                                }))]}
                             icon={<MdDiscount />}
                             className='bg-white md:bg-white'
                             value={discount}
                             onChange={value => {
                                 onChange("discount", value)
                             }}
+
                         />
                     )}
                 </div>

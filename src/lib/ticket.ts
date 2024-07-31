@@ -7,7 +7,7 @@ import { doc, getDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import useAuth from "../stores/useAuth"
 import { ticketsListSchema } from "../schemas/ticket"
-import { busDatesType, busSystemDatesType } from "../hooks/firebase/useSearchTickets/types"
+import { busDatesType, busSystemDatesType, Discount } from "../hooks/firebase/useSearchTickets/types"
 import { ticketChooseType } from "../components/ticket/card/simple/type"
 
 const dateFormat = "yyyy-MM-DD"
@@ -201,16 +201,31 @@ export const getTicketsCount = (busDates: busDatesType, busSystemDates: busSyste
 export const filterUnfilledPassengers = (passengers: passengerType[]) =>
     passengers.filter(({ firstName, lastName }) => firstName && lastName)
 
-export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, fullPrice: boolean = false) => {
+export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, fullPrice: boolean = false, activeDiscountIds: string[], discounts: Discount[] | null, ticket1Type: TicketApiEnum, ticket2Type: TicketApiEnum) => {
+    const discountsProcents = (activeDiscountIds?.map((discountId) => {
+        const { discount_price } = discounts?.find(({ discount_id }) => discount_id === discountId) || { discount_price: 100 }
+        return 100 - discount_price
+    }) || []).reduce((acc, price) => acc + price, 0)
+
+
+    let discountPriceCalc = 0;
+
+    if (ticket1Type === TicketApiEnum.BUS_SYSTEM) {
+        discountPriceCalc = discountsProcents * price1 / 100
+    }
+    if (ticket2Type === TicketApiEnum.BUS_SYSTEM) {
+        discountPriceCalc += discountsProcents * price2 / 100
+    }
+
     let ticketsPrice = passengersCount * price1
     if (price2) {
         ticketsPrice += passengersCount * price2
     }
-    const discount = 0;
     const serviceFee = 0
     const priceWODiscount = ticketsPrice + serviceFee
-    const discountPrice = priceWODiscount * discount / 100
+    const discountPrice = discountPriceCalc
     const totalPrice = fullPrice ? priceWODiscount - discountPrice : ticketsPrice
+    const discount = (discountPrice / priceWODiscount * 100).toFixed(0)
 
     return {
         totalPrice: totalPrice.toFixed(2),
@@ -245,8 +260,22 @@ export const isReserved = (seat: string, freeSeats: number[]) => {
     return freeSeats.includes(parseInt(seat))
 }
 
-export const isBusSystemApi = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
-    return "busSystem" in (activeOutbound?.metadata || activeReturn?.metadata)!
+export const isBusSystemApi = (ticket: ticketChooseType | null) => {
+    return getTicketApiType(ticket) === TicketApiEnum.BUS_SYSTEM
+}
+
+export const isSomeOfBusSystemApi = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+    return isBusSystemApi(activeOutbound) || isBusSystemApi(activeReturn)
+}
+
+const ticketHasSeatsPlan = (ticket: ticketChooseType | null) => {
+    return isBusSystemApi(ticket) && (ticket!.metadata as busSystemDatesType).has_plan === 1
+}
+
+export const doesTicketsHasSeatsPlan = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+    const validateTicket1 = ticketHasSeatsPlan(activeOutbound)
+    const validateTicket2 = ticketHasSeatsPlan(activeReturn)
+    return [validateTicket1 || validateTicket2, validateTicket1, validateTicket2]
 }
 
 export enum TicketApiEnum {
@@ -261,6 +290,10 @@ export const validateTicketPassenger = (api: TicketApiEnum, passengers: passenge
     return passengers.slice(0, 1).every(({ firstName, lastName, userId }) => firstName && lastName && userId)
 }
 
+export const getTicketApiType = (ticket: ticketChooseType | null) => {
+    if (ticket?.metadata && "busSystem" in ticket.metadata) return TicketApiEnum.BUS_SYSTEM
+    return TicketApiEnum.GEORGIAN_BUS
+}
 
 export const getActiveTicketsApiType = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null): TicketApiEnum => {
     if (activeOutbound?.metadata && "busSystem" in activeOutbound.metadata) return TicketApiEnum.BUS_SYSTEM
@@ -268,8 +301,14 @@ export const getActiveTicketsApiType = (activeOutbound: ticketChooseType | null,
     return TicketApiEnum.GEORGIAN_BUS
 }
 
-export const getBusSystemTicketFromActive = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+export const getDiscountsFromActive = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
     if (activeOutbound?.metadata && "busSystem" in activeOutbound.metadata) return activeOutbound.metadata.discounts
     if (activeReturn?.metadata && "busSystem" in activeReturn.metadata) return activeReturn.metadata.discounts
     return null
+}
+
+export const isBothActiveTicketsBusSystem = (activeOutbound: ticketChooseType | null, activeReturn: ticketChooseType | null) => {
+    const type1 = getActiveTicketsApiType(activeOutbound, null)
+    const type2 = getActiveTicketsApiType(null, activeReturn)
+    return type1 === TicketApiEnum.BUS_SYSTEM && type2 === TicketApiEnum.BUS_SYSTEM
 }

@@ -1,5 +1,5 @@
 import useQuery from '../../hooks/useQuery'
-import { calculateTicketsFullPrice, parseTicketQuery } from '../../lib/ticket'
+import { calculateTicketsFullPrice, getDiscountsFromActive, getTicketApiType, parseTicketQuery } from '../../lib/ticket'
 import { cn } from '../../lib/utils'
 import useLanguage from '../../stores/useLanguage'
 import { ticketChooseType } from './card/simple/type'
@@ -7,10 +7,11 @@ import { ticketChooseType } from './card/simple/type'
 type TicketsFullPriceProps = {
     outboundTicket: ticketChooseType | null
     returnTicket: ticketChooseType | null
-    className?: string
+    className?: string,
+    discountIds: string[]
 }
 
-export default function TicketsFullPrice({ outboundTicket, returnTicket, className }: TicketsFullPriceProps) {
+export default function TicketsFullPrice({ outboundTicket, returnTicket, className, discountIds }: TicketsFullPriceProps) {
     const { getItem } = useLanguage()
     const { child, passenger } = parseTicketQuery(useQuery())
 
@@ -31,11 +32,11 @@ export default function TicketsFullPrice({ outboundTicket, returnTicket, classNa
         price2 = returnTicket?.metadata.busDirection.price || 0
     }
 
-    const { serviceFee, ticketsPrice, totalPrice, discountPrice, discount } = calculateTicketsFullPrice(passengersCount, price1, price2)
+    const { serviceFee, ticketsPrice, totalPrice, discountPrice, discount } = calculateTicketsFullPrice(passengersCount, price1, price2, true, discountIds, getDiscountsFromActive(outboundTicket, returnTicket), getTicketApiType(outboundTicket), getTicketApiType(returnTicket))
 
     const items = [
         {
-            left: getItem("Tickets") + ' ( ' + passengersCount + " " + getItem(passengersCount > 1 ? "Passengers" : "Passenger"),
+            left: getItem("Tickets") + ' (' + passengersCount + " " + getItem(passengersCount > 1 ? "Passengers" : "Passenger") + ")",
             right: "₾ " + ticketsPrice
         },
         {

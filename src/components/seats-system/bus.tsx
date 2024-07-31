@@ -13,16 +13,13 @@ import SelectedSeatStatus from './seat-status-title/selected'
 import VagonSeats from './vagon-seat'
 
 type BusSeatsSystemType = {
-  activeOutbound: ticketChooseType | null
-  activeReturn: ticketChooseType | null
+  ticket: ticketChooseType | null
   seatsIndex: number,
   passengers: passengerType[]
   setPassengers: React.Dispatch<React.SetStateAction<passengerType[]>>,
 }
 
-export default function BusSeatsSystem({ activeOutbound, activeReturn, passengers, setPassengers, seatsIndex }: BusSeatsSystemType) {
-
-  const activeTicketType = seatsIndex === 0 ? activeOutbound : activeReturn
+export default function BusSeatsSystem({ ticket, passengers, setPassengers, seatsIndex }: BusSeatsSystemType) {
   const activeSeats = passengers.map(passenger => passenger.seat[seatsIndex])
   const setActiveSeats = (seats: (string | undefined)[]) => {
     const newPassengers = [...passengers]
@@ -33,8 +30,8 @@ export default function BusSeatsSystem({ activeOutbound, activeReturn, passenger
   }
 
   let bustype_id = ""
-  if (activeTicketType && "busSystem" in activeTicketType.metadata) {
-    bustype_id = activeTicketType.metadata.bustype_id
+  if (ticket && "busSystem" in ticket.metadata) {
+    bustype_id = ticket.metadata.bustype_id
   }
 
   const { floors, loading } = useGetPlan(bustype_id)
@@ -47,11 +44,13 @@ export default function BusSeatsSystem({ activeOutbound, activeReturn, passenger
 
   const floor = floors[floorIndex]
 
-  if (!activeTicketType || !("busSystem" in activeTicketType.metadata)) return null
+  if (!ticket || !("busSystem" in ticket.metadata)) return null
   const passengerAmount = child + passenger
 
   const handleSeatClick = (seat: SeatType) => {
-    if (!activeTicketType || !("busSystem" in activeTicketType.metadata) || typeof seat !== "string" || isReserved(seat, activeTicketType.metadata.free_seats)) return
+
+    if (!ticket || !("busSystem" in ticket.metadata) || typeof seat !== "string" || isReserved(seat, ticket.metadata.free_seats)) return
+    console.log(seat);
 
     let seatIndex = -1
     let firstAvaibleSeat = -1
@@ -100,12 +99,12 @@ export default function BusSeatsSystem({ activeOutbound, activeReturn, passenger
         <VagonSeats
           floor={floor}
           loading={loading}
-          freeSeats={activeTicketType.metadata.free_seats}
+          freeSeats={ticket.metadata.free_seats}
           activeSeats={activeSeats}
           handleClick={handleSeatClick}
         />
         <SeatPassengers
-          activeTicketType={activeTicketType}
+          activeTicketType={ticket}
           passengerAmount={passengerAmount}
           activeSeats={activeSeats}
           handleDeleteSeat={handleDeleteSeat}

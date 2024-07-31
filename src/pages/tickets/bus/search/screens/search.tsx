@@ -60,6 +60,7 @@ export default function TicketsSearchScreen({ activeOutbound, activeReturn, setA
                     onContinue={onContinue}
                     returnTicket={activeReturn}
                     outboundTicket={activeOutbound}
+                    passengers={[]}
                 />
             </div>
         </>

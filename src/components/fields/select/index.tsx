@@ -7,14 +7,15 @@ import { cn } from '../../../lib/utils';
 type SelectProps = {
     placeholder: string,
     icon?: React.ReactNode,
-    items: { value: string, title: string, icon?: React.ReactNode }[],
+    items: { value: any, title: string, icon?: React.ReactNode }[],
     onChange?: (item?: string) => void,
     value?: string | null,
     sort?: number,
-    className?: string
+    className?: string,
+    xIcon?: boolean
 }
 
-export default function Select({ placeholder, icon, items, onChange, value, sort = 1, className }: SelectProps) {
+export default function Select({ placeholder, icon, items, onChange, value, sort = 1, className, xIcon = true }: SelectProps) {
     const { isOpen, open, close } = useOpen(false)
     const [scope, animate] = useAnimate()
 
@@ -59,7 +60,7 @@ export default function Select({ placeholder, icon, items, onChange, value, sort
                     <h1 className='absolute top-2 left-0 whitespace-nowrap'>{valueText}</h1>
                 </div>
 
-                {value && (
+                {value && xIcon && (
                     <div className='ml-auto cursor-pointer' onClick={cancel}>
                         <XCircleIcon />
                     </div>

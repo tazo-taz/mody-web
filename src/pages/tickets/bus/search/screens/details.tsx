@@ -7,7 +7,7 @@ import Title from '../../../../../components/title'
 import useTicketUsers from '../../../../../hooks/firebase/useTicketUsers'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import useScrollTop from '../../../../../hooks/useScrollTop'
-import { getActiveTicketsApiType, getBusSystemTicketFromActive, TicketApiEnum } from '../../../../../lib/ticket'
+import { getActiveTicketsApiType, getDiscountsFromActive, TicketApiEnum } from '../../../../../lib/ticket'
 import { objChange } from '../../../../../lib/utils'
 import useLanguage from '../../../../../stores/useLanguage'
 
@@ -33,7 +33,7 @@ export default function TicketDetailsScreen({
     useScrollTop()
 
     const ticketApiType = getActiveTicketsApiType(activeOutbound, activeReturn)
-    const discounts = getBusSystemTicketFromActive(activeOutbound, activeReturn)
+    const discounts = getDiscountsFromActive(activeOutbound, activeReturn)
 
     const onChange = (index: number) => {
         return (key: keyof passengerType, value: any) => {
@@ -91,6 +91,7 @@ export default function TicketDetailsScreen({
                     outboundTicket={activeOutbound}
                     returnTicket={activeReturn}
                     onContinue={detailsToReviewScreen}
+                    passengers={passengers}
                 />
             </div>
         </>
