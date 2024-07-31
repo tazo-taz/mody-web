@@ -39,8 +39,6 @@ export default function TicketSeatsScreen({
 
     let busSystemTicket = activeOutbound
 
-
-    console.log(activeOutbound, activeReturn);
     const [ticketsHasSeats, ticket1HasSeats, ticket2HasSeats] = doesTicketsHasSeatsPlan(activeOutbound, activeReturn)
 
     if (!ticketsHasSeats) {
@@ -54,8 +52,6 @@ export default function TicketSeatsScreen({
     } else if (ticket2HasSeats) {
         busSystemTicket = activeReturn
     }
-
-    console.log(ticket1HasSeats, ticket2HasSeats);
 
     return (
         <>

@@ -7,20 +7,20 @@ import { cn } from '../../lib/utils'
 import LabeledCheckbox from '../fields/checkbox/labeled'
 import { passengerType } from '../../pages/tickets/bus/search'
 import Card from '../card'
-import { ticketUsersSchemaType } from '../../schemas/ticket/user'
 import Badge from '../badge'
 import Select from '../fields/select'
 import { IoMaleFemale, IoFemale, IoMale } from 'react-icons/io5'
-import { TicketApiEnum } from '../../lib/ticket'
 import { Discount } from '../../hooks/firebase/useSearchTickets/types'
 import { MdDiscount } from 'react-icons/md'
+import { MyTickerUserType } from '../../schemas/my-ticket-user'
+import { TicketApiEnum } from '../../types/ticket'
 
 type PassengerFormType = {
     title: string,
     required?: boolean
     isChild?: boolean,
     onChange: (key: keyof passengerType, value: any) => void,
-    users?: ticketUsersSchemaType,
+    users?: MyTickerUserType[],
     type: TicketApiEnum,
     discounts: Discount[] | null,
 } & passengerType
@@ -29,8 +29,6 @@ export default function PassengerForm({
     title, isChild, save, required = false, gender, firstName, lastName, onChange, users = [], type, userId, discounts, discount
 }: PassengerFormType) {
     const { getItem } = useLanguage()
-    console.log({ discount });
-
     return (
         <Card
             title={(
@@ -52,16 +50,16 @@ export default function PassengerForm({
                             {getItem("Saved_Passengers")}:
                         </span>
 
-                        {users.filter((user) => isChild ? !user.isChild : user.isChild).map((user) => (
+                        {users.map((user, inx) => (
                             <Badge
-                                key={user.userId}
+                                key={inx}
                                 size='sm'
                                 variant='secondary'
                                 className='font-bold'
                                 onClick={() => {
                                     onChange("firstName", user.firstName)
                                     onChange("lastName", user.lastName)
-                                    // onChange("userId", user.userId)
+                                    if (user.gender) onChange("gender", user.gender)
                                 }}
                             >{user.firstName}</Badge>
                         ))}

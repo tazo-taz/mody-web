@@ -7,9 +7,10 @@ import Title from '../../../../../components/title'
 import useTicketUsers from '../../../../../hooks/firebase/useTicketUsers'
 import useGrayBg from '../../../../../hooks/useGrayBg'
 import useScrollTop from '../../../../../hooks/useScrollTop'
-import { getActiveTicketsApiType, getDiscountsFromActive, TicketApiEnum } from '../../../../../lib/ticket'
+import { getActiveTicketsApiType, getDiscountsFromActive } from '../../../../../lib/ticket'
 import { objChange } from '../../../../../lib/utils'
 import useLanguage from '../../../../../stores/useLanguage'
+import { TicketApiEnum } from '../../../../../types/ticket'
 
 type TicketDetailsScreenType = {
     detailsToReviewScreen: () => boolean

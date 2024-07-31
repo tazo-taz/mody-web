@@ -2,12 +2,12 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { db } from '../../firebase';
-import { ticketUsersSchema, ticketUsersSchemaType, } from '../../schemas/ticket/user';
+import { MyTickerUserType, myTicketUsersListSchema } from '../../schemas/my-ticket-user';
 import useAuth from '../../stores/useAuth';
 import useLanguage from '../../stores/useLanguage';
 
 export default function useTicketUsers() {
-    const [users, setUsers] = useState<ticketUsersSchemaType>([])
+    const [users, setUsers] = useState<MyTickerUserType[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const { getItem } = useLanguage()
     const { user } = useAuth()
@@ -24,7 +24,7 @@ export default function useTicketUsers() {
 
                     if (isMounted && docSnapshot.exists()) {
                         const data = docSnapshot.data();
-                        const parsedData = ticketUsersSchema.parse(data?.items);
+                        const parsedData = myTicketUsersListSchema.parse(data?.items);
                         setUsers(parsedData)
                     }
                 }

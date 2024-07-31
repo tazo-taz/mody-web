@@ -7,7 +7,7 @@ import { ticketChooseType } from '../../../../components/ticket/card/simple/type
 import TicketHeader from '../../../../components/ticket/header';
 import useOpen from '../../../../hooks/useOpen';
 import useQuery from '../../../../hooks/useQuery';
-import { doesTicketsHasSeatsPlan, getActiveTicketsApiType, parseTicketQuery, TicketApiEnum, validateTicketPassenger } from '../../../../lib/ticket';
+import { doesTicketsHasSeatsPlan, getActiveTicketsApiType, parseTicketQuery, validateTicketPassenger } from '../../../../lib/ticket';
 import { startLoading, stopLoading } from '../../../../references/loading';
 import { userSchemaType } from '../../../../schemas/user';
 import useAuth from '../../../../stores/useAuth';
@@ -17,6 +17,8 @@ import TicketDetailsScreen from './screens/details';
 import TicketPayScreen from './screens/pay';
 import TicketsSearchScreen from './screens/search';
 import TicketSeatsScreen from './screens/seats';
+import { functions } from '../../../../firebase';
+import { GenderEnum, TicketApiEnum } from '../../../../types/ticket';
 
 // TODO: Divide kutaisi into kutaisi and kutaisi airport
 
@@ -30,7 +32,7 @@ export enum screenEnum {
 export type passengerType = {
     firstName: string,
     lastName: string,
-    gender: "M" | "F" | null,
+    gender: GenderEnum | null,
     userId: string | null,
     save: boolean,
     isChild?: boolean,
@@ -105,8 +107,6 @@ export default function BusTicketsSearchPage() {
             return false
         }
     }
-
-    console.log({ activeOutbound, activeReturn });
 
     const searchToNextScreen = () => {
         if (activeOutbound && shouldContinueToDetailsScreen()) {
@@ -204,13 +204,13 @@ export default function BusTicketsSearchPage() {
 
             if ("busSystem" in activeOutbound?.metadata) {
                 item = {
-                    type: "BUS_SYSTEM",
+                    type: TicketApiEnum.BUS_SYSTEM,
                     date: activeOutbound.metadata.date_from,
                     interval_id: activeOutbound.metadata.interval_id,
                 }
             } else {
                 item = {
-                    type: "GEORGIAN_BUS",
+                    type: TicketApiEnum.GEORGIAN_BUS,
                     busDirectionId: activeOutbound?.metadata?.busDirection!.id,
                     date: activeOutbound!.date,
                     flightId: activeOutbound!.id
@@ -236,13 +236,13 @@ export default function BusTicketsSearchPage() {
 
                 if ("busSystem" in activeReturn.metadata) {
                     returnItem = {
-                        type: "BUS_SYSTEM",
+                        type: TicketApiEnum.BUS_SYSTEM,
                         date: activeReturn.metadata.date_from,
                         interval_id: activeReturn.metadata.interval_id,
                     }
                 } else {
                     returnItem = {
-                        type: "GEORGIAN_BUS",
+                        type: TicketApiEnum.GEORGIAN_BUS,
                         busDirectionId: activeReturn.metadata.busDirection!.id,
                         date: activeReturn.date,
                         flightId: activeReturn.id
@@ -257,7 +257,8 @@ export default function BusTicketsSearchPage() {
 
             console.log(JSON.stringify(payBusPriceData));
 
-            // const data = await functions('payBusPrice', payBusPriceData);
+            const data = await functions('payBusPrice', payBusPriceData);
+            console.log(data);
 
             // if (paymentType === "new") {
             //     if (data.data.uri) window.location.href = data.data.uri

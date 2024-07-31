@@ -1,7 +1,5 @@
-import { getFullDayAndMonth, timeFromTo, timeToFrom } from '../../../../lib/date';
-import { getBusDirection, getCitiesByName, getStationByCity } from '../../../../lib/ticket';
-import { ticketItemSchemaType } from '../../../../schemas/ticket';
-import { ticketUserSchemaType } from '../../../../schemas/ticket/user';
+import { formatTime, getFullDayAndMonth, timeFromTo, timeToFrom } from '../../../../lib/date';
+import { getBusDirection, getCitiesByTicketTitle, getStationByCity } from '../../../../lib/ticket';
 import useLanguage from '../../../../stores/useLanguage';
 import Button from '../../../fields/button';
 import { TicketCardDash } from '../components/dash';
@@ -11,18 +9,19 @@ import { PiArrowUUpLeftFill } from "react-icons/pi";
 import { useWindowSize } from 'usehooks-ts';
 import { useReactToPrint } from 'react-to-print';
 import { useRef } from 'react';
+import { MyTicketSchemaType } from '../../../../schemas/my-ticket';
+import { MyTickerUserType } from '../../../../schemas/my-ticket-user';
 
 type RealTicketCardProps = {
-    item: ticketItemSchemaType,
-    outbound?: boolean,
-    passenger?: ticketUserSchemaType,
+    item: MyTicketSchemaType,
+    isOutbound?: boolean,
+    passenger?: MyTickerUserType,
     returnable?: boolean,
     handlePrint: () => void
 }
 
-export default function RealTicketCard({ item, outbound, passenger, returnable }: RealTicketCardProps) {
+export default function RealTicketCard({ item, isOutbound, passenger, returnable }: RealTicketCardProps) {
     const { getItem } = useLanguage()
-    const busDirection = getBusDirection(item.busDirectionId)
     const { width } = useWindowSize()
 
     const print = useReactToPrint({
@@ -37,27 +36,15 @@ export default function RealTicketCard({ item, outbound, passenger, returnable }
         print(null, () => contentToPrint.current)
     }
 
-    if (!busDirection) return null
-    let timeFrom = "", timeTo = ""
 
-    if (outbound) {
-        const x = timeFromTo(item.date, busDirection.timeDiff, false)
-        timeFrom = x.timeFrom
-        timeTo = x.timeTo
+    const ticketIndex = isOutbound ? 0 : 1
 
-    } else {
-        const x = timeToFrom(item.date, busDirection.timeDiff, false)
-        timeFrom = x.timeFrom
-        timeTo = x.timeTo
-    }
+    const timeFrom = formatTime(item.tickets[ticketIndex].dateTimeFrom)
+    const timeTo = formatTime(item.tickets[ticketIndex].dateTimeTo)
 
+    const [cityFrom, cityTo] = getCitiesByTicketTitle(item.tickets[ticketIndex].title)
 
-
-
-
-    const { cityFrom, cityTo } = getCitiesByName(item.orderItem.name)
-
-    const gullDayAndMonth = getFullDayAndMonth(item.date)
+    const fullDayAndMonth = getFullDayAndMonth(item.tickets[ticketIndex].dateTimeFrom)
 
     if (width < 700) {
         return (
@@ -65,10 +52,10 @@ export default function RealTicketCard({ item, outbound, passenger, returnable }
                 <div className='flex bg-white relative group-hover:bg-slate-50 flex-col justify-between gap-8 rounded-t-primary flex-1 p-[25px] border-1 border-b-0'>
                     <div className='flex justify-between'>
                         <div>
-                            <h3 className='font-medium'>{gullDayAndMonth}</h3>
+                            <h3 className='font-medium'>{fullDayAndMonth}</h3>
                             <span className='text-[13px] text-[#6B7280]'>{getStationByCity(cityFrom)}</span>
                         </div>
-                        <div className='font-semibold'>#{item.flightId}</div>
+                        <div className='font-semibold'>#{item.uid}</div>
                     </div>
 
 
@@ -143,16 +130,16 @@ export default function RealTicketCard({ item, outbound, passenger, returnable }
                     </div>
 
                     <div>
-                        <h3 className='font-medium'>{gullDayAndMonth}</h3>
+                        <h3 className='font-medium'>{fullDayAndMonth}</h3>
                         <span className='text-[13px] text-[#6B7280]'>{getStationByCity(cityFrom)}</span>
                     </div>
                 </div>
 
                 <div className='flex gap-[52px]'>
-                    <div className='flex flex-col'>
+                    {/* <div className='flex flex-col'>
                         <div className='text-[13px] text-[#6B7280]'>{getItem("Bus")}</div>
-                        <div className='font-semibold'>#{item.flightId}</div>
-                    </div>
+                        <div className='font-semibold'>#{"id here"}</div>
+                    </div> */}
 
                     {passenger && (
                         <div className='flex flex-col'>

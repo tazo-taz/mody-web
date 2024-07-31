@@ -1,14 +1,15 @@
+import { doc, getDoc } from "firebase/firestore"
 import { sum } from "lodash"
 import moment from "moment"
 import queryString from "query-string"
 import { getLanguageItem, languageData } from "../assets/language"
-import { passengerType } from "../pages/tickets/bus/search"
-import { doc, getDoc } from "firebase/firestore"
-import { db } from "../firebase"
-import useAuth from "../stores/useAuth"
-import { ticketsListSchema } from "../schemas/ticket"
-import { busDatesType, busSystemDatesType, Discount } from "../hooks/firebase/useSearchTickets/types"
 import { ticketChooseType } from "../components/ticket/card/simple/type"
+import { db } from "../firebase"
+import { busDatesType, busSystemDatesType, Discount } from "../hooks/firebase/useSearchTickets/types"
+import { passengerType } from "../pages/tickets/bus/search"
+import { myTicketsListSchema } from "../schemas/my-ticket"
+import useAuth from "../stores/useAuth"
+import { TicketApiEnum } from "../types/ticket"
 
 const dateFormat = "yyyy-MM-DD"
 
@@ -236,12 +237,9 @@ export const calculateTicketsFullPrice = (passengersCount: number, price1: numbe
     }
 }
 
-export const getCitiesByName = (name: string) => {
+export const getCitiesByTicketTitle = (name: string) => {
     const [from, to] = name.split(" - ")
-    return {
-        cityFrom: getCityNameByValue(from),
-        cityTo: getCityNameByValue(to),
-    }
+    return [getCityNameByValue(from), getCityNameByValue(to)]
 }
 
 export const getMyTickets = async () => {
@@ -250,7 +248,7 @@ export const getMyTickets = async () => {
     const docRef = doc(db, "client-bus-tickets", user.uid);
     const docSnapshot = await getDoc(docRef);
     if (docSnapshot.exists()) {
-        const parsedData = ticketsListSchema.parse(docSnapshot.data()?.items);
+        const parsedData = myTicketsListSchema.parse(docSnapshot.data()?.items);
         return parsedData.reverse()
     }
     return null
@@ -276,11 +274,6 @@ export const doesTicketsHasSeatsPlan = (activeOutbound: ticketChooseType | null,
     const validateTicket1 = ticketHasSeatsPlan(activeOutbound)
     const validateTicket2 = ticketHasSeatsPlan(activeReturn)
     return [validateTicket1 || validateTicket2, validateTicket1, validateTicket2]
-}
-
-export enum TicketApiEnum {
-    BUS_SYSTEM = "busSystem",
-    GEORGIAN_BUS = "georgianBus"
 }
 
 export const validateTicketPassenger = (api: TicketApiEnum, passengers: passengerType[]) => {
