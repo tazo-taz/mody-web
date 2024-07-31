@@ -415,7 +415,7 @@ export const languageData = {
     },
     Pay_with_cash: {
         en: "Pay with cash",
-        ge: "გადაიხადე ქეშით"
+        ge: "გადაიხადე ნაღდით"
     },
     Use_a_Discount: {
         en: "Use a Discount",
@@ -609,9 +609,41 @@ export const languageData = {
         en: "Full ticket",
         ge: "სრული ბილეთი"
     },
+    Reserved: {
+        en: "Reserved",
+        ge: "დაჯავშნილია"
+    },
+    Selected: {
+        en: "Selected",
+        ge: "არჩეულია"
+    },
+    Available: {
+        en: "Available",
+        ge: "ხელმისაწვდომია"
+    },
+    floor: {
+        en: "floor",
+        ge: "სართული"
+    },
+    Gender: {
+        en: "Gender",
+        ge: "სქესი"
+    },
+    Male: {
+        en: "Male",
+        ge: "მამრობითი"
+    },
+    Female: {
+        en: "Female",
+        ge: "მდედრობითი"
+    },
+    Discounts: {
+        en: "Discounts",
+        ge: "ფასდაკლებები"
+    },
 }
 
-export const getLanguageItem = (item: keyof typeof languageData) => {
+export const getItem = (item: keyof typeof languageData) => {
     const language = useLanguage.getState()
     return languageData[item]?.[language.language] || ""
 }

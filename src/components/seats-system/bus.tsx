@@ -1,3 +1,4 @@
+import { getItem } from '../../assets/language'
 import useQuery from '../../hooks/useQuery'
 import { isReserved, parseTicketQuery } from '../../lib/ticket'
 import { passengerType } from '../../pages/tickets/bus/search'
@@ -39,7 +40,7 @@ export default function BusSeatsSystem({ ticket, passengers, setPassengers, seat
   const { child, passenger } = parseTicketQuery(query)
 
   const { Tab: floorTab, index: floorIndex } = useTab({
-    nav: floors.map((_, inx) => "I".repeat(inx + 1) + " floor")
+    nav: floors.map((_, inx) => "I".repeat(inx + 1) + " " + getItem("floor"))
   })
 
   const floor = floors[floorIndex]

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { IoReload } from 'react-icons/io5'
 import { useElementSize } from 'usehooks-ts'
 import useSearchTickets from '../../hooks/firebase/useSearchTickets'
@@ -26,7 +26,7 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
     const { getItem } = useLanguage()
     const [squareRef, { width }] = useElementSize()
 
-    const currentTickets = getTicketsFromBusDates(busDates, currentDate)
+    const currentTickets = useMemo(() => getTicketsFromBusDates(busDates, currentDate), [busDates, currentDate])
 
     const geoBusTickets = currentTickets.map((ticket) => ({
         element: (
@@ -59,7 +59,6 @@ export default function TicketsSection({ title, cityTo, cityFrom, dateFrom, onCh
         const date = new Date(item.date)
         return date >= new Date()
     }).map((item) => item.element)
-
 
     const tickets = ticketsHTML.length === 0 && !isLoading ? (
         <div className='flex items-center pt-28 justify-center'>{getItem("Tickets_not_found")}</div>

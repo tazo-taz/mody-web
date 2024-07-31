@@ -2,7 +2,7 @@ import { doc, getDoc } from "firebase/firestore"
 import { sum } from "lodash"
 import moment from "moment"
 import queryString from "query-string"
-import { getLanguageItem, languageData } from "../assets/language"
+import { getItem, languageData } from "../assets/language"
 import { ticketChooseType } from "../components/ticket/card/simple/type"
 import { db } from "../firebase"
 import { busDatesType, busSystemDatesType, Discount } from "../hooks/firebase/useSearchTickets/types"
@@ -38,16 +38,16 @@ export const getBysSystemCityValueByName = (city?: string) => {
 }
 
 export const getCityNameByValue = (value?: string) => {
-    if (value === languageData["Kutaisi_airport"].ge) return getLanguageItem("Kutaisi_airport")
-    if (value === languageData["Tbilisi"].ge) return getLanguageItem("Tbilisi")
-    if (value === languageData["Batumi"].ge) return getLanguageItem("Batumi")
+    if (value === languageData["Kutaisi_airport"].ge) return getItem("Kutaisi_airport")
+    if (value === languageData["Tbilisi"].ge) return getItem("Tbilisi")
+    if (value === languageData["Batumi"].ge) return getItem("Batumi")
     return value || ""
 }
 
 export const getCityRoutes = (cityFrom?: string, cityTo?: string) => {
     const cityRoutes = [
-        [{ value: languageData["Tbilisi"].ge, title: getLanguageItem("Tbilisi") }, { value: languageData["Kutaisi_airport"].ge, title: getLanguageItem("Kutaisi_airport") }],
-        [{ value: languageData["Kutaisi_airport"].ge, title: getLanguageItem("Kutaisi_airport") }, { value: languageData["Batumi"].ge, title: getLanguageItem("Batumi") }],
+        [{ value: languageData["Tbilisi"].ge, title: getItem("Tbilisi") }, { value: languageData["Kutaisi_airport"].ge, title: getItem("Kutaisi_airport") }],
+        [{ value: languageData["Kutaisi_airport"].ge, title: getItem("Kutaisi_airport") }, { value: languageData["Batumi"].ge, title: getItem("Batumi") }],
     ]
 
     if (!cityFrom && cityTo) return [...new Set(cityRoutes.filter(cityArr => cityArr.find(city => city.value === cityTo)).flat())].filter((city) => city.value !== cityTo)
@@ -156,9 +156,9 @@ export const getBusDirection = (id: number) => {
 }
 
 export const getStationByCity = (city: string) => {
-    if ([languageData["Kutaisi_airport"].en, languageData["Kutaisi_airport"].ge].includes(city)) return getLanguageItem("Kutaisi_airport")
-    if ([languageData["Tbilisi"].en, languageData["Tbilisi"].ge].includes(city)) return getLanguageItem("Tbilisi_Station_square_1")
-    if ([languageData["Batumi"].en, languageData["Batumi"].ge].includes(city)) return getLanguageItem("Batumi_Station_2")
+    if ([languageData["Kutaisi_airport"].en, languageData["Kutaisi_airport"].ge].includes(city)) return getItem("Kutaisi_airport")
+    if ([languageData["Tbilisi"].en, languageData["Tbilisi"].ge].includes(city)) return getItem("Tbilisi_Station_square_1")
+    if ([languageData["Batumi"].en, languageData["Batumi"].ge].includes(city)) return getItem("Batumi_Station_2")
 
     return null
 }
@@ -171,7 +171,7 @@ export const getTicketsFromBusDates = (busDates: busDatesType, departureDate: Da
         dates
             .filter((date: string) => date.split(" ")[0] === formatDate(departureDate))
             .forEach((date: string) => {
-                if (!dateItems.find((item) => item.date === date))
+                if (!dateItems.find((item) => item.date === date) && new Date(date).getTime() >= new Date().getTime())
                     dateItems.push({ id, date });
             })
     }

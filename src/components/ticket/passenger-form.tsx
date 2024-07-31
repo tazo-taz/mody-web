@@ -83,10 +83,10 @@ export default function PassengerForm({
                 />
                 {type === TicketApiEnum.BUS_SYSTEM && (<div className='grid grid-cols-2 gap-[15px]'>
                     <Select
-                        placeholder='Gender'
+                        placeholder={getItem('Gender')}
                         items={[
-                            { title: "Male", value: "M", icon: <IoMale /> },
-                            { title: "Female", value: "F", icon: <IoFemale /> },
+                            { title: getItem("Male"), value: "M", icon: <IoMale /> },
+                            { title: getItem("Female"), value: "F", icon: <IoFemale /> },
                         ]}
                         icon={<IoMaleFemale />}
                         className='bg-white md:bg-white'
@@ -98,7 +98,7 @@ export default function PassengerForm({
                     {discounts?.length && (
                         <Select
                             xIcon={false}
-                            placeholder='Discounts'
+                            placeholder={getItem('Discounts')}
                             items={[
                                 {
                                     value: "full-ticket",

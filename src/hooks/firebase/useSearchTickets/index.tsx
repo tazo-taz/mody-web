@@ -58,7 +58,10 @@ export default function useSearchTickets(from?: string, to?: string, fullDate?: 
                 date
             })
 
-            setBusSystemDates(res.data.result ? res.data.data : [])
+            const busSystemDates = ((res.data.result ? res.data.data : []) as busSystemDatesType[]).filter((item) => {
+                return new Date(item.date_from + 'T' + item.time_from) > new Date()
+            })
+            setBusSystemDates(busSystemDates)
             setIsBusSystemDatesLoading(false)
         }
 
