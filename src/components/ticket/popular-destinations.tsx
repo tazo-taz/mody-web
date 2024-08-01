@@ -15,6 +15,13 @@ export default function PopularDestinations() {
 
   const arr = [
     {
+      cityFromTitle: getItem("Prague"),
+      cityFrom: getItem("Prague"),
+      cityToTitle: getItem("Kiev"),
+      cityTo: getItem("Kiev"),
+      src: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/12/48/07/st-andrew-s-church.jpg?w=1000&h=1000&s=1',
+    },
+    {
       cityFromTitle: getItem("Tbilisi"),
       cityFrom: getItem("Tbilisi"),
       cityToTitle: getItem("Kutaisi"),
@@ -42,15 +49,30 @@ export default function PopularDestinations() {
       cityTo: getItem("Kutaisi_airport"),
       src: kutaisiScr,
     },
+    {
+      cityFromTitle: getItem("Batumi"),
+      cityFrom: getItem("Batumi"),
+      cityToTitle: getItem("Kutaisi"),
+      cityTo: getItem("Kutaisi_airport"),
+      src: kutaisiScr,
+    },
   ]
 
   const onClick = ({ cityFrom, cityTo }: {
     cityFrom: string;
     cityTo: string;
   }) => {
-
     const busDirection = getBusDirectionByCities(cityFrom, cityTo)
     if (busDirection) {
+      const url = transformTicketFormToQuery({
+        cityFrom: getCityValueByName(cityFrom),
+        cityTo: getCityValueByName(cityTo),
+        departureDate: new Date()
+      })
+      if (url) {
+        navigate(url)
+      }
+    } else {
       const url = transformTicketFormToQuery({
         cityFrom: getCityValueByName(cityFrom),
         cityTo: getCityValueByName(cityTo),

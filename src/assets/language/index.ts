@@ -641,6 +641,14 @@ export const languageData = {
         en: "Discounts",
         ge: "ფასდაკლებები"
     },
+    Prague: {
+        en: "Prague",
+        ge: "პრაღა"
+    },
+    Kiev: {
+        en: "Kiev",
+        ge: "კიევი"
+    },
 }
 
 export const getItem = (item: keyof typeof languageData) => {

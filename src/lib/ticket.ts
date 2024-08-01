@@ -26,15 +26,15 @@ export const getCityValueByName = (city?: string) => {
     if (city === languageData["Kutaisi_airport"].ge || city === languageData["Kutaisi_airport"].en) return languageData["Kutaisi_airport"].ge
     if (city === languageData["Kutaisi"].ge || city === languageData["Kutaisi"].en) return languageData["Kutaisi_airport"].ge
 
+    if (city === languageData["Prague"].en || city === languageData["Prague"].ge) return languageData["Prague"].ge
+    if (city === languageData["Kiev"].en || city === languageData["Kiev"].ge) return languageData["Kiev"].ge
+
     return undefined
 }
 
 export const getBysSystemCityValueByName = (city?: string) => {
-    if (city === languageData["Tbilisi"].ge || city === languageData["Tbilisi"].en) return "3"
-    if (city === languageData["Batumi"].ge || city === languageData["Batumi"].en) return "2"
-    if (city === languageData["Kutaisi_airport"].ge || city === languageData["Kutaisi_airport"].en) return "6"
-    if (city === languageData["Kutaisi"].ge || city === languageData["Kutaisi"].en) return "6"
-
+    if (city === languageData["Kiev"].en || city === languageData["Kiev"].ge) return "3"
+    if (city === languageData["Prague"].en || city === languageData["Prague"].ge) return "6"
 }
 
 export const getCityNameByValue = (value?: string) => {
@@ -203,19 +203,19 @@ export const filterUnfilledPassengers = (passengers: passengerType[]) =>
     passengers.filter(({ firstName, lastName }) => firstName && lastName)
 
 export const calculateTicketsFullPrice = (passengersCount: number, price1: number = 0, price2: number = 0, fullPrice: boolean = false, activeDiscountIds: string[], discounts: Discount[] | null, ticket1Type: TicketApiEnum, ticket2Type: TicketApiEnum) => {
-    const discountsProcents = (activeDiscountIds?.map((discountId) => {
-        const { discount_price } = discounts?.find(({ discount_id }) => discount_id === discountId) || { discount_price: 100 }
-        return 100 - discount_price
+    const discountsPrices = (activeDiscountIds?.map((discountId) => {
+        const { discount_price } = discounts?.find(({ discount_id }) => discount_id === discountId) || { discount_price: 0 }
+        return discount_price
     }) || []).reduce((acc, price) => acc + price, 0)
 
 
     let discountPriceCalc = 0;
 
     if (ticket1Type === TicketApiEnum.BUS_SYSTEM) {
-        discountPriceCalc = discountsProcents * price1 / 100
+        discountPriceCalc = discountsPrices
     }
     if (ticket2Type === TicketApiEnum.BUS_SYSTEM) {
-        discountPriceCalc += discountsProcents * price2 / 100
+        discountPriceCalc += discountsPrices
     }
 
     let ticketsPrice = passengersCount * price1
@@ -224,7 +224,7 @@ export const calculateTicketsFullPrice = (passengersCount: number, price1: numbe
     }
     const serviceFee = 0
     const priceWODiscount = ticketsPrice + serviceFee
-    const discountPrice = discountPriceCalc
+    const discountPrice = priceWODiscount - discountPriceCalc
     const totalPrice = fullPrice ? priceWODiscount - discountPrice : ticketsPrice
     const discount = (discountPrice / priceWODiscount * 100).toFixed(0)
 
